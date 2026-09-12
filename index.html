@@ -1,34 +1,957 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>SUPPORTERS CULB</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f5f5f5;color:#111;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",Arial,sans-serif}
-header{background:#111;color:#fff;padding:20px}.logo{font-weight:900;letter-spacing:1px;font-size:22px}.sub{font-size:10px;opacity:.65;margin-top:4px}
-.hero{background:#fff;padding:28px 20px;border-bottom:1px solid #ddd}.hero h1{margin:0;font-size:28px}.hero p{margin:7px 0 0;color:#666}
-.content{padding:16px}.filters{display:flex;gap:8px;margin-bottom:16px;overflow:auto}.filters button{background:#fff;border:1px solid #ddd;border-radius:999px;padding:9px 18px;white-space:nowrap}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px #0000000d}.photo{aspect-ratio:1;background:#eee;display:flex;align-items:center;justify-content:center;color:#aaa}.photo img{width:100%;height:100%;object-fit:cover}.details{padding:10px}.details div{display:flex;gap:8px;font-size:12px;margin:5px 0}.details b{font-size:9px;color:#888;min-width:55px}.details strong{font-size:15px}.add{display:block;width:calc(100% - 20px);margin:10px;padding:12px;border:0;border-radius:8px;background:#111;color:#fff;font-weight:700}.cart{position:sticky;bottom:0;background:#fff;border-top:1px solid #ddd;padding:14px 16px;box-shadow:0 -4px 15px #0001}.cartHead{display:flex;justify-content:space-between}.cartItem{display:flex;justify-content:space-between;padding:7px 0;font-size:13px}.cartItem button{border:0;background:none;color:#888}.total{text-align:right;font-weight:800;margin:8px 0}.line{display:block;background:#06c755;color:#fff;text-decoration:none;text-align:center;padding:13px;border-radius:8px;font-weight:800}
-@media(min-width:700px){.grid{grid-template-columns:repeat(3,1fr);max-width:1000px}}
-</style></head>
-<body><header><div class="logo">SUPPORTERS CULB</div><div class="sub">FOOTBALL GOODS</div></header>
-<section class="hero"><h1>SOCCERWE</h1><p>サッカーグッズを選んで注文</p></section>
-<div class="content"><div class="filters"><button onclick="loadProducts('')">すべて</button><button onclick="loadProducts('代表')">代表</button><button onclick="loadProducts('クラブ')">クラブ</button></div><div id="status">商品を読み込み中…</div><div id="grid" class="grid"></div></div>
-<aside class="cart"><div class="cartHead"><b>カート</b><span id="count">0点</span></div><div id="cartItems"></div><div class="total" id="total"></div><a id="line" class="line" style="display:none" href="#">LINEで注文する</a></aside>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SUPABASE_URL="https://juzrxqrabrvhlwvnvton.supabase.co";
-const SUPABASE_KEY="sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-let cart=[];
-async function loadProducts(type=''){
- document.getElementById('status').textContent='商品を読み込み中…';
- let q=sb.from('products').select('*').order('id',{ascending:false}); if(type) q=q.eq('item_type',type);
- const {data,error}=await q; if(error){document.getElementById('status').textContent='商品を読み込めませんでした。';console.error(error);return}
- document.getElementById('status').textContent=data.length?'':'商品がまだ登録されていません。';
- document.getElementById('grid').innerHTML=data.map(p=>`<article class="card"><div class="photo">${p.image_url?`<img src="${p.image_url}" alt="">`:'NO IMAGE'}</div><div class="details"><div><b>NAME</b><span>${esc(p.name)}</span></div><div><b>VERSION</b><span>${esc(p.version||'-')}</span></div><div><b>MODEL</b><span>${esc(p.model||'-')}</span></div><div><b>PRICE</b><strong>¥${Number(p.price).toLocaleString()}</strong></div></div><button class="add" onclick='add(${JSON.stringify(p)})'>カートに入れる</button></article>`).join('');
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:#f5f5f5;
+  color:#111;
+  font-family:-apple-system,BlinkMacSystemFont,
+  "Hiragino Kaku Gothic ProN",Arial,sans-serif
 }
-function esc(x){return String(x).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function add(p){cart.push(p);renderCart()}
-function remove(i){cart.splice(i,1);renderCart()}
-function renderCart(){document.getElementById('count').textContent=cart.length+'点';document.getElementById('cartItems').innerHTML=cart.map((p,i)=>`<div class="cartItem"><span>${esc(p.name)} ¥${Number(p.price).toLocaleString()}</span><button onclick="remove(${i})">削除</button></div>`).join('');let total=cart.reduce((s,p)=>s+Number(p.price),0);document.getElementById('total').textContent=cart.length?'合計 ¥'+total.toLocaleString():'';let text='【SUPPORTERS CULB 注文】\n\n'+cart.map((p,i)=>`${i+1}. ${p.name} / ${p.version||''} / ${p.model||''} / ¥${Number(p.price).toLocaleString()}`).join('\n')+'\n\n合計 ¥'+total.toLocaleString();let a=document.getElementById('line');a.style.display=cart.length?'block':'none';a.href='https://line.me/R/oaMessage/%40163shzbn/?'+encodeURIComponent(text)}
-loadProducts();
-</script></body></html>
+
+header{
+  background:#111;
+  color:#fff;
+  padding:20px
+}
+
+.logo{
+  font-weight:900;
+  letter-spacing:1px;
+  font-size:22px
+}
+
+.sub{
+  font-size:10px;
+  opacity:.65;
+  margin-top:4px
+}
+
+.hero{
+  background:#fff;
+  padding:28px 20px;
+  border-bottom:1px solid #ddd
+}
+
+.hero h1{
+  margin:0;
+  font-size:28px
+}
+
+.hero p{
+  margin:7px 0 0;
+  color:#666
+}
+
+.content{
+  padding:16px
+}
+
+/* カテゴリー */
+.filters{
+  display:flex;
+  gap:8px;
+  margin-bottom:10px;
+  overflow-x:auto;
+  padding-bottom:4px;
+  -webkit-overflow-scrolling:touch
+}
+
+.filters button{
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:999px;
+  padding:9px 18px;
+  white-space:nowrap;
+  font-size:14px
+}
+
+.filters button.active{
+  background:#111;
+  color:#fff;
+  border-color:#111
+}
+
+/* 商品 */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px
+}
+
+.card{
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 2px 10px #0000000d
+}
+
+.photo{
+  aspect-ratio:1;
+  background:#eee;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#aaa
+}
+
+.photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+
+.details{
+  padding:10px
+}
+
+.details div{
+  display:flex;
+  gap:8px;
+  font-size:12px;
+  margin:5px 0
+}
+
+.details b{
+  font-size:9px;
+  color:#888;
+  min-width:55px
+}
+
+.details strong{
+  font-size:15px
+}
+
+.add{
+  display:block;
+  width:calc(100% - 20px);
+  margin:10px;
+  padding:12px;
+  border:0;
+  border-radius:8px;
+  background:#111;
+  color:#fff;
+  font-weight:700
+}
+
+/* カート */
+.cart{
+  position:sticky;
+  bottom:0;
+  background:#fff;
+  border-top:1px solid #ddd;
+  padding:14px 16px;
+  box-shadow:0 -4px 15px #0001
+}
+
+.cartHead{
+  display:flex;
+  justify-content:space-between
+}
+
+.cartItem{
+  display:flex;
+  justify-content:space-between;
+  padding:7px 0;
+  font-size:13px
+}
+
+.cartItem button{
+  border:0;
+  background:none;
+  color:#888
+}
+
+.total{
+  text-align:right;
+  font-weight:800;
+  margin:8px 0
+}
+
+.line{
+  display:block;
+  background:#06c755;
+  color:#fff;
+  text-decoration:none;
+  text-align:center;
+  padding:13px;
+  border-radius:8px;
+  font-weight:800
+}
+
+@media(min-width:700px){
+  .grid{
+    grid-template-columns:repeat(3,1fr);
+    max-width:1000px
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">SUPPORTERS CULB</div>
+  <div class="sub">FOOTBALL GOODS</div>
+</header>
+
+<section class="hero">
+  <h1>SOCCERWE</h1>
+  <p>サッカーグッズを選んで注文</p>
+</section>
+
+<div class="content">
+
+  <!-- 大カテゴリー -->
+  <div class="filters" id="mainFilters">
+    <button class="active" onclick="selectMain('')">
+      すべて
+    </button>
+
+    <button onclick="selectMain('代表')">
+      代表
+    </button>
+
+    <button onclick="selectMain('クラブ')">
+      クラブ
+    </button>
+  </div>
+
+  <!-- 国・リーグ -->
+  <div
+    class="filters"
+    id="subFilters"
+    style="display:none">
+  </div>
+
+  <!-- チーム -->
+  <div
+    class="filters"
+    id="teamFilters"
+    style="display:none">
+  </div>
+
+  <div id="status">
+    商品を読み込み中…
+  </div>
+
+  <div id="grid" class="grid"></div>
+
+</div>
+
+<!-- カート -->
+<aside class="cart">
+
+  <div class="cartHead">
+    <b>カート</b>
+    <span id="count">0点</span>
+  </div>
+
+  <div id="cartItems"></div>
+
+  <div class="total" id="total"></div>
+
+  <a
+    id="line"
+    class="line"
+    style="display:none"
+    href="#">
+    LINEで注文する
+  </a>
+
+</aside>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+/* =========================
+   Supabase
+========================= */
+
+const SUPABASE_URL=
+  "https://juzrxqrabrvhlwvnvton.supabase.co";
+
+const SUPABASE_KEY=
+  "sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
+
+const sb=
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =========================
+   状態
+========================= */
+
+let cart=[];
+
+let allProducts=[];
+
+let currentMain="";
+
+let currentSub="";
+
+let currentTeam="";
+
+
+/* =========================
+   商品を取得
+========================= */
+
+async function init(){
+
+  document.getElementById("status")
+    .textContent="商品を読み込み中…";
+
+  const {data,error}=await sb
+    .from("products")
+    .select("*")
+    .order("id",{ascending:false});
+
+  if(error){
+
+    document.getElementById("status")
+      .textContent=
+      "商品を読み込めませんでした。";
+
+    console.error(error);
+
+    return;
+  }
+
+  allProducts=data || [];
+
+  loadProducts();
+}
+
+
+/* =========================
+   大カテゴリー選択
+========================= */
+
+function selectMain(type){
+
+  currentMain=type;
+
+  currentSub="";
+
+  currentTeam="";
+
+
+  /* ボタンの色 */
+  document
+    .querySelectorAll("#mainFilters button")
+    .forEach(btn=>{
+      btn.classList.remove("active");
+    });
+
+
+  const buttons=
+    document.querySelectorAll(
+      "#mainFilters button"
+    );
+
+
+  if(type===""){
+    buttons[0].classList.add("active");
+  }
+
+  if(type==="代表"){
+    buttons[1].classList.add("active");
+  }
+
+  if(type==="クラブ"){
+    buttons[2].classList.add("active");
+  }
+
+
+  buildSubFilters();
+
+
+  document.getElementById("teamFilters")
+    .style.display="none";
+
+
+  loadProducts();
+}
+
+
+/* =========================
+   第2カテゴリー
+========================= */
+
+function buildSubFilters(){
+
+  const sub=
+    document.getElementById("subFilters");
+
+  sub.innerHTML="";
+
+
+  if(currentMain===""){
+
+    sub.style.display="none";
+
+    return;
+  }
+
+
+  sub.style.display="flex";
+
+
+  /* すべて */
+  const allButton=
+    document.createElement("button");
+
+  allButton.textContent="すべて";
+
+  allButton.classList.add("active");
+
+
+  allButton.onclick=()=>{
+
+    currentSub="";
+
+    currentTeam="";
+
+
+    [...sub.children].forEach(btn=>{
+      btn.classList.remove("active");
+    });
+
+    allButton.classList.add("active");
+
+
+    document.getElementById("teamFilters")
+      .style.display="none";
+
+
+    loadProducts();
+  };
+
+
+  sub.appendChild(allButton);
+
+
+  let values=[];
+
+
+  /* =========================
+     代表 → 国
+  ========================= */
+
+  if(currentMain==="代表"){
+
+    values=[
+      ...new Set(
+
+        allProducts
+
+          .filter(p=>
+            p.item_type==="代表"
+          )
+
+          .map(p=>
+            p.country ||
+            p.country_or_club
+          )
+
+          .filter(Boolean)
+
+      )
+    ];
+  }
+
+
+  /* =========================
+     クラブ → リーグ
+  ========================= */
+
+  if(currentMain==="クラブ"){
+
+    values=[
+      ...new Set(
+
+        allProducts
+
+          .filter(p=>
+            p.item_type==="クラブ"
+          )
+
+          .map(p=>
+            p.region
+          )
+
+          .filter(Boolean)
+
+      )
+    ];
+  }
+
+
+  /* 並び順 */
+  values.sort((a,b)=>
+    String(a).localeCompare(
+      String(b),
+      "ja"
+    )
+  );
+
+
+  /* ボタン作成 */
+  values.forEach(value=>{
+
+    const button=
+      document.createElement("button");
+
+    button.textContent=value;
+
+
+    button.onclick=()=>{
+
+      currentSub=value;
+
+      currentTeam="";
+
+
+      [...sub.children].forEach(btn=>{
+        btn.classList.remove("active");
+      });
+
+      button.classList.add("active");
+
+
+      /* クラブならチームを表示 */
+      if(currentMain==="クラブ"){
+
+        buildTeamFilters();
+
+      }else{
+
+        document.getElementById("teamFilters")
+          .style.display="none";
+
+      }
+
+
+      loadProducts();
+    };
+
+
+    sub.appendChild(button);
+
+  });
+
+}
+
+
+/* =========================
+   第3カテゴリー
+   クラブ → チーム
+========================= */
+
+function buildTeamFilters(){
+
+  const team=
+    document.getElementById("teamFilters");
+
+  team.innerHTML="";
+
+  team.style.display="flex";
+
+
+  /* すべて */
+  const allButton=
+    document.createElement("button");
+
+  allButton.textContent="すべて";
+
+  allButton.classList.add("active");
+
+
+  allButton.onclick=()=>{
+
+    currentTeam="";
+
+
+    [...team.children].forEach(btn=>{
+      btn.classList.remove("active");
+    });
+
+    allButton.classList.add("active");
+
+
+    loadProducts();
+  };
+
+
+  team.appendChild(allButton);
+
+
+  /* 選択したリーグのチーム */
+  const teams=[
+
+    ...new Set(
+
+      allProducts
+
+        .filter(p=>
+          p.item_type==="クラブ" &&
+          p.region===currentSub
+        )
+
+        .map(p=>
+          p.country_or_club
+        )
+
+        .filter(Boolean)
+
+    )
+
+  ];
+
+
+  teams.sort((a,b)=>
+    String(a).localeCompare(
+      String(b),
+      "ja"
+    )
+  );
+
+
+  teams.forEach(value=>{
+
+    const button=
+      document.createElement("button");
+
+    button.textContent=value;
+
+
+    button.onclick=()=>{
+
+      currentTeam=value;
+
+
+      [...team.children].forEach(btn=>{
+        btn.classList.remove("active");
+      });
+
+      button.classList.add("active");
+
+
+      loadProducts();
+    };
+
+
+    team.appendChild(button);
+
+  });
+
+}
+
+
+/* =========================
+   商品を表示
+========================= */
+
+function loadProducts(){
+
+  let data=[
+    ...allProducts
+  ];
+
+
+  /* 大カテゴリー */
+  if(currentMain){
+
+    data=data.filter(p=>
+      p.item_type===currentMain
+    );
+
+  }
+
+
+  /* =========================
+     代表 → 国
+  ========================= */
+
+  if(
+    currentMain==="代表" &&
+    currentSub
+  ){
+
+    data=data.filter(p=>{
+
+      const country=
+        p.country ||
+        p.country_or_club;
+
+      return country===currentSub;
+
+    });
+
+  }
+
+
+  /* =========================
+     クラブ → リーグ
+  ========================= */
+
+  if(
+    currentMain==="クラブ" &&
+    currentSub
+  ){
+
+    data=data.filter(p=>
+      p.region===currentSub
+    );
+
+  }
+
+
+  /* =========================
+     クラブ → リーグ → チーム
+  ========================= */
+
+  if(
+    currentMain==="クラブ" &&
+    currentSub &&
+    currentTeam
+  ){
+
+    data=data.filter(p=>
+      p.country_or_club===currentTeam
+    );
+
+  }
+
+
+  /* 商品なし */
+  document.getElementById("status")
+    .textContent=
+      data.length
+      ? ""
+      : "商品がまだ登録されていません。";
+
+
+  /* 商品カード */
+  document.getElementById("grid")
+    .innerHTML=
+
+    data.map(p=>`
+
+      <article class="card">
+
+        <div class="photo">
+
+          ${
+            p.image_url
+            ?
+            `<img
+              src="${p.image_url}"
+              alt="">`
+            :
+            "NO IMAGE"
+          }
+
+        </div>
+
+        <div class="details">
+
+          <div>
+            <b>NAME</b>
+            <span>
+              ${esc(p.name)}
+            </span>
+          </div>
+
+          <div>
+            <b>VERSION</b>
+            <span>
+              ${esc(p.version||"-")}
+            </span>
+          </div>
+
+          <div>
+            <b>MODEL</b>
+            <span>
+              ${esc(p.model||"-")}
+            </span>
+          </div>
+
+          <div>
+            <b>PRICE</b>
+            <strong>
+              ¥${Number(p.price)
+                .toLocaleString()}
+            </strong>
+          </div>
+
+        </div>
+
+        <button
+          class="add"
+          onclick='add(${JSON.stringify(p)})'>
+          カートに入れる
+        </button>
+
+      </article>
+
+    `).join("");
+
+}
+
+
+/* =========================
+   HTMLエスケープ
+========================= */
+
+function esc(x){
+
+  return String(x).replace(
+    /[&<>"']/g,
+
+    m=>({
+
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+
+    }[m])
+
+  );
+
+}
+
+
+/* =========================
+   カート
+========================= */
+
+function add(p){
+
+  cart.push(p);
+
+  renderCart();
+
+}
+
+
+function remove(i){
+
+  cart.splice(i,1);
+
+  renderCart();
+
+}
+
+
+function renderCart(){
+
+  document.getElementById("count")
+    .textContent=
+    cart.length+"点";
+
+
+  document.getElementById("cartItems")
+    .innerHTML=
+
+    cart.map((p,i)=>`
+
+      <div class="cartItem">
+
+        <span>
+          ${esc(p.name)}
+          ¥${Number(p.price)
+            .toLocaleString()}
+        </span>
+
+        <button
+          onclick="remove(${i})">
+          削除
+        </button>
+
+      </div>
+
+    `).join("");
+
+
+  const total=
+    cart.reduce(
+      (sum,p)=>
+        sum+Number(p.price),
+      0
+    );
+
+
+  document.getElementById("total")
+    .textContent=
+
+    cart.length
+    ?
+    "合計 ¥"+
+    total.toLocaleString()
+    :
+    "";
+
+
+  const text=
+
+    "【SUPPORTERS CULB 注文】\n\n"+
+
+    cart.map((p,i)=>
+
+      `${i+1}. ${p.name} / `+
+      `${p.version||""} / `+
+      `${p.model||""} / `+
+      `¥${Number(p.price)
+        .toLocaleString()}`
+
+    ).join("\n")+
+
+    "\n\n合計 ¥"+
+    total.toLocaleString();
+
+
+  const line=
+    document.getElementById("line");
+
+
+  line.style.display=
+    cart.length
+    ?
+    "block"
+    :
+    "none";
+
+
+  line.href=
+    "https://line.me/R/oaMessage/%40163shzbn/?"+
+    encodeURIComponent(text);
+
+}
+
+
+/* =========================
+   スタート
+========================= */
+
+init();
+
+</script>
+
+</body>
+</html>
