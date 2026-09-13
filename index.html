@@ -874,7 +874,19 @@ function esc(x){
    カート
 ========================= */
 function getCartOrder(id){
-  return cart.filter(p => String(p.id) === String(id)).length;
+  const ids=[];
+
+  cart.forEach(p=>{
+    const key=String(p.id);
+
+    if(!ids.includes(key)){
+      ids.push(key);
+    }
+  });
+
+  const index=ids.indexOf(String(id));
+
+  return index===-1 ? 0 : index+1;
 }
 
 function circledNumber(n){
