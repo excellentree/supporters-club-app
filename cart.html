@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>カート | SUPPORTERS CULB</title>
+
+<style>
+*{
+  box-sizing:border-box
+}
+
+body{
+  margin:0;
+  background:#f5f5f5;
+  color:#111;
+  font-family:-apple-system,BlinkMacSystemFont,
+  "Hiragino Kaku Gothic ProN",Arial,sans-serif
+}
+
+header{
+  background:#111;
+  color:#fff;
+  padding:20px
+}
+
+.logo{
+  font-weight:900;
+  letter-spacing:1px;
+  font-size:22px
+}
+
+.sub{
+  font-size:10px;
+  opacity:.65;
+  margin-top:4px
+}
+
+.content{
+  padding:20px 16px 40px
+}
+
+.back{
+  display:inline-block;
+  margin-bottom:20px;
+  color:#111;
+  text-decoration:none;
+  font-weight:700
+}
+
+h1{
+  margin:0 0 20px;
+  font-size:28px
+}
+
+.cartItem{
+  background:#fff;
+  padding:16px;
+  border-bottom:1px solid #eee
+}
+
+.nameRow{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-weight:700;
+  font-size:15px
+}
+
+.qtyRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:12px
+}
+
+.qty{
+  display:flex;
+  align-items:center;
+  gap:14px
+}
+
+.qty button{
+  width:38px;
+  height:38px;
+  border:1px solid #ddd;
+  border-radius:50%;
+  background:#fff;
+  font-size:22px
+}
+
+.qty strong{
+  min-width:20px;
+  text-align:center;
+  font-size:17px
+}
+
+.delete{
+  border:0;
+  background:none;
+  color:#888;
+  font-size:13px
+}
+
+.total{
+  text-align:right;
+  font-size:24px;
+  font-weight:900;
+  margin:20px 0
+}
+
+.clear{
+  display:block;
+  width:100%;
+  padding:12px;
+  border:0;
+  background:none;
+  color:#888;
+  font-size:13px;
+  margin-bottom:12px
+}
+
+.line{
+  display:block;
+  width:100%;
+  background:#06c755;
+  color:#fff;
+  text-decoration:none;
+  text-align:center;
+  padding:16px;
+  border-radius:10px;
+  font-weight:900;
+  font-size:17px
+}
+
+.empty{
+  background:#fff;
+  padding:40px 20px;
+  text-align:center;
+  color:#888
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">SUPPORTERS CULB</div>
+  <div class="sub">FOOTBALL GOODS</div>
+</header>
+
+<div class="content">
+
+  <a class="back" href="index.html">
+    ← 商品を見る
+  </a>
+
+  <h1>🛒 カート</h1>
+
+  <div id="cartItems"></div>
+
+  <div class="total" id="total"></div>
+
+  <button
+    class="clear"
+    onclick="clearCart()">
+    カートを空にする
+  </button>
+
+  <a
+    id="line"
+    class="line"
+    href="#">
+    LINEで注文する
+  </a>
+
+</div>
+
+<script>
+
+let cart=
+  JSON.parse(
+    localStorage.getItem("supportersCart") || "[]"
+  );
+
+
+function saveCart(){
+
+  localStorage.setItem(
+    "supportersCart",
+    JSON.stringify(cart)
+  );
+
+}
+
+
+function changeQty(id,delta){
+
+  if(delta>0){
+
+    const p=
+      cart.find(x=>
+        String(x.id)===String(id)
+      );
+
+    if(p){
+      cart.push(p);
+    }
+
+  }else{
+
+    const index=
+      cart.findIndex(x=>
+        String(x.id)===String(id)
+      );
+
+    if(index!==-1){
+      cart.splice(index,1);
+    }
+
+  }
+
+  saveCart();
+
+  render();
+
+}
+
+
+function removeProduct(id){
+
+  cart=
+    cart.filter(x=>
+      String(x.id)!==String(id)
+    );
+
+  saveCart();
+
+  render();
+
+}
+
+
+function clearCart(){
+
+  cart=[];
+
+  saveCart();
+
+  render();
+
+}
+
+
+function esc(x){
+
+  return String(x).replace(
+    /[&<>"']/g,
+
+    m=>({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[m])
+
+  );
+
+}
+
+
+function render(){
+
+  const groups={};
+
+
+  cart.forEach(p=>{
+
+    const id=String(p.id);
+
+    if(!groups[id]){
+
+      groups[id]={
+        product:p,
+        qty:0
+      };
+
+    }
+
+    groups[id].qty++;
+
+  });
+
+
+  const items=
+    Object.values(groups);
+
+
+  if(!items.length){
+
+    document.getElementById("cartItems")
+      .innerHTML=`
+        <div class="empty">
+          カートは空です
+        </div>
+      `;
+
+    document.getElementById("total")
+      .textContent="";
+
+    document.getElementById("line")
+      .style.display="none";
+
+    return;
+
+  }
+
+
+  document.getElementById("cartItems")
+    .innerHTML=
+
+    items.map(item=>{
+
+      const p=item.product;
+      const qty=item.qty;
+      const id=String(p.id);
+
+      const subtotal=
+        Number(p.price)*qty;
+
+      return `
+
+        <div class="cartItem">
+
+          <div class="nameRow">
+
+            <span>
+              ${esc(p.name)}
+            </span>
+
+            <span>
+              ¥${subtotal.toLocaleString()}
+            </span>
+
+          </div>
+
+          <div class="qtyRow">
+
+            <div class="qty">
+
+              <button
+                onclick='changeQty(${JSON.stringify(id)},-1)'>
+                −
+              </button>
+
+              <strong>
+                ${qty}
+              </strong>
+
+              <button
+                onclick='changeQty(${JSON.stringify(id)},1)'>
+                ＋
+              </button>
+
+            </div>
+
+            <button
+              class="delete"
+              onclick='removeProduct(${JSON.stringify(id)})'>
+              削除
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }).join("");
+
+
+  const total=
+    cart.reduce(
+      (sum,p)=>
+        sum+Number(p.price),
+      0
+    );
+
+
+  document.getElementById("total")
+    .textContent=
+      "合計 ¥"+
+      total.toLocaleString();
+
+
+  document.getElementById("line")
+    .style.display="block";
+
+
+  const text=
+
+    "【SUPPORTERS CULB 注文】\n\n"+
+
+    items.map((item,i)=>{
+
+      const p=item.product;
+
+      return (
+
+        `${i+1}. ${p.name} × ${item.qty} / `+
+        `${p.version||""} / `+
+        `${p.model||""} / `+
+        `¥${(Number(p.price)*item.qty)
+          .toLocaleString()}`
+
+      );
+
+    }).join("\n")+
+
+    "\n\n合計 ¥"+
+    total.toLocaleString();
+
+
+  document.getElementById("line").href=
+
+    "https://line.me/R/oaMessage/%40163shzbn/?"+
+    encodeURIComponent(text);
+
+}
+
+
+render();
+
+</script>
+
+</body>
+</html>
