@@ -850,9 +850,52 @@ function add(p){
 }
 
 
-function remove(i){
+function changeQty(id,delta){
 
-  cart.splice(i,1);
+  if(delta>0){
+
+    const p=
+      allProducts.find(x=>
+        String(x.id)===String(id)
+      );
+
+    if(p){
+      cart.push(p);
+    }
+
+  }else{
+
+    const index=
+      cart.findIndex(p=>
+        String(p.id)===String(id)
+      );
+
+    if(index!==-1){
+      cart.splice(index,1);
+    }
+
+  }
+
+  renderCart();
+
+}
+
+
+function removeProduct(id){
+
+  cart=
+    cart.filter(p=>
+      String(p.id)!==String(id)
+    );
+
+  renderCart();
+
+}
+
+
+function clearCart(){
+
+  cart=[];
 
   renderCart();
 
@@ -861,34 +904,157 @@ function remove(i){
 
 function renderCart(){
 
+  const groups={};
+
+
+  cart.forEach(p=>{
+
+    const id=String(p.id);
+
+    if(!groups[id]){
+
+      groups[id]={
+        product:p,
+        qty:0
+      };
+
+    }
+
+    groups[id].qty++;
+
+  });
+
+
+  const items=
+    Object.values(groups);
+
+
+  /* 点数 */
   document.getElementById("count")
     .textContent=
-    cart.length+"点";
+      cart.length+"点";
 
 
+  /* 商品表示 */
   document.getElementById("cartItems")
     .innerHTML=
 
-    cart.map((p,i)=>`
+    items.map(item=>{
 
-      <div class="cartItem">
+      const p=item.product;
+      const qty=item.qty;
+      const id=String(p.id);
 
-        <span>
-          ${esc(p.name)}
-          ¥${Number(p.price)
-            .toLocaleString()}
-        </span>
+      const price=
+        Number(p.price);
 
-        <button
-          onclick="remove(${i})">
-          削除
-        </button>
-
-      </div>
-
-    `).join("");
+      const subtotal=
+        price*qty;
 
 
+      return `
+
+        <div class="cartItem"
+          style="
+            display:block;
+            padding:10px 0;
+            border-bottom:1px solid #eee;
+          ">
+
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            gap:10px;
+            margin-bottom:8px;
+          ">
+
+            <span style="
+              font-weight:600;
+            ">
+              ${esc(p.name)}
+            </span>
+
+            <span>
+              ¥${subtotal.toLocaleString()}
+            </span>
+
+          </div>
+
+
+          <div style="
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+          ">
+
+            <div style="
+              display:flex;
+              align-items:center;
+              gap:10px;
+            ">
+
+              <button
+                onclick='changeQty(${JSON.stringify(id)},-1)'
+                style="
+                  width:34px;
+                  height:34px;
+                  border:1px solid #ddd;
+                  border-radius:50%;
+                  background:#fff;
+                  font-size:20px;
+                  padding:0;
+                ">
+                −
+              </button>
+
+
+              <strong style="
+                min-width:20px;
+                text-align:center;
+                font-size:16px;
+              ">
+                ${qty}
+              </strong>
+
+
+              <button
+                onclick='changeQty(${JSON.stringify(id)},1)'
+                style="
+                  width:34px;
+                  height:34px;
+                  border:1px solid #ddd;
+                  border-radius:50%;
+                  background:#fff;
+                  font-size:20px;
+                  padding:0;
+                ">
+                ＋
+              </button>
+
+            </div>
+
+
+            <button
+              onclick='removeProduct(${JSON.stringify(id)})'
+              style="
+                border:0;
+                background:none;
+                color:#888;
+                font-size:13px;
+              ">
+              削除
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }).join("");
+
+
+  /* 合計 */
   const total=
     cart.reduce(
       (sum,p)=>
@@ -908,19 +1074,72 @@ function renderCart(){
     "";
 
 
+  /* カートを空にする */
+  const clearButton=
+    document.getElementById("clearCart");
+
+
+  if(cart.length){
+
+    if(!clearButton){
+
+      const btn=
+        document.createElement("button");
+
+      btn.id="clearCart";
+
+      btn.textContent=
+        "カートを空にする";
+
+      btn.onclick=
+        clearCart;
+
+      btn.style.cssText=`
+        display:block;
+        width:100%;
+        margin:8px 0 10px;
+        padding:8px;
+        border:0;
+        background:none;
+        color:#888;
+        font-size:12px;
+      `;
+
+      document
+        .getElementById("total")
+        .after(btn);
+
+    }
+
+  }else{
+
+    if(clearButton){
+      clearButton.remove();
+    }
+
+  }
+
+
+  /* LINE注文 */
   const text=
 
     "【SUPPORTERS CULB 注文】\n\n"+
 
-    cart.map((p,i)=>
+    items.map((item,i)=>{
 
-      `${i+1}. ${p.name} / `+
-      `${p.version||""} / `+
-      `${p.model||""} / `+
-      `¥${Number(p.price)
-        .toLocaleString()}`
+      const p=item.product;
 
-    ).join("\n")+
+      return (
+
+        `${i+1}. ${p.name} × ${item.qty} / `+
+        `${p.version||""} / `+
+        `${p.model||""} / `+
+        `¥${(Number(p.price)*item.qty)
+          .toLocaleString()}`
+
+      );
+
+    }).join("\n")+
 
     "\n\n合計 ¥"+
     total.toLocaleString();
@@ -943,7 +1162,6 @@ function renderCart(){
     encodeURIComponent(text);
 
 }
-
 
 /* =========================
    スタート
