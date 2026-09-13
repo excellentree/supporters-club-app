@@ -851,7 +851,8 @@ function esc(x){
 function add(p){
 
   cart.push(p);
-
+p.added = true;
+  
   localStorage.setItem(
     "supportersCart",
     JSON.stringify(cart)
