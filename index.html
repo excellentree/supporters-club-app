@@ -247,8 +247,14 @@ header{
 
 </div>
 
+  <div style="text-align:center;margin:20px;">
+  <a href="cart.html" style="display:inline-block;background:#111;color:#fff;padding:15px 30px;border-radius:10px;text-decoration:none;font-weight:bold;">
+    🛒 カートを見る
+  </a>
+</div>
+  
 <!-- カート -->
-<aside class="cart">
+<aside class="cart" style="display:none">
 
   <div class="cartHead">
     <b>カート</b>
@@ -844,6 +850,11 @@ function esc(x){
 function add(p){
 
   cart.push(p);
+
+  localStorage.setItem(
+    "supportersCart",
+    JSON.stringify(cart)
+  );
 
   renderCart();
 
