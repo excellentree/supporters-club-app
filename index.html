@@ -874,18 +874,7 @@ function esc(x){
    カート
 ========================= */
 function getCartOrder(id){
-  const ids = [];
-
-  cart.forEach(p => {
-    const key = String(p.id);
-    if(!ids.includes(key)){
-      ids.push(key);
-    }
-  });
-
-  const n = ids.indexOf(String(id));
-
-  return n >= 0 ? n + 1 : 0;
+  return cart.filter(p => String(p.id) === String(id)).length;
 }
 
 function circledNumber(n){
@@ -913,12 +902,17 @@ function add(p, btn){
 
     const card = btn.closest(".card");
 
-    if(card && !card.querySelector(".cartOrderBadge")){
-      const badge = document.createElement("span");
-      badge.className = "cartOrderBadge";
-      badge.textContent = circledNumber(order);
-      card.appendChild(badge);
-    }
+   if(card){
+  let badge = card.querySelector(".cartOrderBadge");
+
+  if(!badge){
+    badge = document.createElement("span");
+    badge.className = "cartOrderBadge";
+    card.appendChild(badge);
+  }
+
+  badge.textContent = circledNumber(order);
+}
   }
 
   renderCart();
