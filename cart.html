@@ -398,12 +398,9 @@ function render(){
   document.getElementById("line")
     .style.display="block";
 
-
-  const text=
-
-    "const totalQty = cart.length;
-const discount = Math.max(0, totalQty - 1) * 100;
-const discountedTotal = total - discount;
+const totalQty = items.reduce((sum,item)=>sum+item.qty,0);
+const discount = Math.max(0,totalQty-1)*100;
+const discountedTotal = total-discount;
 
 const text=
 
