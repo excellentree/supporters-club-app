@@ -883,7 +883,7 @@ function add(p, btn){
     JSON.stringify(cart)
   );
 
-  const count = cart.filter(x=>String(x.id)===String(p.id)).length;
+const count = getCartOrder(p.id);
 
   if(btn){
     btn.textContent = "✓ 追加済み";
