@@ -1204,6 +1204,9 @@ function renderCart(){
 
 
   /* LINE注文 */
+  const totalQty = cart.length;
+  const discount = Math.max(0, totalQty - 1) * 100;
+  const discountedTotal = total - discount;
   const text=
 
     "【SUPPORTERS CULB 注文】\n\n"+
@@ -1224,8 +1227,33 @@ function renderCart(){
 
     }).join("\n")+
 
-    "\n\n合計 ¥"+
-    total.toLocaleString();
+"\n\n商品合計 ¥"+
+total.toLocaleString()+
+"\nセット割引 -¥"+
+discount.toLocaleString()+
+"\nお支払い合計 ¥"+
+discountedTotal.toLocaleString()+
+"\n\n━━━━━━━━━━━━━━━━━━"+
+"\n【セット割引について】"+
+"\n\n複数点ご購入いただいた場合、"+
+"\n2点目以降、1点につき100円OFFとなります。"+
+"\n\n2点 → 100円OFF"+
+"\n3点 → 200円OFF"+
+"\n4点 → 300円OFF"+
+"\n5点 → 400円OFF"+
+"\n　・"+
+"\n　・"+
+"\n　・"+
+"\n\n※ご注文点数に応じて自動計算されます。"+
+"\n━━━━━━━━━━━━━━━━━━"+
+"\n\n【商品について】"+
+"\n\n新品・未使用品ですが、"+
+"\n海外製品のため、製造・輸送過程による"+
+"\n細かな傷や個体差がある場合がございます。"+
+"\n\nあらかじめご了承のうえ、"+
+"\nご購入をお願いいたします。"+
+"\n\n※海外製品につき、返品・交換は"+
+"\nお受けしておりません。";
 
 
   const line=
