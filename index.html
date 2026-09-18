@@ -908,24 +908,14 @@ badge.textContent = circledNumber(count);
 
 }
   function getCartOrder(id){
-  const ids=[];
-
-  cart.forEach(p=>{
-    const key=String(p.id);
-
-    if(!ids.includes(key)){
-      ids.push(key);
-    }
-  });
-
-  const index=ids.indexOf(String(id));
-
-  return index===-1 ? 0 : index+1;
+  return cart.filter(
+    p=>String(p.id)===String(id)
+  ).length;
 }
 
 function circledNumber(n){
   if(n>=1 && n<=20){
-    return String.fromCodePoint(0x245F+n);
+return String.fromCodePoint(0x2775+n);
   }
 
   return String(n);
