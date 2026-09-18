@@ -1257,6 +1257,12 @@ discountedTotal.toLocaleString()+
 
 init();
 
+window.addEventListener("pageshow",()=>{
+  cart=JSON.parse(localStorage.getItem("supportersCart")||"[]");
+  loadProducts();
+});
+
+
 </script>
 
 </body>
