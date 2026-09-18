@@ -783,7 +783,7 @@ function loadProducts(){
     data.map(p=>`
 
       <article class="card">
-　　　　${cart.filter(x=>String(x.id)===String(p.id)).length ? `<span class="cartOrderBadge">🛒${cart.filter(x=>String(x.id)===String(p.id)).length}</span>` : ''}
+${getCartOrder(p.id) ? `<span class="cartOrderBadge">${circledNumber(getCartOrder(p.id))}</span>` : ''}
 
         <div class="photo">
 
@@ -906,6 +906,29 @@ badge.textContent = circledNumber(count);
 
   renderCart();
 
+}
+  function getCartOrder(id){
+  const ids=[];
+
+  cart.forEach(p=>{
+    const key=String(p.id);
+
+    if(!ids.includes(key)){
+      ids.push(key);
+    }
+  });
+
+  const index=ids.indexOf(String(id));
+
+  return index===-1 ? 0 : index+1;
+}
+
+function circledNumber(n){
+  if(n>=1 && n<=20){
+    return String.fromCodePoint(0x245F+n);
+  }
+
+  return String(n);
 }
 
 
