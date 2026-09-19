@@ -346,6 +346,36 @@ regionButtons.forEach(function(id){
   document.getElementById("europeCountryArea").style.display="block";
 
 });
+
+  　let selectedCountry = "";
+
+const countryButtons = [
+  "englandButton",
+  "spainButton",
+  "italyButton",
+  "germanyButton",
+  "franceButton"
+];
+
+countryButtons.forEach(function(id){
+
+  document.getElementById(id).addEventListener("click",function(){
+
+    selectedCountry = id;
+
+    countryButtons.forEach(function(otherId){
+
+      document.getElementById(otherId).style.background="";
+      document.getElementById(otherId).style.color="";
+
+    });
+
+    document.getElementById(id).style.background="#111";
+    document.getElementById(id).style.color="#fff";
+
+  });
+
+});
 </script>
 </body>
 </html>
