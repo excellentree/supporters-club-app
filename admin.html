@@ -207,7 +207,16 @@ button.selected{
   <button type="button" id="moroccoButton">モロッコ</button>
 
 </div>
-  
+  <div id="southAmericaCountryArea" style="display:none; margin-top:20px;">
+
+  <h2>国</h2>
+
+  <button type="button" id="brazilButton">ブラジル</button>
+  <button type="button" id="argentinaButton">アルゼンチン</button>
+  <button type="button" id="uruguayButton">ウルグアイ</button>
+  <button type="button" id="colombiaButton">コロンビア</button>
+
+</div>
   <div class="card">
 
     <button class="register">
@@ -422,6 +431,15 @@ africaCountryButtons.forEach(function(id){
   });
 
 });
+  document.getElementById("southAmericaButton").addEventListener("click",function(){
+
+  document.getElementById("southAmericaCountryArea").style.display="block";
+
+  document.getElementById("europeCountryArea").style.display="none";
+  document.getElementById("africaCountryArea").style.display="none";
+
+});
+  
 </script>
 </body>
 </html>
