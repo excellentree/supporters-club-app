@@ -217,6 +217,17 @@ button.selected{
   <button type="button" id="colombiaButton">コロンビア</button>
 
 </div>
+
+  <div id="asiaCountryArea" style="display:none; margin-top:30px;">
+
+  <h2>国</h2>
+
+  <button type="button" id="japanButton">日本</button>
+  <button type="button" id="koreaButton">韓国</button>
+  <button type="button" id="iranButton">イラン</button>
+  <button type="button" id="saudiArabiaButton">サウジアラビア</button>
+
+</div>
   <div class="card">
 
     <button class="register">
@@ -482,6 +493,43 @@ document.getElementById("southAmericaButton").addEventListener("click",function(
   document.getElementById("europeCountryArea").style.display="none";
   document.getElementById("africaCountryArea").style.display="none";
   document.getElementById("southAmericaCountryArea").style.display="block";
+});
+  let selectedAsiaCountry = "";
+
+const asiaCountryButtons = [
+  "japanButton",
+  "koreaButton",
+  "iranButton",
+  "saudiArabiaButton"
+];
+
+asiaCountryButtons.forEach(function(id){
+
+  document.getElementById(id).addEventListener("click",function(){
+
+    selectedAsiaCountry = id;
+
+    asiaCountryButtons.forEach(function(otherId){
+
+      document.getElementById(otherId).style.background="";
+      document.getElementById(otherId).style.color="";
+
+    });
+
+    document.getElementById(id).style.background="#111";
+    document.getElementById(id).style.color="#fff";
+
+  });
+
+});
+
+document.getElementById("asiaButton").addEventListener("click",function(){
+
+  document.getElementById("asiaCountryArea").style.display="block";
+  document.getElementById("europeCountryArea").style.display="none";
+  document.getElementById("africaCountryArea").style.display="none";
+  document.getElementById("southAmericaCountryArea").style.display="none";
+
 });
 </script>
 </body>
