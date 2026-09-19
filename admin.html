@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>SUPPORTERS CULB 商品登録</title>
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f5f5;
+  color:#111;
+}
+
+header{
+  background:#111;
+  color:#fff;
+  padding:28px 20px;
+}
+
+header h1{
+  margin:0;
+  font-size:28px;
+}
+
+header p{
+  margin:8px 0 0;
+  color:#aaa;
+}
+
+main{
+  padding:20px;
+  max-width:600px;
+  margin:auto;
+}
+
+.card{
+  background:#fff;
+  padding:20px;
+  border-radius:16px;
+  margin-bottom:16px;
+}
+
+label{
+  display:block;
+  font-weight:bold;
+  margin-bottom:8px;
+}
+
+input{
+  width:100%;
+  box-sizing:border-box;
+  padding:14px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  font-size:16px;
+}
+
+.buttons{
+  display:flex;
+  gap:10px;
+}
+
+button{
+  flex:1;
+  padding:14px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  background:#fff;
+  font-size:16px;
+}
+
+button.selected{
+  background:#111;
+  color:#fff;
+}
+
+.register{
+  width:100%;
+  background:#111;
+  color:#fff;
+  border:none;
+  font-weight:bold;
+  font-size:18px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>SUPPORTERS CULB</h1>
+  <p>商品登録</p>
+</header>
+
+<main>
+
+  <div class="card">
+
+    <label>NAME</label>
+    <input type="text" placeholder="選手名">
+
+  </div>
+
+  <div class="card">
+
+    <label>VERSION</label>
+    <input type="text" placeholder="normal / smiley">
+
+  </div>
+
+  <div class="card">
+
+    <label>MODEL</label>
+    <input type="text" placeholder="レアル17-18">
+
+  </div>
+
+  <div class="card">
+
+    <label>土台</label>
+
+    <div class="buttons">
+
+      <button type="button">ACTION</button>
+      <button type="button">FIXED</button>
+
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <label>PRICE</label>
+    <input type="number" placeholder="1080">
+
+  </div>
+
+  <div class="card">
+
+    <label>カテゴリー</label>
+
+    <div class="buttons">
+
+      <button type="button">代表</button>
+      <button type="button">クラブ</button>
+
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <button class="register">
+      商品を登録する
+    </button>
+
+  </div>
+
+</main>
+
+</body>
+</html>
