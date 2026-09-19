@@ -439,7 +439,23 @@ africaCountryButtons.forEach(function(id){
   document.getElementById("africaCountryArea").style.display="none";
 
 });
-  
+  document.getElementById("europeButton").addEventListener("click",function(){
+  document.getElementById("europeCountryArea").style.display="block";
+  document.getElementById("africaCountryArea").style.display="none";
+  document.getElementById("southAmericaCountryArea").style.display="none";
+});
+
+document.getElementById("africaButton").addEventListener("click",function(){
+  document.getElementById("europeCountryArea").style.display="none";
+  document.getElementById("africaCountryArea").style.display="block";
+  document.getElementById("southAmericaCountryArea").style.display="none";
+});
+
+document.getElementById("southAmericaButton").addEventListener("click",function(){
+  document.getElementById("europeCountryArea").style.display="none";
+  document.getElementById("africaCountryArea").style.display="none";
+  document.getElementById("southAmericaCountryArea").style.display="block";
+});
 </script>
 </body>
 </html>
