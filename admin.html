@@ -305,6 +305,32 @@ document.getElementById("clubButton").addEventListener("click",function(){
   document.getElementById("repRegionArea").style.display="none";
 
 });
+  let selectedRegion = "";
+
+const regionButtons = [
+  "europeButton",
+  "africaButton",
+  "southAmericaButton",
+  "asiaButton"
+];
+
+regionButtons.forEach(function(id){
+
+  document.getElementById(id).addEventListener("click",function(){
+
+    selectedRegion = id;
+
+    regionButtons.forEach(function(otherId){
+      document.getElementById(otherId).style.background="";
+      document.getElementById(otherId).style.color="";
+    });
+
+    document.getElementById(id).style.background="#111";
+    document.getElementById(id).style.color="#fff";
+
+  });
+
+});
 </script>
 </body>
 </html>
