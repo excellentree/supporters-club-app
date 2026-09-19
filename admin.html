@@ -429,7 +429,34 @@ africaCountryButtons.forEach(function(id){
     document.getElementById(id).style.color="#fff";
 
   });
+let selectedSouthAmericaCountry = "";
 
+const southAmericaCountryButtons = [
+  "brazilButton",
+  "argentinaButton",
+  "uruguayButton",
+  "colombiaButton"
+];
+
+southAmericaCountryButtons.forEach(function(id){
+
+  document.getElementById(id).addEventListener("click",function(){
+
+    selectedSouthAmericaCountry = id;
+
+    southAmericaCountryButtons.forEach(function(otherId){
+
+      document.getElementById(otherId).style.background="";
+      document.getElementById(otherId).style.color="";
+
+    });
+
+    document.getElementById(id).style.background="#111";
+    document.getElementById(id).style.color="#fff";
+
+  });
+
+});
 });
   document.getElementById("southAmericaButton").addEventListener("click",function(){
 
