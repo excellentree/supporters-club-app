@@ -260,6 +260,31 @@ document.getElementById("fixedButton").addEventListener("click",function(){
   document.getElementById("actionButton").style.color="";
 
 });
+let selectedCategory = "";
+
+document.getElementById("repButton").addEventListener("click",function(){
+
+  selectedCategory="代表";
+
+  document.getElementById("repButton").style.background="#111";
+  document.getElementById("repButton").style.color="#fff";
+
+  document.getElementById("clubButton").style.background="";
+  document.getElementById("clubButton").style.color="";
+
+});
+
+document.getElementById("clubButton").addEventListener("click",function(){
+
+  selectedCategory="クラブ";
+
+  document.getElementById("clubButton").style.background="#111";
+  document.getElementById("clubButton").style.color="#fff";
+
+  document.getElementById("repButton").style.background="";
+  document.getElementById("repButton").style.color="";
+
+});
 </script>
 </body>
 </html>
