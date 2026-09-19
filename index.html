@@ -774,7 +774,17 @@ function loadProducts(){
     );
 
   }
+/* MODEL順に並べる */
+data.sort((a,b)=>{
+  const modelA=String(a.model||"");
+  const modelB=String(b.model||"");
 
+  return modelA.localeCompare(
+    modelB,
+    "ja",
+    {numeric:true}
+  );
+});
 
   /* 商品なし */
   document.getElementById("status")
