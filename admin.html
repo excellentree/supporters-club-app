@@ -175,7 +175,16 @@ button.selected{
 <button type="button" id="clubButton">クラブ</button>
 
     </div>
+<div id="repRegionArea" style="display:none; margin-top:20px;">
 
+  <h2>地域</h2>
+
+  <button type="button" id="europeButton">ヨーロッパ</button>
+  <button type="button" id="africaButton">アフリカ</button>
+  <button type="button" id="southAmericaButton">南米</button>
+  <button type="button" id="asiaButton">アジア</button>
+
+</div>
   </div>
 
   <div class="card">
@@ -283,6 +292,17 @@ document.getElementById("clubButton").addEventListener("click",function(){
 
   document.getElementById("repButton").style.background="";
   document.getElementById("repButton").style.color="";
+
+});
+  document.getElementById("repButton").addEventListener("click",function(){
+
+  document.getElementById("repRegionArea").style.display="block";
+
+});
+
+document.getElementById("clubButton").addEventListener("click",function(){
+
+  document.getElementById("repRegionArea").style.display="none";
 
 });
 </script>
