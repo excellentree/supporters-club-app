@@ -115,21 +115,30 @@ button.selected{
   <div class="card">
 
     <label>NAME</label>
-    <input type="text" placeholder="選手名">
+<input
+  type="text"
+  id="nameInput"
+  placeholder="選手名">
 
   </div>
 
   <div class="card">
 
     <label>VERSION</label>
-    <input type="text" placeholder="normal / smiley">
+<input
+  type="text"
+  id="versionInput"
+  placeholder="normal / smiley">
 
   </div>
 
   <div class="card">
 
     <label>MODEL</label>
-    <input type="text" placeholder="レアル17-18">
+<input
+  type="text"
+  id="modelInput"
+  placeholder="レアル17-18">
 
   </div>
 
@@ -139,8 +148,8 @@ button.selected{
 
     <div class="buttons">
 
-      <button type="button">ACTION</button>
-      <button type="button">FIXED</button>
+<button type="button" id="actionButton">ACTION</button>
+<button type="button" id="fixedButton">FIXED</button>
 
     </div>
 
@@ -149,7 +158,10 @@ button.selected{
   <div class="card">
 
     <label>PRICE</label>
-    <input type="number" placeholder="1080">
+<input
+  type="number"
+  id="priceInput"
+  placeholder="1080">
 
   </div>
 
@@ -223,7 +235,31 @@ alert("画像アップロード成功！");
   reader.readAsDataURL(file);
 
 });
+let selectedBase = "";
 
+document.getElementById("actionButton").addEventListener("click",function(){
+
+  selectedBase="ACTION";
+
+  document.getElementById("actionButton").style.background="#111";
+  document.getElementById("actionButton").style.color="#fff";
+
+  document.getElementById("fixedButton").style.background="";
+  document.getElementById("fixedButton").style.color="";
+
+});
+
+document.getElementById("fixedButton").addEventListener("click",function(){
+
+  selectedBase="FIXED";
+
+  document.getElementById("fixedButton").style.background="#111";
+  document.getElementById("fixedButton").style.color="#fff";
+
+  document.getElementById("actionButton").style.background="";
+  document.getElementById("actionButton").style.color="";
+
+});
 </script>
 </body>
 </html>
