@@ -197,6 +197,17 @@ button.selected{
   <button type="button" id="franceButton">フランス</button>
 
 </div>
+<div id="africaCountryArea" style="display:none; margin-top:20px;">
+
+  <h2>国</h2>
+
+  <button type="button" id="nigeriaButton">ナイジェリア</button>
+  <button type="button" id="senegalButton">セネガル</button>
+  <button type="button" id="egyptButton">エジプト</button>
+  <button type="button" id="moroccoButton">モロッコ</button>
+
+</div>
+  
   <div class="card">
 
     <button class="register">
@@ -376,6 +387,14 @@ countryButtons.forEach(function(id){
   });
 
 });
+document.getElementById("africaButton").addEventListener("click",function(){
+
+  document.getElementById("africaCountryArea").style.display="block";
+
+  document.getElementById("europeCountryArea").style.display="none";
+
+});
+  
 </script>
 </body>
 </html>
