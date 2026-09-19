@@ -186,7 +186,17 @@ button.selected{
 
 </div>
   </div>
+<div id="europeCountryArea" style="display:none; margin-top:20px;">
 
+  <h2>国</h2>
+
+  <button type="button" id="englandButton">イングランド</button>
+  <button type="button" id="spainButton">スペイン</button>
+  <button type="button" id="italyButton">イタリア</button>
+  <button type="button" id="germanyButton">ドイツ</button>
+  <button type="button" id="franceButton">フランス</button>
+
+</div>
   <div class="card">
 
     <button class="register">
@@ -329,6 +339,11 @@ regionButtons.forEach(function(id){
     document.getElementById(id).style.color="#fff";
 
   });
+
+});
+  document.getElementById("europeButton").addEventListener("click",function(){
+
+  document.getElementById("europeCountryArea").style.display="block";
 
 });
 </script>
