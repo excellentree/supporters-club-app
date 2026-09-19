@@ -540,6 +540,110 @@ document.getElementById("asiaButton").addEventListener("click",function(){
   document.getElementById("southAmericaCountryArea").style.display="none";
 
 });
+  document.getElementById("registerButton").addEventListener("click",async function(){
+
+  if(!uploadedImageUrl){
+    alert("画像を登録してください");
+    return;
+  }
+
+  if(!document.getElementById("nameInput").value){
+    alert("NAMEを入力してください");
+    return;
+  }
+
+  if(!document.getElementById("priceInput").value){
+    alert("PRICEを入力してください");
+    return;
+  }
+
+  if(!selectedBase){
+    alert("土台を選択してください");
+    return;
+  }
+
+  if(!selectedCategory){
+    alert("カテゴリーを選択してください");
+    return;
+  }
+
+  if(selectedCategory==="クラブ"){
+    alert("クラブ登録は次に対応します");
+    return;
+  }
+
+  function getSelectedCountryName(){
+
+    if(selectedRegion==="europeButton"){
+      return selectedCountry
+        ? document.getElementById(selectedCountry).textContent
+        : "";
+    }
+
+    if(selectedRegion==="africaButton"){
+      return selectedAfricaCountry
+        ? document.getElementById(selectedAfricaCountry).textContent
+        : "";
+    }
+
+    if(selectedRegion==="southAmericaButton"){
+      return selectedSouthAmericaCountry
+        ? document.getElementById(selectedSouthAmericaCountry).textContent
+        : "";
+    }
+
+    if(selectedRegion==="asiaButton"){
+      return selectedAsiaCountry
+        ? document.getElementById(selectedAsiaCountry).textContent
+        : "";
+    }
+
+    return "";
+  }
+
+  function getSelectedRegionName(){
+
+    const map={
+      europeButton:"ヨーロッパ",
+      africaButton:"アフリカ",
+      southAmericaButton:"南米",
+      asiaButton:"アジア"
+    };
+
+    return map[selectedRegion] || "";
+  }
+
+  const countryName=getSelectedCountryName();
+
+  if(!selectedRegion || !countryName){
+    alert("地域と国を選択してください");
+    return;
+  }
+
+  const {data,error}=await sb
+    .from("products")
+    .insert([{
+      image_url:uploadedImageUrl,
+      name:document.getElementById("nameInput").value,
+      version:document.getElementById("versionInput").value,
+      model:document.getElementById("modelInput").value,
+      base:selectedBase,
+      price:Number(document.getElementById("priceInput").value),
+      category:"soccerwe",
+      item_type:selectedCategory,
+      region:getSelectedRegionName(),
+      country_or_club:countryName
+    }]);
+
+  if(error){
+    alert("商品登録失敗");
+    console.error(error);
+    return;
+  }
+
+  alert("商品登録成功！");
+
+});
 </script>
 </body>
 </html>
