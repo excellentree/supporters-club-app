@@ -188,11 +188,26 @@ const sb =
     SUPABASE_URL,
     SUPABASE_KEY
   );
-document.getElementById("imageInput").addEventListener("change",function(){
+document.getElementById("imageInput").addEventListener("change",async function(){
 
   const file=this.files[0];
 
   if(!file) return;
+  const fileName=
+  Date.now()+"-"+file.name;
+
+const {data,error}=await sb
+  .storage
+  .from("product-images")
+  .upload(fileName,file);
+
+if(error){
+  alert("画像アップロード失敗");
+  console.error(error);
+  return;
+}
+
+alert("画像アップロード成功！");
 
   const reader=new FileReader();
 
