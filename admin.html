@@ -636,10 +636,10 @@ document.getElementById("asiaButton").addEventListener("click",function(){
     }]);
 
   if(error){
-    alert("商品登録失敗");
-    console.error(error);
-    return;
-  }
+  alert("商品登録失敗\n\n" + error.message);
+  console.error(error);
+  return;
+}
 
   alert("商品登録成功！");
 
