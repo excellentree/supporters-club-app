@@ -394,7 +394,34 @@ document.getElementById("africaButton").addEventListener("click",function(){
   document.getElementById("europeCountryArea").style.display="none";
 
 });
-  
+  let selectedAfricaCountry = "";
+
+const africaCountryButtons = [
+  "nigeriaButton",
+  "senegalButton",
+  "egyptButton",
+  "moroccoButton"
+];
+
+africaCountryButtons.forEach(function(id){
+
+  document.getElementById(id).addEventListener("click",function(){
+
+    selectedAfricaCountry = id;
+
+    africaCountryButtons.forEach(function(otherId){
+
+      document.getElementById(otherId).style.background="";
+      document.getElementById(otherId).style.color="";
+
+    });
+
+    document.getElementById(id).style.background="#111";
+    document.getElementById(id).style.color="#fff";
+
+  });
+
+});
 </script>
 </body>
 </html>
