@@ -55,9 +55,25 @@ h1{
 }
 
 .cartItem{
+  display:flex;
+  align-items:center;
+  gap:12px;
   background:#fff;
   padding:16px;
   border-bottom:1px solid #eee
+}
+
+.cartImage{
+  width:64px;
+  height:64px;
+  object-fit:cover;
+  border-radius:8px;
+  flex-shrink:0;
+}
+
+.cartInfo{
+  flex:1;
+  min-width:0;
 }
 
 .nameRow{
@@ -332,50 +348,60 @@ function render(){
 
       return `
 
-        <div class="cartItem">
+       return `
+  <div class="cartItem">
 
-          <div class="nameRow">
+    <img
+      class="cartImage"
+      src="${esc(p.image_url || '')}"
+      alt="${esc(p.name)}">
 
-            <span>
-              ${esc(p.name)}
-            </span>
+    <div class="cartInfo">
 
-            <span>
-              ¥${subtotal.toLocaleString()}
-            </span>
+      <div class="nameRow">
 
-          </div>
+        <span>
+          ${esc(p.name)}
+        </span>
 
-          <div class="qtyRow">
+        <span>
+          ¥${subtotal.toLocaleString()}
+        </span>
 
-            <div class="qty">
+      </div>
 
-              <button
-                onclick='changeQty(${JSON.stringify(id)},-1)'>
-                −
-              </button>
+      <div class="qtyRow">
 
-              <strong>
-                ${qty}
-              </strong>
+        <div class="qty">
 
-              <button
-                onclick='changeQty(${JSON.stringify(id)},1)'>
-                ＋
-              </button>
+          <button
+            onclick='changeQty(${JSON.stringify(id)},-1)'>
+            −
+          </button>
 
-            </div>
+          <strong>
+            ${qty}
+          </strong>
 
-            <button
-              class="delete"
-              onclick='removeProduct(${JSON.stringify(id)})'>
-              削除
-            </button>
-
-          </div>
+          <button
+            onclick='changeQty(${JSON.stringify(id)},1)'>
+            ＋
+          </button>
 
         </div>
 
+        <button
+          class="delete"
+          onclick='removeProduct(${JSON.stringify(id)})'>
+          削除
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+`;
       `;
 
     }).join("");
