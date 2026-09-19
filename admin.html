@@ -481,18 +481,21 @@ southAmericaCountryButtons.forEach(function(id){
   document.getElementById("europeCountryArea").style.display="block";
   document.getElementById("africaCountryArea").style.display="none";
   document.getElementById("southAmericaCountryArea").style.display="none";
+    document.getElementById("asiaCountryArea").style.display="none";
 });
 
 document.getElementById("africaButton").addEventListener("click",function(){
   document.getElementById("europeCountryArea").style.display="none";
   document.getElementById("africaCountryArea").style.display="block";
   document.getElementById("southAmericaCountryArea").style.display="none";
+  document.getElementById("asiaCountryArea").style.display="none";
 });
 
 document.getElementById("southAmericaButton").addEventListener("click",function(){
   document.getElementById("europeCountryArea").style.display="none";
   document.getElementById("africaCountryArea").style.display="none";
   document.getElementById("southAmericaCountryArea").style.display="block";
+  document.getElementById("asiaCountryArea").style.display="none";
 });
   let selectedAsiaCountry = "";
 
