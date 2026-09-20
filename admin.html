@@ -726,7 +726,11 @@ document.getElementById("asiaButton").addEventListener("click",function(){
           <div>
             PRICE：¥${p.price||""}
           </div>
-
+<div style="margin-top:15px;">
+  <button onclick="editProduct(${p.id})">
+    ✏️ 修正
+  </button>
+</div>
         </div>
 
       </div>
