@@ -675,6 +675,71 @@ document.getElementById("asiaButton").addEventListener("click",function(){
   document.getElementById("asiaCountryArea").style.display="none";
 
 });
+  async function loadAdminProducts(){
+
+  const {data,error}=await sb
+    .from("products")
+    .select("*")
+    .order("created_at",{ascending:false});
+
+  if(error){
+    console.error(error);
+    return;
+  }
+
+  const list=document.getElementById("productList");
+
+  list.innerHTML="";
+
+  data.forEach(function(p){
+
+    const item=document.createElement("div");
+
+    item.style.background="#fff";
+    item.style.padding="20px";
+    item.style.marginBottom="15px";
+    item.style.borderRadius="15px";
+
+    item.innerHTML=`
+
+      <div style="display:flex;gap:15px;align-items:center;">
+
+        <img
+          src="${p.image_url||""}"
+          style="width:80px;height:80px;object-fit:cover;border-radius:10px;"
+        >
+
+        <div>
+
+          <div style="font-size:20px;font-weight:bold;">
+            ${p.name||""}
+          </div>
+
+          <div>
+            MODEL：${p.model||""}
+          </div>
+
+          <div>
+            VERSION：${p.version||""}
+          </div>
+
+          <div>
+            PRICE：¥${p.price||""}
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+    list.appendChild(item);
+
+  });
+
+}
+
+window.addEventListener("load",loadAdminProducts);
 </script>
   <div class="card">
   <h2>登録済み商品</h2>
