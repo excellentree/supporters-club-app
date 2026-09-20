@@ -429,6 +429,15 @@ const africaCountryButtons = [
   "moroccoButton"
 ];
 
+let selectedAfricaCountry = "";
+
+const africaCountryButtons = [
+  "nigeriaButton",
+  "senegalButton",
+  "egyptButton",
+  "moroccoButton"
+];
+
 africaCountryButtons.forEach(function(id){
 
   document.getElementById(id).addEventListener("click",function(){
@@ -446,6 +455,10 @@ africaCountryButtons.forEach(function(id){
     document.getElementById(id).style.color="#fff";
 
   });
+
+});
+
+
 let selectedSouthAmericaCountry = "";
 
 const southAmericaCountryButtons = [
@@ -455,6 +468,25 @@ const southAmericaCountryButtons = [
   "colombiaButton"
 ];
 
+southAmericaCountryButtons.forEach(function(id){
+
+  document.getElementById(id).addEventListener("click",function(){
+
+    selectedSouthAmericaCountry = id;
+
+    southAmericaCountryButtons.forEach(function(otherId){
+
+      document.getElementById(otherId).style.background="";
+      document.getElementById(otherId).style.color="";
+
+    });
+
+    document.getElementById(id).style.background="#111";
+    document.getElementById(id).style.color="#fff";
+
+  });
+
+});
 southAmericaCountryButtons.forEach(function(id){
 
   document.getElementById(id).addEventListener("click",function(){
@@ -615,7 +647,7 @@ document.getElementById("asiaButton").addEventListener("click",function(){
   }
 
   const countryName=getSelectedCountryName();
-　　alert("選択された国：" + countryName);
+
   if(!selectedRegion || !countryName){
     alert("地域と国を選択してください");
     return;
