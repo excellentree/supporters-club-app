@@ -738,7 +738,10 @@ document.getElementById("asiaButton").addEventListener("click",function(){
     `;
 
     list.appendChild(item);
-let editingProductId = null;
+
+  });
+}
+  let editingProductId = null;
 
 async function editProduct(id){
 
@@ -773,8 +776,6 @@ async function editProduct(id){
   });
 
   alert("商品情報を読み込みました！");
-}
-  });
 }
 window.addEventListener("load",loadAdminProducts);
 </script>
