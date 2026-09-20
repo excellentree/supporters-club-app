@@ -738,10 +738,43 @@ document.getElementById("asiaButton").addEventListener("click",function(){
     `;
 
     list.appendChild(item);
+let editingProductId = null;
 
+async function editProduct(id){
+
+  const {data,error}=await sb
+    .from("products")
+    .select("*")
+    .eq("id",id)
+    .single();
+
+  if(error){
+    alert("商品情報を取得できませんでした");
+    console.error(error);
+    return;
+  }
+
+  editingProductId=id;
+
+  document.getElementById("nameInput").value=data.name||"";
+  document.getElementById("versionInput").value=data.version||"";
+  document.getElementById("modelInput").value=data.model||"";
+  document.getElementById("priceInput").value=data.price||"";
+
+  uploadedImageUrl=data.image_url||"";
+
+  const preview=document.getElementById("imagePreview");
+  preview.src=data.image_url||"";
+  preview.style.display=data.image_url ? "block" : "none";
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
   });
 
+  alert("商品情報を読み込みました！");
 }
+  
 
 window.addEventListener("load",loadAdminProducts);
 </script>
