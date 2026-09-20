@@ -644,6 +644,35 @@ document.getElementById("asiaButton").addEventListener("click",function(){
   }
 
   alert("商品登録成功！");
+      document.getElementById("imageInput").value="";
+  uploadedImageUrl="";
+
+  document.getElementById("imagePreview").src="";
+  document.getElementById("imagePreview").style.display="none";
+
+  document.getElementById("nameInput").value="";
+  document.getElementById("versionInput").value="";
+  document.getElementById("modelInput").value="";
+  document.getElementById("priceInput").value="";
+
+  selectedBase="";
+  selectedCategory="";
+  selectedRegion="";
+  selectedCountry="";
+  selectedAfricaCountry="";
+  selectedSouthAmericaCountry="";
+  selectedAsiaCountry="";
+
+  document.querySelectorAll("button").forEach(function(btn){
+    btn.style.background="";
+    btn.style.color="";
+  });
+
+  document.getElementById("repRegionArea").style.display="none";
+  document.getElementById("europeCountryArea").style.display="none";
+  document.getElementById("africaCountryArea").style.display="none";
+  document.getElementById("southAmericaCountryArea").style.display="none";
+  document.getElementById("asiaCountryArea").style.display="none";
 
 });
 </script>
