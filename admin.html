@@ -420,46 +420,7 @@ document.getElementById("africaButton").addEventListener("click",function(){
   document.getElementById("europeCountryArea").style.display="none";
 
 });
-  let selectedCountry = "";
-
-const countryButtons = [
-  "englandButton",
-  "spainButton",
-  "italyButton",
-  "germanyButton",
-  "franceButton"
-];
-
-countryButtons.forEach(function(id){
-
-  document.getElementById(id).addEventListener("click",function(){
-
-    selectedCountry = id;
-
-    countryButtons.forEach(function(otherId){
-
-      document.getElementById(otherId).style.background="";
-      document.getElementById(otherId).style.color="";
-
-    });
-
-    document.getElementById(id).style.background="#111";
-    document.getElementById(id).style.color="#fff";
-
-  });
-
-});
-
-
-document.getElementById("africaButton").addEventListener("click",function(){
-
-  document.getElementById("africaCountryArea").style.display="block";
-  document.getElementById("europeCountryArea").style.display="none";
-
-});
-
-
-let selectedAfricaCountry = "";
+  let selectedAfricaCountry = "";
 
 const africaCountryButtons = [
   "nigeriaButton",
@@ -485,10 +446,6 @@ africaCountryButtons.forEach(function(id){
     document.getElementById(id).style.color="#fff";
 
   });
-
-});
-
-
 let selectedSouthAmericaCountry = "";
 
 const southAmericaCountryButtons = [
@@ -516,7 +473,8 @@ southAmericaCountryButtons.forEach(function(id){
 
   });
 
-
+});
+});
   document.getElementById("southAmericaButton").addEventListener("click",function(){
 
   document.getElementById("southAmericaCountryArea").style.display="block";
@@ -678,10 +636,10 @@ document.getElementById("asiaButton").addEventListener("click",function(){
     }]);
 
   if(error){
-  alert("商品登録失敗\n\n" + error.message);
-  console.error(error);
-  return;
-}
+    alert("商品登録失敗");
+    console.error(error);
+    return;
+  }
 
   alert("商品登録成功！");
 
