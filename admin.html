@@ -420,7 +420,46 @@ document.getElementById("africaButton").addEventListener("click",function(){
   document.getElementById("europeCountryArea").style.display="none";
 
 });
-  let selectedAfricaCountry = "";
+  let selectedCountry = "";
+
+const countryButtons = [
+  "englandButton",
+  "spainButton",
+  "italyButton",
+  "germanyButton",
+  "franceButton"
+];
+
+countryButtons.forEach(function(id){
+
+  document.getElementById(id).addEventListener("click",function(){
+
+    selectedCountry = id;
+
+    countryButtons.forEach(function(otherId){
+
+      document.getElementById(otherId).style.background="";
+      document.getElementById(otherId).style.color="";
+
+    });
+
+    document.getElementById(id).style.background="#111";
+    document.getElementById(id).style.color="#fff";
+
+  });
+
+});
+
+
+document.getElementById("africaButton").addEventListener("click",function(){
+
+  document.getElementById("africaCountryArea").style.display="block";
+  document.getElementById("europeCountryArea").style.display="none";
+
+});
+
+
+let selectedAfricaCountry = "";
 
 const africaCountryButtons = [
   "nigeriaButton",
@@ -428,8 +467,6 @@ const africaCountryButtons = [
   "egyptButton",
   "moroccoButton"
 ];
-
-
 
 africaCountryButtons.forEach(function(id){
 
@@ -445,10 +482,10 @@ africaCountryButtons.forEach(function(id){
     });
 
     document.getElementById(id).style.background="#111";
-    document.getElementById(id).style.color="#
+    document.getElementById(id).style.color="#fff";
 
-});
-  
+  });
+
 });
 
 
@@ -479,26 +516,7 @@ southAmericaCountryButtons.forEach(function(id){
 
   });
 
-});
-southAmericaCountryButtons.forEach(function(id){
 
-  document.getElementById(id).addEventListener("click",function(){
-
-    selectedSouthAmericaCountry = id;
-
-    southAmericaCountryButtons.forEach(function(otherId){
-
-      document.getElementById(otherId).style.background="";
-      document.getElementById(otherId).style.color="";
-
-    });
-
-    document.getElementById(id).style.background="#111";
-    document.getElementById(id).style.color="#fff";
-
-  });
-  });
-});
   document.getElementById("southAmericaButton").addEventListener("click",function(){
 
   document.getElementById("southAmericaCountryArea").style.display="block";
