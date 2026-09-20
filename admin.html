@@ -621,7 +621,29 @@ document.getElementById("asiaButton").addEventListener("click",function(){
     alert("地域と国を選択してください");
     return;
   }
+if(editingProductId){
 
+  const {error}=await sb
+    .from("products")
+    .update({
+      image_url:uploadedImageUrl,
+      name:document.getElementById("nameInput").value,
+      version:document.getElementById("versionInput").value,
+      model:document.getElementById("modelInput").value,
+      price:Number(document.getElementById("priceInput").value)
+    })
+    .eq("id",editingProductId);
+
+  if(error){
+    alert("商品修正失敗");
+    console.error(error);
+    return;
+  }
+
+  alert("商品を修正しました！");
+  location.reload();
+  return;
+}
   const {data,error}=await sb
     .from("products")
     .insert([{
@@ -758,7 +780,43 @@ async function editProduct(id){
   }
 
   editingProductId=id;
+const regionButtonMap={
+  "ヨーロッパ":"europeButton",
+  "アフリカ":"africaButton",
+  "南米":"southAmericaButton",
+  "アジア":"asiaButton"
+};
 
+const regionButtonId=regionButtonMap[data.region];
+
+if(regionButtonId){
+
+  document.getElementById(regionButtonId).click();
+
+  const areaMap={
+    "europeButton":"europeCountryArea",
+    "africaButton":"africaCountryArea",
+    "southAmericaButton":"southAmericaCountryArea",
+    "asiaButton":"asiaCountryArea"
+  };
+
+  const area=document.getElementById(areaMap[regionButtonId]);
+
+  if(area){
+
+    const buttons=area.querySelectorAll("button");
+
+    buttons.forEach(function(btn){
+
+      if(btn.textContent.trim()===data.country_or_club){
+        btn.click();
+      }
+
+    });
+
+  }
+
+}
   document.getElementById("nameInput").value=data.name||"";
   document.getElementById("versionInput").value=data.version||"";
   document.getElementById("modelInput").value=data.model||"";
