@@ -754,6 +754,10 @@ if(editingProductId){
   <button onclick="editProduct(${p.id})">
     ✏️ 修正
   </button>
+
+  <button onclick="deleteProduct(${p.id})" style="margin-left:10px;">
+    🗑️ 削除
+  </button>
 </div>
         </div>
 
@@ -764,6 +768,25 @@ if(editingProductId){
     list.appendChild(item);
 
   });
+}
+  async function deleteProduct(id){
+  if(!confirm("この商品を削除しますか？")){
+    return;
+  }
+
+  const { error } = await sb
+    .from("products")
+    .delete()
+    .eq("id", id);
+
+  if(error){
+    alert("削除に失敗しました");
+    console.error(error);
+    return;
+  }
+
+  alert("商品を削除しました");
+  location.reload();
 }
   let editingProductId = null;
 
