@@ -780,6 +780,13 @@ async function editProduct(id){
   }
 
   editingProductId=id;
+  if(data.item_type==="代表"){
+  document.getElementById("repButton").click();
+}
+
+if(data.item_type==="クラブ"){
+  document.getElementById("clubButton").click();
+}
   if(data.base==="ACTION"){
   document.getElementById("actionButton").click();
 }
