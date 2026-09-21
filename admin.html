@@ -630,7 +630,9 @@ if(editingProductId){
       name:document.getElementById("nameInput").value,
       version:document.getElementById("versionInput").value,
       model:document.getElementById("modelInput").value,
-      price:Number(document.getElementById("priceInput").value)
+      price:Number(document.getElementById("priceInput").value),
+      region:selectedRegion,
+　　　　country_or_club:countryName
     })
     .eq("id",editingProductId);
 
