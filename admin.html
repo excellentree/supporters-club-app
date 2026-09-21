@@ -631,7 +631,7 @@ if(editingProductId){
       version:document.getElementById("versionInput").value,
       model:document.getElementById("modelInput").value,
       price:Number(document.getElementById("priceInput").value),
-      region:selectedRegion,
+     region:getSelectedRegionName(),
 　　　　country_or_club:countryName
     })
     .eq("id",editingProductId);
