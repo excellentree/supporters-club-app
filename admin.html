@@ -780,6 +780,13 @@ async function editProduct(id){
   }
 
   editingProductId=id;
+  if(data.base==="ACTION"){
+  document.getElementById("actionButton").click();
+}
+
+if(data.base==="FIXED"){
+  document.getElementById("fixedButton").click();
+}
 const regionButtonMap={
   "ヨーロッパ":"europeButton",
   "アフリカ":"africaButton",
