@@ -661,12 +661,17 @@ function buildTeamFilters(){
   ];
 
 
-  teams.sort((a,b)=>
-    String(a).localeCompare(
-      String(b),
-      "ja"
-    )
-  );
+ teams.sort((a,b)=>{
+  const getYear = value => {
+    const match = String(value).match(/(\d{2})-\d{2}$/);
+    return match ? Number(match[1]) : 0;
+  };
+
+  const yearA = getYear(a);
+  const yearB = getYear(b);
+
+  return yearB - yearA;
+});
 
 
   teams.forEach(value=>{
