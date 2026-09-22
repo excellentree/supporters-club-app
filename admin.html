@@ -234,6 +234,18 @@ button.selected{
   <button type="button" id="saudiArabiaButton">サウジアラビア</button>
 
 </div>
+  <div id="clubLeagueArea" style="display:none; margin-top:30px;">
+
+  <h2>リーグ</h2>
+
+  <button type="button" id="premierLeagueButton">プレミアリーグ</button>
+  <button type="button" id="laLigaButton">ラリーガ</button>
+  <button type="button" id="ligue1Button">リーグアン</button>
+  <button type="button" id="serieAButton">セリエA</button>
+  <button type="button" id="bundesligaButton">ブンデスリーガ</button>
+  <button type="button" id="otherLeagueButton">その他リーグ</button>
+
+</div>
   <div class="card">
 
     <button class="register" id="registerButton">
@@ -356,8 +368,10 @@ document.getElementById("clubButton").addEventListener("click",function(){
 document.getElementById("clubButton").addEventListener("click",function(){
 
   document.getElementById("repRegionArea").style.display="none";
+  document.getElementById("clubLeagueArea").style.display="block";
 
 });
+  
   let selectedRegion = "";
 
 const regionButtons = [
