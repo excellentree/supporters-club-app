@@ -678,9 +678,18 @@ teamsList.forEach(function(team){
   }
 
   if(selectedCategory==="クラブ"){
-    alert("クラブ登録は次に対応します");
+
+  if(!selectedClubLeague){
+    alert("リーグを選択してください");
     return;
   }
+
+  if(!selectedClubTeam){
+    alert("チームを選択してください");
+    return;
+  }
+
+}
 
   function getSelectedCountryName(){
 
@@ -725,10 +734,10 @@ teamsList.forEach(function(team){
 
   const countryName=getSelectedCountryName();
 
-  if(!selectedRegion || !countryName){
-    alert("地域と国を選択してください");
-    return;
-  }
+if(selectedCategory==="代表" && (!selectedRegion || !countryName)){
+  alert("地域と国を選択してください");
+  return;
+}
 if(editingProductId){
 
   const {error}=await sb
@@ -765,8 +774,13 @@ if(editingProductId){
       price:Number(document.getElementById("priceInput").value),
       category:"soccerwe",
       item_type:selectedCategory,
-      region:getSelectedRegionName(),
-      country_or_club:countryName
+     region:selectedCategory==="クラブ"
+  ? document.getElementById(selectedClubLeague).textContent
+  : getSelectedRegionName(),
+
+country_or_club:selectedCategory==="クラブ"
+  ? selectedClubTeam
+  : countryName
     }]);
 
   if(error){
