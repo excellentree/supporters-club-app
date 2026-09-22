@@ -72,7 +72,17 @@ button{
   background:#fff;
   font-size:16px;
 }
+#clubTeamButtons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
 
+#clubTeamButtons button{
+  flex:0 0 auto;
+  width:auto;
+  min-width:120px;
+}
 button.selected{
   background:#111;
   color:#fff;
@@ -248,7 +258,7 @@ button.selected{
 
   <h2>チーム</h2>
 
-  <div id="clubTeamButtons" class="buttons"></div>
+<div id="clubTeamButtons"></div>
 
 </div>
 </div>
