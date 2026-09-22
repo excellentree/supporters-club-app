@@ -568,6 +568,72 @@ document.getElementById("asiaButton").addEventListener("click",function(){
   document.getElementById("southAmericaCountryArea").style.display="none";
 
 });
+  let selectedClubLeague = "";
+let selectedClubTeam = "";
+
+const clubLeagueButtons = [
+  "premierLeagueButton",
+  "laLigaButton",
+  "ligue1Button",
+  "serieAButton",
+  "bundesligaButton",
+  "otherLeagueButton"
+];
+
+clubLeagueButtons.forEach(function(id){
+
+  document.getElementById(id).addEventListener("click",function(){
+
+    selectedClubLeague = id;
+    selectedClubTeam = "";
+
+    document.getElementById("clubTeamArea").style.display="block";
+
+    const teamArea =
+      document.getElementById("clubTeamButtons");
+
+    teamArea.innerHTML="";
+const teams={
+  premierLeagueButton:[
+    "マンチェスターシティ",
+    "マンチェスターユナイテッド",
+    "リヴァプール",
+    "アーセナル",
+    "トッテナム",
+    "チェルシー",
+    "エバートン"
+  ]
+};
+
+const teamsList=teams[selectedClubLeague]||[];
+
+teamsList.forEach(function(team){
+
+  const button=document.createElement("button");
+
+  button.type="button";
+  button.textContent=team;
+
+  button.addEventListener("click",function(){
+
+    selectedClubTeam=team;
+
+    document.querySelectorAll("#clubTeamButtons button").forEach(function(other){
+      other.style.background="";
+      other.style.color="";
+    });
+
+    button.style.background="#111";
+    button.style.color="#fff";
+
+  });
+
+  document.getElementById("clubTeamButtons").appendChild(button);
+
+});
+  });
+
+});
   document.getElementById("registerButton").addEventListener("click",async function(){
 
   if(!uploadedImageUrl){
