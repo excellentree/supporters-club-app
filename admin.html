@@ -967,6 +967,7 @@ async function editProduct(id){
   }
 
   editingProductId=id;
+document.getElementById("registerButton").textContent="商品を修正する";
   if(data.item_type==="代表"){
   document.getElementById("repButton").click();
 }
