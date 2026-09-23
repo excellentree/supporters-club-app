@@ -974,6 +974,23 @@ async function editProduct(id){
 if(data.item_type==="クラブ"){
   document.getElementById("clubButton").click();
 }
+  if(data.item_type==="クラブ"){
+  for(const leagueId of clubLeagueButtons){
+    const leagueTeams = teams[leagueId] || [];
+
+    if(leagueTeams.includes(data.country_or_club)){
+      document.getElementById(leagueId).click();
+      const teamButtons = document.querySelectorAll("#clubTeamButtons button");
+
+teamButtons.forEach(function(btn){
+  if(btn.textContent.trim() === data.country_or_club){
+    btn.click();
+  }
+});
+      break;
+    }
+  }
+}
   if(data.base==="ACTION"){
   document.getElementById("actionButton").click();
 }
