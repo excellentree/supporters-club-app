@@ -789,7 +789,7 @@ if(editingProductId){
       model:document.getElementById("modelInput").value,
       price:Number(document.getElementById("priceInput").value),
      region:getSelectedRegionName(),
-　　　　country_or_club:countryName
+　　　　country_or_club: selectedCategory === "クラブ" ? selectedClubTeam : countryName
     })
     .eq("id",editingProductId);
 
