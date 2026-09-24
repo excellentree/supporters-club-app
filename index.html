@@ -854,7 +854,11 @@ ${getCartOrder(p.id) ? `<span class="cartOrderBadge">${circledNumber(getCartOrde
           </div>
 
         </div>
-
+　　　　　　${p.sold_out ? `
+<div style="color:#e00000;font-weight:bold;font-size:18px;margin:10px 0;">
+🔴 SOLD OUT
+</div>
+` : ""}
         <button
           class="add"
           onclick='add(${JSON.stringify(p)}, this)'>
