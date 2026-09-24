@@ -595,21 +595,7 @@ const clubLeagueButtons = [
   "bundesligaButton",
   "otherLeagueButton"
 ];
-
-clubLeagueButtons.forEach(function(id){
-
-  document.getElementById(id).addEventListener("click",function(){
-
-    selectedClubLeague = id;
-    selectedClubTeam = "";
-
-    document.getElementById("clubTeamArea").style.display="block";
-
-    const teamArea =
-      document.getElementById("clubTeamButtons");
-
-    teamArea.innerHTML="";
-const teams={
+  const teams={
   premierLeagueButton:[
     "マンチェスターシティ",
     "マンチェスターユナイテッド",
@@ -660,6 +646,20 @@ const teams={
     "その他"
   ]
 };
+
+clubLeagueButtons.forEach(function(id){
+
+  document.getElementById(id).addEventListener("click",function(){
+
+    selectedClubLeague = id;
+    selectedClubTeam = "";
+
+    document.getElementById("clubTeamArea").style.display="block";
+
+    const teamArea =
+      document.getElementById("clubTeamButtons");
+
+    teamArea.innerHTML="";
 
 const teamsList=teams[selectedClubLeague]||[];
 alert(selectedClubLeague);
