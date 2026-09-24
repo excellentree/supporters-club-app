@@ -914,13 +914,19 @@ country_or_club:selectedCategory==="クラブ"
             PRICE：¥${p.price||""}
           </div>
 <div style="margin-top:15px;">
-<button onclick="editProduct('${p.id}')">
+
+  <button onclick="editProduct('${p.id}')">
     ✏️ 修正
+  </button>
+
+  <button onclick="toggleSoldOut('${p.id}', ${p.sold_out})" style="margin-left:10px;">
+    ${p.sold_out ? "↩️ SOLD OUT解除" : "🔴 SOLD OUT"}
   </button>
 
   <button onclick="deleteProduct(${p.id})" style="margin-left:10px;">
     🗑️ 削除
   </button>
+
 </div>
         </div>
 
@@ -931,6 +937,20 @@ country_or_club:selectedCategory==="クラブ"
     list.appendChild(item);
 
   });
+}
+  async function toggleSoldOut(id, current){
+  const { error } = await sb
+    .from("products")
+    .update({ sold_out: !current })
+    .eq("id", id);
+
+  if(error){
+    alert("SOLD OUT変更に失敗しました");
+    console.error(error);
+    return;
+  }
+
+  location.reload();
 }
   async function deleteProduct(id){
   if(!confirm("この商品を削除しますか？")){
