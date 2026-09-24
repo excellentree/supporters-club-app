@@ -788,7 +788,9 @@ if(editingProductId){
       version:document.getElementById("versionInput").value,
       model:document.getElementById("modelInput").value,
       price:Number(document.getElementById("priceInput").value),
-     region:getSelectedRegionName(),
+     region:selectedCategory === "クラブ"
+  ? document.getElementById(selectedClubLeague).textContent
+  : getSelectedRegionName(),
 　　　　country_or_club: selectedCategory === "クラブ" ? selectedClubTeam : countryName
     })
     .eq("id",editingProductId);
