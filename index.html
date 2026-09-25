@@ -256,6 +256,9 @@ header{
     <button onclick="selectMain('クラブ')">
       クラブ
     </button>
+    <button onclick="selectMain('NEW')">
+  NEW
+</button>
   </div>
 
   <!-- 国・リーグ -->
@@ -413,8 +416,13 @@ function selectMain(type){
   if(type==="クラブ"){
     buttons[2].classList.add("active");
   }
-
-
+　if(type==="NEW"){
+  buttons[3].classList.add("active");
+}
+if(type==="NEW"){
+  document.getElementById("subFilters").style.display="none";
+  document.getElementById("teamFilters").style.display="none";
+}
   buildSubFilters();
 
 
@@ -717,11 +725,20 @@ function loadProducts(){
 
 
   /* 大カテゴリー */
-  if(currentMain){
+  if(currentMain && currentMain!=="NEW"){
 
     data=data.filter(p=>
       p.item_type===currentMain
     );
+
+  }
+    /* =========================
+     NEW
+  ========================= */
+
+  if(currentMain==="NEW"){
+
+    data=data.slice(0,10);
 
   }
 
