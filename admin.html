@@ -175,24 +175,6 @@ button.selected{
 
   </div>
 
-    <div class="card">
-
-    <label>NEW設定</label>
-
-    <div class="buttons">
-
-      <button type="button" id="newYesButton">
-        NEW
-      </button>
-
-      <button type="button" id="newNoButton">
-        通常商品
-      </button>
-
-    </div>
-
-  </div>
-
   <div class="card">
 
     <label>カテゴリー</label>
@@ -392,39 +374,13 @@ document.getElementById("clubButton").addEventListener("click",function(){
   document.getElementById("repButton").style.color="";
 
 });
-
-  
   document.getElementById("repButton").addEventListener("click",function(){
 
   document.getElementById("repRegionArea").style.display="block";
   document.getElementById("clubLeagueArea").style.display="none";
 
 });
-let selectedNewType = "";
 
-document.getElementById("newButton").addEventListener("click",function(){
-
-  selectedNewType="NEW";
-
-  document.getElementById("newButton").style.background="#111";
-  document.getElementById("newButton").style.color="#fff";
-
-  document.getElementById("normalButton").style.background="";
-  document.getElementById("normalButton").style.color="";
-
-});
-
-document.getElementById("normalButton").addEventListener("click",function(){
-
-  selectedNewType="通常商品";
-
-  document.getElementById("normalButton").style.background="#111";
-  document.getElementById("normalButton").style.color="#fff";
-
-  document.getElementById("newButton").style.background="";
-  document.getElementById("newButton").style.color="";
-
-});
 document.getElementById("clubButton").addEventListener("click",function(){
 
   document.getElementById("repRegionArea").style.display="none";
@@ -859,7 +815,6 @@ if(editingProductId){
       price:Number(document.getElementById("priceInput").value),
       category:"soccerwe",
       item_type:selectedCategory,
-　　　　is_new: selectedNewType === "NEW",
      region:selectedCategory==="クラブ"
   ? document.getElementById(selectedClubLeague).textContent
   : getSelectedRegionName(),
