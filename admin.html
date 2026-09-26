@@ -65,7 +65,7 @@ input{
 }
 
 button{
-  flex:0 0 180px;
+  flex:1;
   padding:14px;
   border:1px solid #ddd;
   border-radius:10px;
@@ -924,10 +924,10 @@ if(error){
     ✏️ 修正
   </button>
 <button onclick="toggleNew('${p.id}', ${p.is_new})">
-  ${p.is_new ? "↩️ NEW解除" : "🆕 NEW"}
+  ${p.is_new ? "🆕　解除" : "🆕 NEW"}
 </button>
 <button onclick="toggleSoldOut('${p.id}', ${p.sold_out})" style="margin-left:10px; width:280px;">
-    ${p.sold_out ? "↩️ SOLD OUT解除" : "🔴 SOLD OUT"}
+    ${p.sold_out ? "🔴 解除" : "🔴 完売"}
   </button>
 
   <button onclick="deleteProduct(${p.id})" style="margin-left:10px;">
