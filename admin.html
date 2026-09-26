@@ -925,7 +925,7 @@ country_or_club:selectedCategory==="クラブ"
     ✏️ 修正
   </button>
 <button onclick="toggleNew('${p.id}', ${p.is_new})">
-🆕 NEW
+  ${p.is_new ? "↩️ NEW解除" : "🆕 NEW"}
 </button>
   <button onclick="toggleSoldOut('${p.id}', ${p.sold_out})" style="margin-left:10px;">
     ${p.sold_out ? "↩️ SOLD OUT解除" : "🔴 SOLD OUT"}
