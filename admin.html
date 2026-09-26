@@ -958,7 +958,8 @@ country_or_club:selectedCategory==="クラブ"
     return;
   }
 
-  location.reload();
+  sessionStorage.setItem("adminScrollY", window.scrollY);
+location.reload();
 }
   async function toggleSoldOut(id, current){
   const { error } = await sb
@@ -972,7 +973,8 @@ country_or_club:selectedCategory==="クラブ"
     return;
   }
 
-  location.reload();
+  sessionStorage.setItem("adminScrollY", window.scrollY);
+location.reload();
 }
   async function deleteProduct(id){
   if(!confirm("この商品を削除しますか？")){
@@ -1098,6 +1100,14 @@ if(regionButtonId){
   alert("商品情報を読み込みました！");
 }
 window.addEventListener("load",loadAdminProducts);
+const savedScrollY = sessionStorage.getItem("adminScrollY");
+
+if(savedScrollY !== null){
+  setTimeout(() => {
+    window.scrollTo(0, Number(savedScrollY));
+    sessionStorage.removeItem("adminScrollY");
+  }, 300);
+}
 </script>
   <div class="card">
   <h2>登録済み商品</h2>
