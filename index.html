@@ -801,6 +801,12 @@ function loadProducts(){
   }
 /* MODEL順に並べる */
 data.sort((a,b)=>{
+  const isAll = currentMain === "";
+  if(isAll){
+  if(a.is_new !== b.is_new){
+    return a.is_new ? -1 : 1;
+  }
+}
   const modelA=String(a.model||"");
   const modelB=String(b.model||"");
 
