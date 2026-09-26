@@ -915,9 +915,7 @@ country_or_club:selectedCategory==="クラブ"
           <div>
             VERSION：${p.version||""}
           </div>
-　　　　　　<div>
-             TYPE : ${p.new_type||"通常"}
-　　　　　　　</div>
+　　　　　
           <div>
             PRICE：¥${p.price||""}
           </div>
@@ -947,6 +945,20 @@ country_or_club:selectedCategory==="クラブ"
     list.appendChild(item);
 
   });
+}
+  async function toggleNew(id, current){
+  const { error } = await sb
+    .from("products")
+    .update({ is_new: !current })
+    .eq("id", id);
+
+  if(error){
+    alert("NEW変更に失敗しました");
+    console.error(error);
+    return;
+  }
+
+  location.reload();
 }
   async function toggleSoldOut(id, current){
   const { error } = await sb
