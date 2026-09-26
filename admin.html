@@ -176,7 +176,7 @@ button.selected{
   </div>
 
   <div class="card">
-　<button type="button" id="newButton" onclick="location.reload()">🆕 NEW</button>
+
     <label>カテゴリー</label>
 
     <div class="buttons">
@@ -926,7 +926,9 @@ country_or_club:selectedCategory==="クラブ"
   <button onclick="editProduct('${p.id}')">
     ✏️ 修正
   </button>
-
+<button onclick="toggleNew('${p.id}', ${p.is_new})">
+🆕 NEW
+</button>
   <button onclick="toggleSoldOut('${p.id}', ${p.sold_out})" style="margin-left:10px;">
     ${p.sold_out ? "↩️ SOLD OUT解除" : "🔴 SOLD OUT"}
   </button>
