@@ -927,7 +927,7 @@ if(error){
   ${p.is_new ? "↩️ NEW解除" : "🆕 NEW"}
 </button>
 <button onclick="toggleSoldOut('${p.id}', ${p.sold_out})" style="margin-left:10px;">
-    ${p.sold_out ? "🔴 解除" : "🟢 再販"}
+    ${p.sold_out ? "🟢 再販" : "🔴 解除"}
   </button>
 
   <button onclick="deleteProduct(${p.id})" style="margin-left:10px;">
