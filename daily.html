@@ -653,24 +653,7 @@ productSelectBtn.addEventListener("click", () => {
 modelSelect.innerHTML =
   '<option value="">MODELを選択してください</option>';
 
-const base = document.getElementById("baseSelect").value;
 
-const sameNameProducts = data.filter(
-  p =>
-    p.name === product.name &&
-    p.base === base
-);
-
-sameNameProducts.forEach(p => {
-
-  const option = document.createElement("option");
-
-  option.value = p.model || "";
-  option.textContent = p.model || "";
-
-  modelSelect.appendChild(option);
-
-});
       productSelectBtn.textContent = product.name;
 
       document.getElementById("productName").value = product.name;
@@ -711,7 +694,8 @@ function addSale(){
 
   const productName =
     document.getElementById("productName").value.trim();
-
+const model =
+  document.getElementById("modelSelect").value;
   const price =
     Number(document.getElementById("price").value);
 
