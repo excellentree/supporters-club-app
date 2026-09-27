@@ -408,7 +408,7 @@ async function loadProducts(){
 
   const { data, error } = await db
     .from("products")
-    .select("id,name,price")
+   .select("id,name,price,model,base,version,category,item_type,region,country_or_club")
     .order("name", { ascending:true });
 
   if(error){
