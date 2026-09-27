@@ -420,6 +420,41 @@ async function loadProducts(){
 　window.products = data;
 }
   loadProducts();
+  document.getElementById("productName").addEventListener("input", () => {
+
+  const name =
+    document.getElementById("productName").value.trim();
+
+  const modelSelect =
+    document.getElementById("modelSelect");
+
+  modelSelect.innerHTML =
+    '<option value="">MODELを選択してください</option>';
+
+  if(!name || !window.products){
+    return;
+  }
+
+  const products =
+    window.products.filter(product =>
+      product.name === name
+    );
+
+  products.forEach(product => {
+
+    const option =
+      document.createElement("option");
+
+    option.value = product.model || "";
+
+    option.textContent =
+      product.model || "MODELなし";
+
+    modelSelect.appendChild(option);
+
+  });
+
+});
  
   let selectedProduct = null;
   
