@@ -280,23 +280,9 @@ td{
 <option value="その他">その他</option>
 </select>
    
-  <label>商品名</label>
+ <label>商品名</label>
 
-  <button type="button" id="productSelectBtn">
-    商品を選択してください
-  </button>
-
-  <div id="productSearchArea" style="display:none; margin-top:12px;">
-    <input
-      id="productSearch"
-      type="text"
-      placeholder="選手名・商品名で検索"
-    >
-
-    <div id="productResults"></div>
-  </div>
-
- <input
+<input
   type="text"
   id="productName"
   placeholder="商品名を入力してください"
@@ -467,24 +453,6 @@ itemTypeSelect.addEventListener("change", () => {
   const leagueArea =
     document.getElementById("leagueArea");
 
-  if(itemTypeSelect.value === "代表"){
-
-    regionArea.style.display = "block";
-    leagueArea.style.display = "none";
-
-  }else if(itemTypeSelect.value === "クラブ"){
-
-    regionArea.style.display = "none";
-    leagueArea.style.display = "block";
-
-  }else{
-
-    regionArea.style.display = "none";
-    leagueArea.style.display = "none";
-
-  }
-
-});
   const regionSelect =
   document.getElementById("regionSelect");
 
