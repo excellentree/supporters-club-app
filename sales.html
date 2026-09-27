@@ -332,7 +332,7 @@ productSearch.addEventListener("input", async () => {
     .from("products")
     .select("id,name,price")
     .ilike("name", `%${keyword}%`)
-    .order("name", { ascending: true })
+    .order("name", { ascending: false })
     .limit(20);
 
   if(error){
