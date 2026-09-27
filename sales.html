@@ -216,7 +216,7 @@ header{
 
     <div class="menu">
 
-      <button class="menu-button">
+      <button class="menu-button" id="dailyBtn">
         日計表
       </button>
 
@@ -235,9 +235,12 @@ header{
 </div>
 
 <script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-const today = new Date();
+<script>
 
+const SUPABASE_URL = "https://juzrxqrabrvhlwvnvton.supabase.co";
+const SUPABASE_KEY = "ここに今使っているSUPABASE_KEY";const today = new Date();
 const yyyy = today.getFullYear();
 const mm = String(today.getMonth() + 1).padStart(2,"0");
 const dd = String(today.getDate()).padStart(2,"0");
