@@ -174,7 +174,30 @@ button.selected{
   placeholder="1080">
 
   </div>
+  <div class="card">
 
+  <label>AVERAGE COST</label>
+
+  <input
+    type="number"
+    id="averageCostInput"
+    placeholder="仕入単価"
+    min="0"
+  >
+
+  </div>
+<div class="card">
+
+  <label>STOCK</label>
+
+  <input
+    type="number"
+    id="stockInput"
+    placeholder="0"
+    min="0"
+  >
+
+</div>
   <div class="card">
 
     <label>カテゴリー</label>
@@ -792,7 +815,9 @@ if(editingProductId){
       version:document.getElementById("versionInput").value,
       model:document.getElementById("modelInput").value,
       price:Number(document.getElementById("priceInput").value),
-     region:selectedCategory === "クラブ"
+      average_cost:Number(document.getElementById("averageCostInput").value),
+      stock:Number(document.getElementById("stockInput").value) || 0,
+      region:selectedCategory === "クラブ"
   ? document.getElementById(selectedClubLeague).textContent
   : getSelectedRegionName(),
 　　　　country_or_club: selectedCategory === "クラブ" ? selectedClubTeam : countryName
@@ -818,6 +843,8 @@ if(editingProductId){
       model:document.getElementById("modelInput").value,
       base:selectedBase,
       price:Number(document.getElementById("priceInput").value),
+      average_cost:Number(document.getElementById("averageCostInput").value),
+      stock:Number(document.getElementById("stockInput").value) || 0,
       category:"soccerwe",
       item_type:selectedCategory,
       is_new:false,
