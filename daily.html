@@ -585,9 +585,12 @@ function addSale(){
   sales.push({
 
     productName:productName,
-
+　　　productId:selectedProduct ? selectedProduct.id : null,
+    category:selectedProduct ? selectedProduct.category : null,
+    itemType:selectedProduct ? selectedProduct.item_type : null,
+    region:selectedProduct ? selectedProduct.region : null,
+    countryOrClub:selectedProduct ? selectedProduct.country_or_club : null,
     price:price,
-
     cost:cost,
 
     quantity:quantity,
