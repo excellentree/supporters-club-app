@@ -627,7 +627,7 @@ productSelectBtn.addEventListener("click", () => {
 
   const { data, error } = await db
     .from("products")
-    .select("id,name,price,model,category,item_type,region,country_or_club")
+    .select("id,name,price,model,base,version,category,item_type,region,country_or_club")
     .ilike("name", `%${keyword}%`)
     .order("name", { ascending: false })
     .limit(20);
