@@ -248,7 +248,12 @@ const dd = String(today.getDate()).padStart(2,"0");
 
 document.getElementById("salesDate").value =
   `${yyyy}-${mm}-${dd}`;
+document.getElementById("salesDate").value =
+`${yyyy}-${mm}-${dd}`;
 
+document.getElementById("dailyBtn").addEventListener("click", () => {
+  location.href = "daily.html";
+});
 </script>
 
 </body>
