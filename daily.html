@@ -1,1 +1,584 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
+<title>SUPPORTERS CULB 日計表</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f5f5;
+  color:#111;
+}
+
+header{
+  background:#111;
+  color:#fff;
+  padding:28px 20px;
+}
+
+header h1{
+  margin:0;
+  font-size:28px;
+  letter-spacing:1px;
+}
+
+header p{
+  margin:8px 0 0;
+  color:#aaa;
+  font-size:16px;
+}
+
+.container{
+  padding:28px 20px 60px;
+  max-width:1000px;
+  margin:auto;
+}
+
+.title{
+  font-size:30px;
+  font-weight:bold;
+  margin-bottom:24px;
+}
+
+.date-area{
+  background:#fff;
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:20px;
+}
+
+.date-area label{
+  display:block;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+input,
+select{
+  width:100%;
+  padding:14px;
+  border:1px solid #ddd;
+  border-radius:12px;
+  font-size:16px;
+  background:#fff;
+}
+
+.summary{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  margin-bottom:24px;
+}
+
+.card{
+  background:#fff;
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 4px 15px rgba(0,0,0,.05);
+}
+
+.card-label{
+  color:#888;
+  font-size:15px;
+  margin-bottom:8px;
+}
+
+.card-value{
+  font-size:28px;
+  font-weight:bold;
+}
+
+.section{
+  background:#fff;
+  border-radius:20px;
+  padding:22px;
+  margin-bottom:24px;
+}
+
+.section h2{
+  margin:0 0 18px;
+  font-size:22px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.form-item label{
+  display:block;
+  font-size:14px;
+  font-weight:bold;
+  margin-bottom:7px;
+}
+
+.full{
+  grid-column:1 / -1;
+}
+
+.button{
+  width:100%;
+  border:none;
+  background:#111;
+  color:#fff;
+  padding:16px;
+  border-radius:14px;
+  font-size:17px;
+  font-weight:bold;
+  margin-top:16px;
+}
+
+.button:active{
+  transform:scale(.98);
+}
+
+.table-wrap{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:650px;
+}
+
+th,
+td{
+  padding:14px 10px;
+  border-bottom:1px solid #eee;
+  text-align:left;
+}
+
+th{
+  color:#777;
+  font-size:13px;
+}
+
+td{
+  font-size:14px;
+}
+
+.delete{
+  border:none;
+  background:#eee;
+  padding:8px 12px;
+  border-radius:8px;
+}
+
+.empty{
+  text-align:center;
+  color:#999;
+  padding:30px 10px;
+}
+
+.back{
+  display:block;
+  text-align:center;
+  background:#111;
+  color:#fff;
+  text-decoration:none;
+  padding:16px;
+  border-radius:14px;
+  font-weight:bold;
+  margin-top:10px;
+}
+
+@media(max-width:600px){
+
+  .container{
+    padding:22px 16px 50px;
+  }
+
+  .summary{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .card{
+    padding:18px;
+  }
+
+  .card-value{
+    font-size:24px;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .full{
+    grid-column:auto;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>SUPPORTERS CULB</h1>
+  <p>SALES MANAGEMENT</p>
+</header>
+
+<div class="container">
+
+  <div class="title">日計表</div>
+
+  <div class="date-area">
+    <label for="salesDate">日付</label>
+    <input type="date" id="salesDate">
+  </div>
+
+  <div class="summary">
+
+    <div class="card">
+      <div class="card-label">売上</div>
+      <div class="card-value" id="totalSales">¥0</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">販売数</div>
+      <div class="card-value" id="totalQty">0</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">注文数</div>
+      <div class="card-value" id="totalOrders">0</div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">粗利益</div>
+      <div class="card-value" id="totalProfit">¥0</div>
+    </div>
+
+  </div>
+
+  <div class="section">
+
+    <h2>売上を追加</h2>
+
+    <div class="form-grid">
+
+      <div class="form-item full">
+        <label>商品名</label>
+        <select id="productName">
+  <option value="">商品を選択してください</option>
+</select>
+      </div>
+
+      <div class="form-item">
+        <label>販売価格</label>
+        <input id="price" type="number" placeholder="1080">
+      </div>
+
+      <div class="form-item">
+        <label>仕入価格</label>
+        <input id="cost" type="number" placeholder="500">
+      </div>
+
+      <div class="form-item">
+        <label>数量</label>
+        <input id="quantity" type="number" value="1" min="1">
+      </div>
+
+      <div class="form-item">
+        <label>注文番号</label>
+        <input id="orderNo" type="text" placeholder="例：001">
+      </div>
+
+    </div>
+
+    <button class="button" onclick="addSale()">
+      売上を追加
+    </button>
+
+  </div>
+
+  <div class="section">
+
+    <h2>本日の売上明細</h2>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>商品名</th>
+            <th>売上</th>
+            <th>数量</th>
+            <th>仕入</th>
+            <th>粗利益</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody id="salesTable">
+        </tbody>
+
+      </table>
+
+      <div id="emptyMessage" class="empty">
+        まだ売上データがありません
+      </div>
+
+    </div>
+
+  </div>
+
+  <a href="sales.html" class="back">
+    売上管理へ戻る
+  </a>
+
+</div>
+
+<script>
+
+const salesDate = document.getElementById("salesDate");
+
+const today = new Date();
+
+const yyyy = today.getFullYear();
+
+const mm = String(today.getMonth() + 1).padStart(2,"0");
+
+const dd = String(today.getDate()).padStart(2,"0");
+
+salesDate.value = `${yyyy}-${mm}-${dd}`;
+
+
+function getStorageKey(){
+
+  return "supporters_daily_" + salesDate.value;
+
+}
+
+
+function getSales(){
+
+  return JSON.parse(
+    localStorage.getItem(getStorageKey()) || "[]"
+  );
+
+}
+
+
+function saveSales(data){
+
+  localStorage.setItem(
+    getStorageKey(),
+    JSON.stringify(data)
+  );
+
+}
+
+
+function addSale(){
+
+  const productName =
+    document.getElementById("productName").value.trim();
+
+  const price =
+    Number(document.getElementById("price").value);
+
+  const cost =
+    Number(document.getElementById("cost").value);
+
+  const quantity =
+    Number(document.getElementById("quantity").value);
+
+  const orderNo =
+    document.getElementById("orderNo").value.trim();
+
+
+  if(!productName){
+
+    alert("商品名を入力してください");
+
+    return;
+
+  }
+
+
+  if(!price || price <= 0){
+
+    alert("販売価格を入力してください");
+
+    return;
+
+  }
+
+
+  if(!quantity || quantity <= 0){
+
+    alert("数量を入力してください");
+
+    return;
+
+  }
+
+
+  const sales = getSales();
+
+
+  sales.push({
+
+    productName:productName,
+
+    price:price,
+
+    cost:cost,
+
+    quantity:quantity,
+
+    orderNo:orderNo
+
+  });
+
+
+  saveSales(sales);
+
+  document.getElementById("productName").value = "";
+
+  document.getElementById("price").value = "";
+
+  document.getElementById("cost").value = "";
+
+  document.getElementById("quantity").value = "1";
+
+  document.getElementById("orderNo").value = "";
+
+
+  render();
+
+}
+
+
+function deleteSale(index){
+
+  const sales = getSales();
+
+  sales.splice(index,1);
+
+  saveSales(sales);
+
+  render();
+
+}
+
+
+function render(){
+
+  const sales = getSales();
+
+  const table = document.getElementById("salesTable");
+
+  const empty = document.getElementById("emptyMessage");
+
+
+  table.innerHTML = "";
+
+
+  let totalSales = 0;
+
+  let totalQty = 0;
+
+  let totalProfit = 0;
+
+
+  sales.forEach((sale,index)=>{
+
+    const saleTotal =
+      sale.price * sale.quantity;
+
+    const costTotal =
+      sale.cost * sale.quantity;
+
+    const profit =
+      saleTotal - costTotal;
+
+
+    totalSales += saleTotal;
+
+    totalQty += sale.quantity;
+
+    totalProfit += profit;
+
+
+    const tr = document.createElement("tr");
+
+
+    tr.innerHTML = `
+
+      <td>${escapeHtml(sale.productName)}</td>
+
+      <td>¥${saleTotal.toLocaleString()}</td>
+
+      <td>${sale.quantity}</td>
+
+      <td>¥${costTotal.toLocaleString()}</td>
+
+      <td>¥${profit.toLocaleString()}</td>
+
+      <td>
+        <button class="delete"
+          onclick="deleteSale(${index})">
+          削除
+        </button>
+      </td>
+
+    `;
+
+
+    table.appendChild(tr);
+
+  });
+
+
+  document.getElementById("totalSales").textContent =
+    "¥" + totalSales.toLocaleString();
+
+  document.getElementById("totalQty").textContent =
+    totalQty.toLocaleString();
+
+  document.getElementById("totalOrders").textContent =
+    sales.length.toLocaleString();
+
+  document.getElementById("totalProfit").textContent =
+    "¥" + totalProfit.toLocaleString();
+
+
+  empty.style.display =
+    sales.length === 0 ? "block" : "none";
+
+}
+
+
+function escapeHtml(text){
+
+  const div = document.createElement("div");
+
+  div.textContent = text;
+
+  return div.innerHTML;
+
+}
+
+
+salesDate.addEventListener("change",render);
+
+
+render();
+
+</script>
+
+</body>
+</html>
