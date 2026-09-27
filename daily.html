@@ -455,6 +455,45 @@ async function loadProducts(){
   });
 
 });
+  document.getElementById("modelSelect").addEventListener("change", () => {
+
+  const name =
+    document.getElementById("productName").value.trim();
+
+  const model =
+    document.getElementById("modelSelect").value;
+
+  const versionSelect =
+    document.getElementById("versionSelect");
+
+  versionSelect.innerHTML =
+    '<option value="">VERSIONを選択してください</option>';
+
+  if(!name || !model || !window.products){
+    return;
+  }
+
+  const products =
+    window.products.filter(product =>
+      product.name === name &&
+      product.model === model
+    );
+
+  products.forEach(product => {
+
+    const option =
+      document.createElement("option");
+
+    option.value = product.version || "";
+
+    option.textContent =
+      product.version || "VERSIONなし";
+
+    versionSelect.appendChild(option);
+
+  });
+
+});
  
   let selectedProduct = null;
   
