@@ -404,7 +404,55 @@ productSelectBtn.addEventListener("click", () => {
   productSearchArea.style.display = "block";
   productSearch.focus();
 });
-  
+  productSearch.addEventListener("input", async () => {
+
+  const keyword = productSearch.value.trim();
+
+  if(!keyword){
+    productResults.innerHTML = "";
+    return;
+  }
+
+  const { data, error } = await db
+    .from("products")
+    .select("id,name,price")
+    .ilike("name", `%${keyword}%`)
+    .order("name", { ascending: false })
+    .limit(20);
+
+  if(error){
+    console.error(error);
+    return;
+  }
+
+  productResults.innerHTML = "";
+
+  data.forEach(product => {
+
+    const item = document.createElement("button");
+
+    item.type = "button";
+    item.textContent = product.name;
+
+    item.addEventListener("click", () => {
+
+      productSelectBtn.textContent = product.name;
+
+      document.getElementById("productName").value = product.name;
+
+      document.getElementById("price").value = product.price;
+
+      productSearch.value = "";
+      productResults.innerHTML = "";
+      productSearchArea.style.display = "none";
+
+    });
+
+    productResults.appendChild(item);
+
+  });
+
+});
 function getSales(){
 
   return JSON.parse(
