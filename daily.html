@@ -279,6 +279,56 @@ td{
 <option value="LEGO">LEGO</option>
 <option value="その他">その他</option>
 </select>
+     <!-- soccerwe 絞り込み -->
+<div id="soccerweFilterArea" style="display:none;">
+
+  <div class="form-item">
+    <label>区分</label>
+    <select id="itemTypeSelect">
+      <option value="">選択してください</option>
+      <option value="代表">代表</option>
+      <option value="クラブ">クラブ</option>
+    </select>
+  </div>
+
+  <div class="form-item" id="regionArea" style="display:none;">
+    <label>地域</label>
+    <select id="regionSelect">
+      <option value="">選択してください</option>
+      <option value="ヨーロッパ">ヨーロッパ</option>
+      <option value="アフリカ">アフリカ</option>
+      <option value="南米">南米</option>
+      <option value="アジア">アジア</option>
+    </select>
+  </div>
+<!-- 国・リーグ絞り込み -->
+<div class="form-item" id="countryLeagueArea" style="display:none;">
+  <label>国・リーグ</label>
+  <select id="countryLeagueSelect">
+    <option value="">選択してください</option>
+  </select>
+</div>
+  <div class="form-item" id="leagueArea" style="display:none;">
+    <label>リーグ</label>
+    <select id="leagueSelect">
+      <option value="">選択してください</option>
+      <option value="プレミアリーグ">プレミアリーグ</option>
+      <option value="ラリーガ">ラリーガ</option>
+      <option value="セリエA">セリエA</option>
+      <option value="ブンデスリーガ">ブンデスリーガ</option>
+      <option value="リーグアン">リーグアン</option>
+      <option value="その他リーグ">その他リーグ</option>
+    </select>
+  </div>
+
+  <div class="form-item" id="countryClubArea" style="display:none;">
+    <label id="countryClubLabel">国・クラブ</label>
+    <select id="countryClubSelect">
+      <option value="">選択してください</option>
+    </select>
+  </div>
+
+</div>   
   <label>商品名</label>
 
   <button type="button" id="productSelectBtn">
