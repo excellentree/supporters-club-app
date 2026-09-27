@@ -379,8 +379,22 @@ function getStorageKey(){
   return "supporters_daily_" + salesDate.value;
 
 }
+async function loadProducts(){
 
+  const { data, error } = await db
+    .from("products")
+    .select("id,name,price")
+    .order("name", { ascending:true });
 
+  if(error){
+    console.error(error);
+    return;
+  }
+
+  console.log("商品一覧:", data);
+
+}
+  loadProducts();
 function getSales(){
 
   return JSON.parse(
