@@ -395,6 +395,16 @@ async function loadProducts(){
 　window.products = data;
 }
   loadProducts();
+  const productSelectBtn = document.getElementById("productSelectBtn");
+const productSearchArea = document.getElementById("productSearchArea");
+const productSearch = document.getElementById("productSearch");
+const productResults = document.getElementById("productResults");
+
+productSelectBtn.addEventListener("click", () => {
+  productSearchArea.style.display = "block";
+  productSearch.focus();
+});
+  
 function getSales(){
 
   return JSON.parse(
