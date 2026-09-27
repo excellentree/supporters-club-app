@@ -234,14 +234,13 @@ header{
 
 </div>
 
-<script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
 const SUPABASE_URL = "https://juzrxqrabrvhlwvnvton.supabase.co";
-const SUPABASE_KEY = "sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";const today = new Date();
-const db = window.supabase.createClient(...)
+const SUPABASE_KEY = "sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const today = new Date();
 const yyyy = today.getFullYear();
 const mm = String(today.getMonth() + 1).padStart(2,"0");
@@ -257,19 +256,6 @@ async function loadProducts(){
     console.error(error);
     return;
   }
-
-  const select = document.getElementById("productName");
-
-  data.forEach(product => {
-
-    const option = document.createElement("option");
-
-    option.value = product.id;
-    option.textContent = product.name;
-
-    select.appendChild(option);
-
-  });
 
 }
   loadProducts();
@@ -337,7 +323,7 @@ productSearch.addEventListener("input", async () => {
     });
 
     productResults.appendChild(item);
-
+});
 });
 </script>
 
