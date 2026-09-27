@@ -456,6 +456,7 @@ async function loadProducts(){
 　window.products = data;
 }
   loadProducts();
+  let selectedProduct = null;
   const productSelectBtn = document.getElementById("productSelectBtn");
 const productSearchArea = document.getElementById("productSearchArea");
 const productSearch = document.getElementById("productSearch");
@@ -476,7 +477,7 @@ productSelectBtn.addEventListener("click", () => {
 
   const { data, error } = await db
     .from("products")
-    .select("id,name,price")
+    .select("id,name,price,category,item_type,region,country_or_club")
     .ilike("name", `%${keyword}%`)
     .order("name", { ascending: false })
     .limit(20);
@@ -496,7 +497,7 @@ productSelectBtn.addEventListener("click", () => {
     item.textContent = product.name;
 
     item.addEventListener("click", () => {
-
+　　　selectedProduct = product;
       productSelectBtn.textContent = product.name;
 
       document.getElementById("productName").value = product.name;
