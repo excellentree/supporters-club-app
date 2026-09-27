@@ -210,6 +210,45 @@ header{
 
   <div class="section">
 
+  <div class="section-title">
+    売上を追加
+  </div>
+
+  <label>商品名</label>
+
+  <button
+    type="button"
+    id="productSearchBtn"
+    class="menu-button"
+  >
+    商品を選択してください
+  </button>
+
+  <div id="productSearchArea" style="display:none; margin-top:10px;">
+
+    <input
+      id="productSearch"
+      type="text"
+      placeholder="選手名・商品名で検索"
+      style="width:100%; padding:12px; border:1px solid #ddd; border-radius:10px;"
+    >
+
+    <div id="productResults"></div>
+
+  </div>
+
+  <input type="hidden" id="productName">
+
+  <label>販売価格</label>
+
+  <input
+    type="number"
+    id="price"
+    placeholder="1080"
+    style="width:100%; padding:12px; margin-bottom:15px;"
+  >
+
+</div>
     <div class="section-title">
       管理メニュー
     </div>
