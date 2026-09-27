@@ -653,8 +653,12 @@ productSelectBtn.addEventListener("click", () => {
 modelSelect.innerHTML =
   '<option value="">MODELを選択してください</option>';
 
+const base = document.getElementById("baseSelect").value;
+
 const sameNameProducts = data.filter(
-  p => p.name === product.name
+  p =>
+    p.name === product.name &&
+    p.base === base
 );
 
 sameNameProducts.forEach(p => {
