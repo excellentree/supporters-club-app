@@ -313,7 +313,7 @@ productSearch.addEventListener("input", async () => {
     item.addEventListener("click", () => {
 
       productSearchBtn.textContent = product.name;
-
+　　　　document.getElementById("productName").value = product.name;
       document.getElementById("price").value = product.price || "";
 
       productSearch.value = "";
