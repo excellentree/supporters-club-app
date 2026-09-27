@@ -420,94 +420,9 @@ async function loadProducts(){
 　window.products = data;
 }
   loadProducts();
-  const productCategory =
-
-  document.getElementById("productCategory");
-
-productCategory.addEventListener("change", () => {
-
-  const soccerweFilterArea =
-
-    document.getElementById("soccerweFilterArea");
-
-  if(productCategory.value === "soccerwe"){
-
-    soccerweFilterArea.style.display = "block";
-
-  }else{
-
-    soccerweFilterArea.style.display = "none";
-
-  }
-
-});
-
-
+ 
   let selectedProduct = null;
-  const productSelectBtn = document.getElementById("productSelectBtn");
-const productSearchArea = document.getElementById("productSearchArea");
-const productSearch = document.getElementById("productSearch");
-const productResults = document.getElementById("productResults");
-
-productSelectBtn.addEventListener("click", () => {
-  productSearchArea.style.display = "block";
-  productSearch.focus();
-});
-  productSearch.addEventListener("input", async () => {
-
-  const keyword = productSearch.value.trim();
-
-  if(!keyword){
-    productResults.innerHTML = "";
-    return;
-  }
-
-  const { data, error } = await db
-    .from("products")
-    .select("id,name,price,model,base,version,category,item_type,region,country_or_club")
-    .ilike("name", `%${keyword}%`)
-    .order("name", { ascending: false })
-    .limit(20);
-
-  if(error){
-    console.error(error);
-    return;
-  }
-
-  productResults.innerHTML = "";
-
-  data.forEach(product => {
-
-    const item = document.createElement("button");
-
-    item.type = "button";
-    item.textContent = product.model || product.name;
-
-    item.addEventListener("click", () => {
-　　　selectedProduct = product;
-      const modelSelect = document.getElementById("modelSelect");
-
-modelSelect.innerHTML =
-  '<option value="">MODELを選択してください</option>';
-
-
-      productSelectBtn.textContent = product.name;
-
-      document.getElementById("productName").value = product.name;
-
-      document.getElementById("price").value = product.price;
-
-      productSearch.value = "";
-      productResults.innerHTML = "";
-      productSearchArea.style.display = "none";
-
-    });
-
-    productResults.appendChild(item);
-
-  });
-
-});
+  
 function getSales(){
 
   return JSON.parse(
