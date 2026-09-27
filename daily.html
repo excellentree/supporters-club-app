@@ -279,56 +279,7 @@ td{
 <option value="LEGO">LEGO</option>
 <option value="その他">その他</option>
 </select>
-     <!-- soccerwe 絞り込み -->
-<div id="soccerweFilterArea" style="display:none;">
-
-  <div class="form-item">
-    <label>区分</label>
-    <select id="itemTypeSelect">
-      <option value="">選択してください</option>
-      <option value="代表">代表</option>
-      <option value="クラブ">クラブ</option>
-    </select>
-  </div>
-
-  <div class="form-item" id="regionArea" style="display:none;">
-    <label>地域</label>
-    <select id="regionSelect">
-      <option value="">選択してください</option>
-      <option value="ヨーロッパ">ヨーロッパ</option>
-      <option value="アフリカ">アフリカ</option>
-      <option value="南米">南米</option>
-      <option value="アジア">アジア</option>
-    </select>
-  </div>
-<!-- 国・リーグ絞り込み -->
-<div class="form-item" id="countryLeagueArea" style="display:none;">
-  <label>国・リーグ</label>
-  <select id="countryLeagueSelect">
-    <option value="">選択してください</option>
-  </select>
-</div>
-  <div class="form-item" id="leagueArea" style="display:none;">
-    <label>リーグ</label>
-    <select id="leagueSelect">
-      <option value="">選択してください</option>
-      <option value="プレミアリーグ">プレミアリーグ</option>
-      <option value="ラリーガ">ラリーガ</option>
-      <option value="セリエA">セリエA</option>
-      <option value="ブンデスリーガ">ブンデスリーガ</option>
-      <option value="リーグアン">リーグアン</option>
-      <option value="その他リーグ">その他リーグ</option>
-    </select>
-  </div>
-
-  <div class="form-item" id="countryClubArea" style="display:none;">
-    <label id="countryClubLabel">国・クラブ</label>
-    <select id="countryClubSelect">
-      <option value="">選択してください</option>
-    </select>
-  </div>
-
-</div>   
+   
   <label>商品名</label>
 
   <button type="button" id="productSelectBtn">
@@ -346,8 +297,31 @@ td{
   </div>
 
   <input type="hidden" id="productName">
-</div>
+        <div class="form-item" style="margin-top:14px;">
+  <label>MODEL</label>
 
+  <select id="modelSelect">
+    <option value="">商品名を先に入力してください</option>
+  </select>
+</div>
+</div>
+<div class="form-item" style="margin-top:14px;">
+  <label>土台</label>
+
+  <select id="baseSelect">
+    <option value="">選択してください</option>
+    <option value="ACTION">ACTION</option>
+    <option value="FIXED">FIXED</option>
+  </select>
+</div>
+<div class="form-item" style="margin-top:14px;">
+  <label>VERSION</label>
+
+  <select id="versionSelect">
+    <option value="">選択してください</option>
+  </select>
+</div>
+      
       <div class="form-item">
         <label>販売価格</label>
         <input id="price" type="number" placeholder="1080">
@@ -702,6 +676,25 @@ productSelectBtn.addEventListener("click", () => {
 
     item.addEventListener("click", () => {
 　　　selectedProduct = product;
+      const modelSelect = document.getElementById("modelSelect");
+
+modelSelect.innerHTML =
+  '<option value="">MODELを選択してください</option>';
+
+const sameNameProducts = data.filter(
+  p => p.name === product.name
+);
+
+sameNameProducts.forEach(p => {
+
+  const option = document.createElement("option");
+
+  option.value = p.model || "";
+  option.textContent = p.model || "";
+
+  modelSelect.appendChild(option);
+
+});
       productSelectBtn.textContent = product.name;
 
       document.getElementById("productName").value = product.name;
