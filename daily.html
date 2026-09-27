@@ -268,11 +268,24 @@ td{
     <div class="form-grid">
 
       <div class="form-item full">
-        <label>商品名</label>
-        <select id="productName">
-  <option value="">商品を選択してください</option>
-</select>
-      </div>
+  <label>商品名</label>
+
+  <button type="button" id="productSelectBtn">
+    商品を選択してください
+  </button>
+
+  <div id="productSearchArea" style="display:none; margin-top:12px;">
+    <input
+      id="productSearch"
+      type="text"
+      placeholder="選手名・商品名で検索"
+    >
+
+    <div id="productResults"></div>
+  </div>
+
+  <input type="hidden" id="productName">
+</div>
 
       <div class="form-item">
         <label>販売価格</label>
