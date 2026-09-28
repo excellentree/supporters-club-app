@@ -440,10 +440,10 @@ async function loadProducts(){
     return;
   }
 
-  const products =
-    window.products.filter(product =>
-      product.name === name
-    );
+ const products =
+  window.products.filter(product =>
+    String(product.name).trim() === name
+  );
 
   products.forEach(product => {
 
