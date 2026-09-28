@@ -436,9 +436,9 @@ async function loadProducts(){
   }
 
   const products =
-    window.products.filter(product =>
-      product.name === name
-    );
+  window.products.filter(product =>
+    String(product.name).trim() === name.trim()
+  );
 
   products.forEach(product => {
 
