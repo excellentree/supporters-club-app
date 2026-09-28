@@ -313,9 +313,9 @@ td{
 </div>
       
       <div class="form-item">
-  <label>販売価格</label>
-  <input id="price" type="number" placeholder="販売価格">
-</div>
+        <label>販売価格</label>
+        <input id="price" type="number" placeholder="1080">
+      </div>
 
       <div class="form-item">
         <label>仕入価格</label>
@@ -388,7 +388,7 @@ const db = window.supabase.createClient(
 );
 const salesDate = document.getElementById("salesDate");
 
-const today = new Date();る
+const today = new Date();
 
 const yyyy = today.getFullYear();
 
@@ -419,19 +419,14 @@ async function loadProducts(){
   console.log("商品一覧:", data);
 　window.products = data;
 }
-loadProducts().then(() => {
-  document.getElementById("productName").dispatchEvent(
-    new Event("input")
-  );
-});
-  
+  loadProducts();
   document.getElementById("productName").addEventListener("input", () => {
 
   const name =
     document.getElementById("productName").value.trim();
 
-  const model =
-  document.getElementById("modelSelect").value;
+  const modelSelect =
+    document.getElementById("modelSelect");
 
   modelSelect.innerHTML =
     '<option value="">MODELを選択してください</option>';
@@ -441,9 +436,9 @@ loadProducts().then(() => {
   }
 
   const products =
-  window.products.filter(product =>
-    String(product.name).trim() === name.trim()
-  );
+    window.products.filter(product =>
+      product.name === name
+    );
 
   products.forEach(product => {
 
@@ -499,38 +494,7 @@ loadProducts().then(() => {
   });
 
 });
-document.getElementById("versionSelect").addEventListener("change", () => {
-
-  const name =
-    document.getElementById("productName").value.trim();
-
-  const model =
-    document.getElementById("modelSelect").value;
-
-  const version =
-    document.getElementById("versionSelect").value;
-
-  if(!name || !model || !version || !window.products){
-    return;
-  }
-
-  const product =
-    window.products.find(product =>
-      product.name === name &&
-      product.model === model &&
-      product.version === version
-    );
-
-  if(!product){
-    return;
-  }
-
-  selectedProduct = product;
-
-  document.getElementById("price").value =
-    product.price || "";
-
-});
+ 
   let selectedProduct = null;
   
 function getSales(){
