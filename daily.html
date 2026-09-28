@@ -419,7 +419,12 @@ async function loadProducts(){
   console.log("商品一覧:", data);
 　window.products = data;
 }
-  loadProducts();
+loadProducts().then(() => {
+  document.getElementById("productName").dispatchEvent(
+    new Event("input")
+  );
+});
+  
   document.getElementById("productName").addEventListener("input", () => {
 
   const name =
