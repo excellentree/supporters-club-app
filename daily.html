@@ -494,7 +494,35 @@ async function loadProducts(){
   });
 
 });
- 
+ document.getElementById("versionSelect").addEventListener("change", () => {
+
+  const name =
+    document.getElementById("productName").value.trim();
+
+  const model =
+    document.getElementById("modelSelect").value;
+
+  const version =
+    document.getElementById("versionSelect").value;
+
+  if(!name || !model || !version || !window.products){
+    return;
+  }
+
+  selectedProduct = window.products.find(product =>
+    product.name === name &&
+    product.model === model &&
+    product.version === version
+  );
+
+  if(selectedProduct){
+
+    document.getElementById("price").value =
+      selectedProduct.price || "";
+
+  }
+
+});
   let selectedProduct = null;
   
 function getSales(){
