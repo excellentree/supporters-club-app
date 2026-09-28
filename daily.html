@@ -321,6 +321,10 @@ td{
         <label>仕入価格</label>
         <input id="cost" type="number" placeholder="500">
       </div>
+      <div class="form-item">
+  <label>送料</label>
+  <input id="shipping" type="number" value="210">
+</div>
 
       <div class="form-item">
         <label>数量</label>
@@ -583,7 +587,9 @@ const model =
 
   const cost =
     Number(document.getElementById("cost").value);
+const shipping =
 
+  Number(document.getElementById("shipping").value);
   const quantity =
     Number(document.getElementById("quantity").value);
 
@@ -631,7 +637,7 @@ const model =
     countryOrClub:selectedProduct ? selectedProduct.country_or_club : null,
     price:price,
     cost:cost,
-
+　　shipping:shipping
     quantity:quantity,
 
     orderNo:orderNo
@@ -697,9 +703,14 @@ function render(){
     const costTotal =
       sale.cost * sale.quantity;
 
-    const profit =
-      saleTotal - costTotal;
+    const shippingTotal =
 
+  sale.shipping * sale.quantity;
+const mercariFee =
+  saleTotal * 0.10;
+const profit =
+
+  saleTotal - costTotal - shippingTotal - mercariFee;
 
     totalSales += saleTotal;
 
