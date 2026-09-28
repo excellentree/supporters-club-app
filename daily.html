@@ -422,6 +422,7 @@ async function loadProducts(){
 
   console.log("商品一覧:", data);
 　window.products = data;
+  document.getElementById("productName").dispatchEvent(new Event("input"));
 }
   loadProducts();
   document.getElementById("productName").addEventListener("input", () => {
