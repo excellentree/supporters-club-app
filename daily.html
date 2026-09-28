@@ -408,7 +408,7 @@ async function loadProducts(){
 
   const { data, error } = await db
     .from("products")
-   .select("id,name,price,model,base,version,category,item_type,region,country_or_club")
+   .select("id,name,price,model,base,version,average_cost,category,item_type,region,country_or_club")
     .order("name", { ascending:true });
 
   if(error){
@@ -492,6 +492,34 @@ async function loadProducts(){
     versionSelect.appendChild(option);
 
   });
+
+});
+  document.getElementById("versionSelect").addEventListener("change", () => {
+
+  const name =
+    document.getElementById("productName").value.trim();
+
+  const model =
+    document.getElementById("modelSelect").value;
+
+  const version =
+    document.getElementById("versionSelect").value;
+
+  const product =
+    window.products.find(product =>
+      product.name === name &&
+      product.model === model &&
+      product.version === version
+    );
+
+  if(product){
+
+    selectedProduct = product;
+
+    document.getElementById("cost").value =
+      product.average_cost ?? "";
+
+  }
 
 });
  document.getElementById("versionSelect").addEventListener("change", () => {
