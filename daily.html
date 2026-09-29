@@ -490,18 +490,17 @@ models.forEach(model => {
 
   products.forEach(product => {
 
-    const option =
-      document.createElement("option");
+  const option =
+    document.createElement("option");
 
-    option.value = product.version || "";
+  option.value = product.version || "";
 
-    option.textContent =
-      product.version || "VERSIONなし";
+  option.textContent =
+    product.version || "VERSIONなし";
 
-    versionSelect.appendChild(option);
+  versionSelect.appendChild(option);
 
-  });
-
+});
 });
   document.getElementById("versionSelect").addEventListener("change", () => {
 
