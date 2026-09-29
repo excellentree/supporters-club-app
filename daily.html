@@ -430,7 +430,7 @@ async function loadProducts(){
 }
   loadProducts();
   document.getElementById("productName").addEventListener("input", () => {
-
+　console.log("入力:", document.getElementById("productName").value, "商品数:", window.products?.length);
   const name =
     document.getElementById("productName").value.trim();
 
