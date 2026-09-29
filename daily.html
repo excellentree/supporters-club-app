@@ -287,11 +287,17 @@ td{
   id="productName"
   placeholder="商品名を入力してください"
 >
-        <div class="form-item" style="margin-top:14px;">
+       <div class="form-item" style="margin-top:14px;">
   <label>MODEL</label>
 
-  <div id="modelButtons" class="button-select"></div>
-</div>
+  <div id="modelButtons" class="select-buttons">
+    <div class="select-placeholder">
+      商品名を先に入力してください
+    </div>
+  </div>
+
+  <select id="modelSelect" style="display:none;">
+  </select>
 </div>
 <div class="form-item" style="margin-top:14px;">
   <label>土台</label>
