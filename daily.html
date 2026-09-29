@@ -445,19 +445,23 @@ async function loadProducts(){
     String(product.name).trim().includes(name)
   );
 
-  products.forEach(product => {
+  const models = [...new Set(
+  products
+    .map(product => product.model)
+    .filter(Boolean)
+)];
 
-    const option =
-      document.createElement("option");
+models.forEach(model => {
 
-    option.value = product.model || "";
+  const option =
+    document.createElement("option");
 
-    option.textContent =
-      product.model || "MODELなし";
+  option.value = model;
+  option.textContent = model;
 
-    modelSelect.appendChild(option);
+  modelSelect.appendChild(option);
 
-  });
+});
 
 });
   document.getElementById("modelSelect").addEventListener("change", () => {
