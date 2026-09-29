@@ -480,7 +480,7 @@ async function loadProducts(){
 
   const products =
     window.products.filter(product =>
-      product.name === name &&
+      String(product.name).trim().includes(name) &&
       product.model === model
     );
 
