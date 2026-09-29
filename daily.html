@@ -543,7 +543,7 @@ async function loadProducts(){
   }
 
   selectedProduct = window.products.find(product =>
-    product.name === name &&
+    String(product.name).trim().includes(name) &&
     product.model === model &&
     product.version === version
   );
