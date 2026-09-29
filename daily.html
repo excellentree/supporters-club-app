@@ -483,20 +483,26 @@ models.forEach(model => {
   }
 
   const products =
-    window.products.filter(product =>
-      String(product.name).trim().includes(name) &&
-      product.model === model
-    );
+  window.products.filter(product =>
+    String(product.name).trim().includes(name) &&
+    String(product.model || "").trim() === String(model).trim()
+  );
 
-  products.forEach(product => {
+const versions = [
+  ...new Set(
+    products
+      .map(product => String(product.version || "").trim())
+      .filter(Boolean)
+  )
+];
+
+versions.forEach(version => {
 
   const option =
     document.createElement("option");
 
-  option.value = product.version || "";
-
-  option.textContent =
-    product.version || "VERSIONなし";
+  option.value = version;
+  option.textContent = version;
 
   versionSelect.appendChild(option);
 
