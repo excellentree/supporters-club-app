@@ -465,13 +465,37 @@ models.forEach(model => {
 
 });
   document.getElementById("modelSelect").addEventListener("change", () => {
+const baseSelect =
+  document.getElementById("baseSelect");
 
+baseSelect.innerHTML =
+  '<option value="">土台を選択してください</option>';
   const name =
     document.getElementById("productName").value.trim();
 
   const model =
     document.getElementById("modelSelect").value;
+const bases = [...new Set(
+  window.products
+    .filter(product =>
+      String(product.name).trim().includes(name) &&
+      String(product.model || "").trim() === model
+    )
+    .map(product => product.base)
+    .filter(Boolean)
+)];
 
+bases.forEach(base => {
+
+  const option =
+    document.createElement("option");
+
+  option.value = base;
+  option.textContent = base;
+
+  baseSelect.appendChild(option);
+
+});
   const versionSelect =
     document.getElementById("versionSelect");
 
