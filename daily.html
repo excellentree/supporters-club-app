@@ -484,7 +484,7 @@ models.forEach(model => {
 
   const products =
   window.products.filter(product =>
-    String(product.name).trim().includes(name) &&
+    
     String(product.model || "").trim() === String(model).trim()
   );
 
