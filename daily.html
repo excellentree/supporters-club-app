@@ -511,29 +511,11 @@ models.forEach(model => {
         btn.classList.remove("active")
       );
 
-    button.classList.add("active");
-
-    modelSelect.value = model;
-
-    modelSelect.dispatchEvent(
-      new Event("change")
-    );
-
   });
 
   modelButtons.appendChild(button);
 
-  const option =
-    document.createElement("option");
-
-  option.value = model;
-  option.textContent = model;
-
-  modelSelect.appendChild(option);
-
-});
-
-modelSelect.disabled = false;
+  
   document.getElementById("modelSelect").addEventListener("change", () => {
 const baseSelect =
   document.getElementById("baseSelect");
