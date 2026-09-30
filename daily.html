@@ -457,162 +457,90 @@ async function loadProducts(){
 }
   loadProducts();
   document.getElementById("productName").addEventListener("input", () => {
-　console.log("入力:", document.getElementById("productName").value, "商品数:", window.products?.length);
+
   const name =
     document.getElementById("productName").value.trim();
+
+  const modelButtons =
+    document.getElementById("modelButtons");
 
   const modelSelect =
-  document.getElementById("modelSelect");
+    document.getElementById("modelSelect");
 
-const modelButtons =
-  document.getElementById("modelButtons");
+  modelButtons.innerHTML = "";
 
-modelSelect.innerHTML =
-  '<option value="">MODELを選択してください</option>';
+  modelSelect.innerHTML =
+    '<option value="">MODELを選択してください</option>';
 
-modelButtons.innerHTML = "";
+  if (!name || !window.products) {
+    if (name && !window.products) {
+      loadProducts().then(() => {
+        document.getElementById("productName")
+          .dispatchEvent(new Event("input"));
+      });
+    }
 
-if(!name || !window.products){
-  if(name && !window.products){
-    loadProducts().then(() => {
-      document.getElementById("productName")
-        .dispatchEvent(new Event("input"));
-    });
-  }
-  return;
-}
+    modelButtons.innerHTML =
+      '<div class="select-placeholder">商品名を先に入力してください</div>';
 
-const products =
-  window.products.filter(product =>
-    String(product.name).trim().includes(name)
-  );
-
-const models = [
-  ...new Set(
-    products
-      .map(product => product.model)
-      .filter(Boolean)
-  )
-];
-
-models.forEach(model => {
-
-  const button =
-    document.createElement("button");
-
-  button.type = "button";
-  button.textContent = model;
-
-  button.addEventListener("click", () => {
-
-    document
-      .querySelectorAll("#modelButtons button")
-      .forEach(btn =>
-        btn.classList.remove("active")
-      );
-
-  });
-
-  modelButtons.appendChild(button);
-
-  
-  document.getElementById("modelSelect").addEventListener("change", () => {
-const baseSelect =
-  document.getElementById("baseSelect");
-
-baseSelect.innerHTML =
-  '<option value="">土台を選択してください</option>';
-  const name =
-    document.getElementById("productName").value.trim();
-
-  const model =
-    document.getElementById("modelSelect").value;
-const bases = [...new Set(
-  window.products
-    .filter(product =>
-      String(product.name).trim().includes(name) &&
-      String(product.model || "").trim() === model
-    )
-    .map(product => product.base)
-    .filter(Boolean)
-)];
-
-bases.forEach(base => {
-
-  const option =
-    document.createElement("option");
-
-  option.value = base;
-  option.textContent = base;
-
-  baseSelect.appendChild(option);
-
-});
-  const versionSelect =
-    document.getElementById("versionSelect");
-
-  versionSelect.innerHTML =
-    '<option value="">VERSIONを選択してください</option>';
-
-  if(!name || !model || !window.products){
     return;
   }
 
   const products =
-  window.products.filter(product =>
-    
-    String(product.model || "").trim() === String(model).trim()
-  );
-
-const versions = [
-  ...new Set(
-    products
-      .map(product => String(product.version || "").trim())
-      .filter(Boolean)
-  )
-];
-
-versions.forEach(version => {
-
-  const option =
-    document.createElement("option");
-
-  option.value = version;
-  option.textContent = version;
-
-  versionSelect.appendChild(option);
-
-});
-});
-  document.getElementById("versionSelect").addEventListener("change", () => {
-
-  const name =
-    document.getElementById("productName").value.trim();
-
-  const model =
-    document.getElementById("modelSelect").value;
-
-  const version =
-    document.getElementById("versionSelect").value;
-
-  const product =
-    window.products.find(product =>
-       String(product.name).trim().includes(name) &&
-      product.model === model &&
-      product.version === version
+    window.products.filter(product =>
+      String(product.name).trim().includes(name)
     );
 
-  if(product){
+  const models = [
+    ...new Set(
+      products
+        .map(product => String(product.model || "").trim())
+        .filter(Boolean)
+    )
+  ];
 
-    selectedProduct = product;
+  models.forEach(model => {
 
-    document.getElementById("cost").value =
-      product.average_cost ?? "";
+    /* MODELボタン */
+    const button =
+      document.createElement("button");
 
-  }
+    button.type = "button";
+    button.textContent = model;
+
+    button.addEventListener("click", () => {
+
+      document
+        .querySelectorAll("#modelButtons button")
+        .forEach(btn =>
+          btn.classList.remove("active")
+        );
+
+      button.classList.add("active");
+
+      modelSelect.value = model;
+
+      modelSelect.dispatchEvent(new Event("change"));
+    });
+
+    modelButtons.appendChild(button);
+
+    /* MODELセレクトにも追加 */
+    const option =
+      document.createElement("option");
+
+    option.value = model;
+    option.textContent = model;
+
+    modelSelect.appendChild(option);
+
+  });
 
 });
- document.getElementById("versionSelect").addEventListener("change", () => {
+
+
+/* MODEL変更 */
+document.getElementById("modelSelect").addEventListener("change", () => {
 
   const name =
     document.getElementById("productName").value.trim();
@@ -620,23 +548,109 @@ versions.forEach(version => {
   const model =
     document.getElementById("modelSelect").value;
 
-  const version =
-    document.getElementById("versionSelect").value;
+  const baseSelect =
+    document.getElementById("baseSelect");
 
-  if(!name || !model || !version || !window.products){
+  const versionSelect =
+    document.getElementById("versionSelect");
+
+  baseSelect.innerHTML =
+    '<option value="">土台を選択してください</option>';
+
+  versionSelect.innerHTML =
+    '<option value="">VERSIONを選択してください</option>';
+
+  if (!name || !model || !window.products) {
     return;
   }
 
-  selectedProduct = window.products.find(product =>
-    String(product.name).trim().includes(name) &&
-    product.model === model &&
-    product.version === version
-  );
+  const products =
+    window.products.filter(product =>
+      String(product.name).trim().includes(name) &&
+      String(product.model || "").trim() === model
+    );
 
-  if(selectedProduct){
+
+  /* 土台 */
+  const bases = [
+    ...new Set(
+      products
+        .map(product =>
+          String(product.base || "").trim()
+        )
+        .filter(Boolean)
+    )
+  ];
+
+  bases.forEach(base => {
+
+    const option =
+      document.createElement("option");
+
+    option.value = base;
+    option.textContent = base;
+
+    baseSelect.appendChild(option);
+
+  });
+
+
+  /* VERSION */
+  const versions = [
+    ...new Set(
+      products
+        .map(product =>
+          String(product.version || "").trim()
+        )
+        .filter(Boolean)
+    )
+  ];
+
+  versions.forEach(version => {
+
+    const option =
+      document.createElement("option");
+
+    option.value = version;
+    option.textContent = version;
+
+    versionSelect.appendChild(option);
+
+  });
+
+});
+
+
+/* VERSION変更 */
+document.getElementById("versionSelect").addEventListener("change", () => {
+
+  const name =
+    document.getElementById("productName").value.trim();
+
+  const model =
+    document.getElementById("modelSelect").value;
+
+  const version =
+    document.getElementById("versionSelect").value;
+
+  if (!name || !model || !version || !window.products) {
+    return;
+  }
+
+  selectedProduct =
+    window.products.find(product =>
+      String(product.name).trim().includes(name) &&
+      String(product.model || "").trim() === model &&
+      String(product.version || "").trim() === version
+    );
+
+  if (selectedProduct) {
+
+    document.getElementById("cost").value =
+      selectedProduct.average_cost ?? "";
 
     document.getElementById("price").value =
-      selectedProduct.price || "";
+      selectedProduct.price ?? "";
 
   }
 
