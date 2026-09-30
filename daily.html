@@ -616,30 +616,57 @@ document.getElementById("modelSelect").addEventListener("change", () => {
         )
       ];
 
-      versionSelect.innerHTML =
-        '<option value="">VERSIONを選択してください</option>';
+versionButtons.innerHTML = "";
 
-      versions.forEach(version => {
+versions.forEach(version => {
 
-        const option =
-          document.createElement("option");
+  const button = document.createElement("button");
 
-        option.value = version;
-        option.textContent = version;
+  button.type = "button";
+  button.textContent = version;
 
-        versionSelect.appendChild(option);
+  button.addEventListener("click", () => {
 
-      });
+    document
+      .querySelectorAll("#versionButtons button")
+      .forEach(btn =>
+        btn.classList.remove("active")
+      );
 
-    });
+    button.classList.add("active");
 
+    selectedProduct =
+      window.products.find(product =>
+        String(product.name).trim().includes(name) &&
+        String(product.model || "").trim() === model &&
+        String(product.base || "").trim() === base &&
+        String(product.version || "").trim() === version
+      );
+
+    if (selectedProduct) {
+
+      document.getElementById("cost").value =
+        selectedProduct.average_cost ?? "";
+
+      document.getElementById("price").value =
+        selectedProduct.price ?? "";
+
+    }
+
+  });
+
+  versionButtons.appendChild(button);
+
+});
     baseButtons.appendChild(button);
 
   });
 
 });
 /* VERSION変更 */
-document.getElementById("versionSelect").addEventListener("change", () => {
+document.getElementById("versionButtons").addEventListener("click", (e) => {
+
+  if (e.target.tagName !== "BUTTON") return;
 
   const name =
     document.getElementById("productName").value.trim();
@@ -648,11 +675,19 @@ document.getElementById("versionSelect").addEventListener("change", () => {
     document.getElementById("modelSelect").value;
 
   const version =
-    document.getElementById("versionSelect").value;
+    e.target.textContent.trim();
 
   if (!name || !model || !version || !window.products) {
     return;
   }
+
+  document
+    .querySelectorAll("#versionButtons button")
+    .forEach(btn =>
+      btn.classList.remove("active")
+    );
+
+  e.target.classList.add("active");
 
   selectedProduct =
     window.products.find(product =>
