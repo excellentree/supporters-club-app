@@ -548,19 +548,19 @@ document.getElementById("modelSelect").addEventListener("change", () => {
   const model =
     document.getElementById("modelSelect").value;
 
-  const baseSelect =
+  const baseButtons =
     document.getElementById("baseSelect");
 
   const versionSelect =
     document.getElementById("versionSelect");
 
-  baseSelect.innerHTML =
-    '<option value="">土台を選択してください</option>';
-
+  baseButtons.innerHTML = "";
   versionSelect.innerHTML =
     '<option value="">VERSIONを選択してください</option>';
 
   if (!name || !model || !window.products) {
+    baseButtons.innerHTML =
+      '<div class="select-placeholder">MODELを選択してください</div>';
     return;
   }
 
@@ -569,7 +569,6 @@ document.getElementById("modelSelect").addEventListener("change", () => {
       String(product.name).trim().includes(name) &&
       String(product.model || "").trim() === model
     );
-
 
   /* 土台 */
   const bases = [
@@ -584,43 +583,59 @@ document.getElementById("modelSelect").addEventListener("change", () => {
 
   bases.forEach(base => {
 
-    const option =
-      document.createElement("option");
+    const button =
+      document.createElement("button");
 
-    option.value = base;
-    option.textContent = base;
+    button.type = "button";
+    button.textContent = base;
 
-    baseSelect.appendChild(option);
+    button.addEventListener("click", () => {
 
-  });
+      document
+        .querySelectorAll("#baseSelect button")
+        .forEach(btn =>
+          btn.classList.remove("active")
+        );
 
+      button.classList.add("active");
 
-  /* VERSION */
-  const versions = [
-    ...new Set(
-      products
-        .map(product =>
-          String(product.version || "").trim()
+      const baseProducts =
+        products.filter(product =>
+          String(product.base || "").trim() === base
+        );
+
+      const versions = [
+        ...new Set(
+          baseProducts
+            .map(product =>
+              String(product.version || "").trim()
+            )
+            .filter(Boolean)
         )
-        .filter(Boolean)
-    )
-  ];
+      ];
 
-  versions.forEach(version => {
+      versionSelect.innerHTML =
+        '<option value="">VERSIONを選択してください</option>';
 
-    const option =
-      document.createElement("option");
+      versions.forEach(version => {
 
-    option.value = version;
-    option.textContent = version;
+        const option =
+          document.createElement("option");
 
-    versionSelect.appendChild(option);
+        option.value = version;
+        option.textContent = version;
+
+        versionSelect.appendChild(option);
+
+      });
+
+    });
+
+    baseButtons.appendChild(button);
 
   });
 
 });
-
-
 /* VERSION変更 */
 document.getElementById("versionSelect").addEventListener("change", () => {
 
