@@ -462,32 +462,66 @@ async function loadProducts(){
     document.getElementById("productName").value.trim();
 
   const modelSelect =
-    document.getElementById("modelSelect");
+  document.getElementById("modelSelect");
 
-  modelSelect.innerHTML =
-    '<option value="">MODELを選択してください</option>';
+const modelButtons =
+  document.getElementById("modelButtons");
 
-  if(!name || !window.products){
-    if(name && !window.products){
-        loadProducts().then(() => {
-            document.getElementById("productName").dispatchEvent(new Event("input"));
-        });
-    }
-    return;
+modelSelect.innerHTML =
+  '<option value="">MODELを選択してください</option>';
+
+modelButtons.innerHTML = "";
+
+if(!name || !window.products){
+  if(name && !window.products){
+    loadProducts().then(() => {
+      document.getElementById("productName")
+        .dispatchEvent(new Event("input"));
+    });
+  }
+  return;
 }
 
- const products =
+const products =
   window.products.filter(product =>
     String(product.name).trim().includes(name)
   );
 
-  const models = [...new Set(
-  products
-    .map(product => product.model)
-    .filter(Boolean)
-)];
+const models = [
+  ...new Set(
+    products
+      .map(product => product.model)
+      .filter(Boolean)
+  )
+];
 
 models.forEach(model => {
+
+  const button =
+    document.createElement("button");
+
+  button.type = "button";
+  button.textContent = model;
+
+  button.addEventListener("click", () => {
+
+    document
+      .querySelectorAll("#modelButtons button")
+      .forEach(btn =>
+        btn.classList.remove("active")
+      );
+
+    button.classList.add("active");
+
+    modelSelect.value = model;
+
+    modelSelect.dispatchEvent(
+      new Event("change")
+    );
+
+  });
+
+  modelButtons.appendChild(button);
 
   const option =
     document.createElement("option");
@@ -495,12 +529,11 @@ models.forEach(model => {
   option.value = model;
   option.textContent = model;
 
-modelSelect.appendChild(option);
-  modelSelect.disabled = false;
+  modelSelect.appendChild(option);
 
 });
 
-});
+modelSelect.disabled = false;
   document.getElementById("modelSelect").addEventListener("change", () => {
 const baseSelect =
   document.getElementById("baseSelect");
