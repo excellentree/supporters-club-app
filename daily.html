@@ -942,26 +942,30 @@ const profit =
     const tr = document.createElement("tr");
 
 
-    tr.innerHTML = `
+   tr.innerHTML = `
 
-      <td>${escapeHtml(sale.productName)}</td>
+  <td>
+    ${escapeHtml(sale.category || "")}<br>
+    ${escapeHtml(sale.productName)}<br>
+    ${escapeHtml(sale.model || "")}
+  </td>
 
-      <td>¥${saleTotal.toLocaleString()}</td>
+  <td>¥${saleTotal.toLocaleString()}</td>
 
-      <td>${sale.quantity}</td>
+  <td>${sale.quantity}</td>
 
-      <td>¥${costTotal.toLocaleString()}</td>
+  <td>¥${costTotal.toLocaleString()}</td>
 
-      <td>¥${profit.toLocaleString()}</td>
+  <td>¥${profit.toLocaleString()}</td>
 
-      <td>
-        <button class="delete"
-          onclick="deleteSale(${index})">
-          削除
-        </button>
-      </td>
+  <td>
+    <button class="delete"
+      onclick="deleteSale(${index})">
+      削除
+    </button>
+  </td>
 
-    `;
+`;
 
 
     table.appendChild(tr);
