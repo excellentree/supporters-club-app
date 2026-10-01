@@ -461,7 +461,7 @@ async function loadProducts(){
   console.log("商品一覧:", data);
 
   window.products = data || [];
-
+alert("商品数：" + window.products.length);
   document
     .getElementById("productName")
     .dispatchEvent(new Event("input"));
