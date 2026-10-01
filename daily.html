@@ -338,11 +338,9 @@ td{
 <div class="form-item" style="margin-top:14px;">
   <label>VERSION</label>
 
-  <div id="versionButtons" class="select-buttons">
-    <div class="select-placeholder">
-      土台を選択してください
-    </div>
-  </div>
+  <select id="versionSelect">
+    <option value="">選択してください</option>
+  </select>
 </div>
       
       <div class="form-item">
@@ -616,57 +614,30 @@ document.getElementById("modelSelect").addEventListener("change", () => {
         )
       ];
 
-versionButtons.innerHTML = "";
+      versionSelect.innerHTML =
+        '<option value="">VERSIONを選択してください</option>';
 
-versions.forEach(version => {
+      versions.forEach(version => {
 
-  const button = document.createElement("button");
+        const option =
+          document.createElement("option");
 
-  button.type = "button";
-  button.textContent = version;
+        option.value = version;
+        option.textContent = version;
 
-  button.addEventListener("click", () => {
+        versionSelect.appendChild(option);
 
-    document
-      .querySelectorAll("#versionButtons button")
-      .forEach(btn =>
-        btn.classList.remove("active")
-      );
+      });
 
-    button.classList.add("active");
+    });
 
-    selectedProduct =
-      window.products.find(product =>
-        String(product.name).trim().includes(name) &&
-        String(product.model || "").trim() === model &&
-        String(product.base || "").trim() === base &&
-        String(product.version || "").trim() === version
-      );
-
-    if (selectedProduct) {
-
-      document.getElementById("cost").value =
-        selectedProduct.average_cost ?? "";
-
-      document.getElementById("price").value =
-        selectedProduct.price ?? "";
-
-    }
-
-  });
-
-  versionButtons.appendChild(button);
-
-});
     baseButtons.appendChild(button);
 
   });
 
 });
 /* VERSION変更 */
-document.getElementById("versionButtons").addEventListener("click", (e) => {
-
-  if (e.target.tagName !== "BUTTON") return;
+document.getElementById("versionSelect").addEventListener("change", () => {
 
   const name =
     document.getElementById("productName").value.trim();
@@ -675,19 +646,11 @@ document.getElementById("versionButtons").addEventListener("click", (e) => {
     document.getElementById("modelSelect").value;
 
   const version =
-    e.target.textContent.trim();
+    document.getElementById("versionSelect").value;
 
   if (!name || !model || !version || !window.products) {
     return;
   }
-
-  document
-    .querySelectorAll("#versionButtons button")
-    .forEach(btn =>
-      btn.classList.remove("active")
-    );
-
-  e.target.classList.add("active");
 
   selectedProduct =
     window.products.find(product =>
