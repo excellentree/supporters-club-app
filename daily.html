@@ -849,6 +849,8 @@ const shipping =
   sales.push({
 
     productName:productName,
+    base:selectedProduct ? selectedProduct.base : "",
+　　　version:selectedProduct ? selectedProduct.version : "",
 　　 model:model,
 　  productId:selectedProduct ? selectedProduct.id : null,
     category:selectedProduct ? selectedProduct.category : null,
@@ -946,8 +948,14 @@ const profit =
 
   <td>
     ${escapeHtml(sale.category || "")}<br>
-    ${escapeHtml(sale.productName)}<br>
-    ${escapeHtml(sale.model || "")}
+
+${escapeHtml(sale.productName)}<br>
+
+${escapeHtml(sale.base || "")}<br>
+
+${escapeHtml(sale.version || "")}<br>
+
+${escapeHtml(sale.model || "")}
   </td>
 
   <td>¥${saleTotal.toLocaleString()}</td>
