@@ -544,7 +544,22 @@ async function loadProducts(){
 
 });
 
+// 土台の初期ボタン
+const initialBaseButtons =
+  document.getElementById("baseSelect");
 
+initialBaseButtons.innerHTML = "";
+
+["ACTION", "FIXED"].forEach(base => {
+
+  const button = document.createElement("button");
+
+  button.type = "button";
+  button.textContent = base;
+
+  initialBaseButtons.appendChild(button);
+
+});
 /* MODEL変更 */
 document.getElementById("modelSelect").addEventListener("change", () => {
 
