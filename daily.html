@@ -751,6 +751,30 @@ document.getElementById("versionSelect").addEventListener("change", () => {
 
 });
   let selectedProduct = null;
+  const quantityInput = document.getElementById("quantity");
+const quantityDisplay = document.getElementById("quantityDisplay");
+const quantityMinus = document.getElementById("quantityMinus");
+const quantityPlus = document.getElementById("quantityPlus");
+
+quantityMinus.addEventListener("click", () => {
+  let quantity = Number(quantityInput.value);
+
+  if (quantity > 1) {
+    quantity--;
+  }
+
+  quantityInput.value = quantity;
+  quantityDisplay.textContent = quantity;
+});
+
+quantityPlus.addEventListener("click", () => {
+  let quantity = Number(quantityInput.value);
+
+  quantity++;
+
+  quantityInput.value = quantity;
+  quantityDisplay.textContent = quantity;
+});
   
 function getSales(){
 
