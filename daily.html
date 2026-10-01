@@ -543,7 +543,22 @@ async function loadProducts(){
   });
 
 });
+// VERSIONの初期ボタン
+const initialVersionButtons =
+  document.getElementById("versionButtons");
 
+initialVersionButtons.innerHTML = "";
+
+["normal", "smiley", "newhead"].forEach(version => {
+
+  const button = document.createElement("button");
+
+  button.type = "button";
+  button.textContent = version;
+
+  initialVersionButtons.appendChild(button);
+
+});
 // 土台の初期ボタン
 const initialBaseButtons =
   document.getElementById("baseSelect");
