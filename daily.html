@@ -338,15 +338,9 @@ td{
 <div class="form-item" style="margin-top:14px;">
   <label>VERSION</label>
 
- <div id="versionButtons" class="select-buttons">
-  <div class="select-placeholder">
-    土台を選択してください
-  </div>
-</div>
-
-<select id="versionSelect" style="display:none;">
-  <option value="">VERSIONを選択してください</option>
-</select>
+  <select id="versionSelect">
+    <option value="">選択してください</option>
+  </select>
 </div>
       
       <div class="form-item">
@@ -449,22 +443,17 @@ async function loadProducts(){
 
   const { data, error } = await db
     .from("products")
-    .select("id,name,price,model,base,version,average_cost,category,item_type,region,country_or_club")
+   .select("id,name,price,model,base,version,average_cost,category,item_type,region,country_or_club")
     .order("name", { ascending:true });
 
   if(error){
-    console.error("商品読み込みエラー:", error);
-    alert("商品データの読み込みに失敗しました");
+    console.error(error);
     return;
   }
 
   console.log("商品一覧:", data);
-
-  window.products = data || [];
-alert("商品数：" + window.products.length);
-  document
-    .getElementById("productName")
-    .dispatchEvent(new Event("input"));
+　window.products = data;
+ document.getElementById("productName").dispatchEvent(new Event("input"));
 }
   loadProducts();
   document.getElementById("productName").addEventListener("input", () => {
@@ -626,34 +615,21 @@ document.getElementById("modelSelect").addEventListener("change", () => {
       ];
 
       versionSelect.innerHTML =
-  '<option value="">VERSIONを選択してください</option>';
+        '<option value="">VERSIONを選択してください</option>';
 
-versionButtons.innerHTML = "";
+      versions.forEach(version => {
 
-versions.forEach(version => {
+        const option =
+          document.createElement("option");
 
-  const option = document.createElement("option");
-  option.value = version;
-  option.textContent = version;
-  versionSelect.appendChild(option);
+        option.value = version;
+        option.textContent = version;
 
-  const button = document.createElement("button");
-  button.type = "button";
-  button.textContent = version;
+        versionSelect.appendChild(option);
 
-  button.addEventListener("click", () => {
+      });
 
-    versionButtons
-      .querySelectorAll("button")
-      .forEach(btn => btn.classList.remove("active"));
-
-    button.classList.add("active");
-
-    versionSelect.value = version;
-  });
-
-  versionButtons.appendChild(button);
-});
+    });
 
     baseButtons.appendChild(button);
 
