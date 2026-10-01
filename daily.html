@@ -883,7 +883,7 @@ const shipping =
   render();
 
 }
-
+る
 
 function deleteSale(index){
 
@@ -946,17 +946,10 @@ const profit =
 
    tr.innerHTML = `
 
-  <td>
-    ${escapeHtml(sale.category || "")}<br>
-
-${escapeHtml(sale.productName)}<br>
-
-${escapeHtml(sale.base || "")}<br>
-
-${escapeHtml(sale.version || "")}<br>
-
-${escapeHtml(sale.model || "")}
-  </td>
+<td>
+  ${escapeHtml(sale.category || "")} / ${escapeHtml(sale.productName)}<br>
+  ${escapeHtml(sale.base || "")} / ${escapeHtml(sale.version || "")} / ${escapeHtml(sale.model || "")}
+</td>
 
   <td>¥${saleTotal.toLocaleString()}</td>
 
