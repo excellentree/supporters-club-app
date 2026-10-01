@@ -621,21 +621,34 @@ document.getElementById("modelSelect").addEventListener("change", () => {
       ];
 
       versionSelect.innerHTML =
-        '<option value="">VERSIONを選択してください</option>';
+  '<option value="">VERSIONを選択してください</option>';
 
-      versions.forEach(version => {
+versionButtons.innerHTML = "";
 
-        const option =
-          document.createElement("option");
+versions.forEach(version => {
 
-        option.value = version;
-        option.textContent = version;
+  const option = document.createElement("option");
+  option.value = version;
+  option.textContent = version;
+  versionSelect.appendChild(option);
 
-        versionSelect.appendChild(option);
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = version;
 
-      });
+  button.addEventListener("click", () => {
 
-    });
+    versionButtons
+      .querySelectorAll("button")
+      .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+    versionSelect.value = version;
+  });
+
+  versionButtons.appendChild(button);
+});
 
     baseButtons.appendChild(button);
 
