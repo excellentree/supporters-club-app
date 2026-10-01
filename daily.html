@@ -449,17 +449,22 @@ async function loadProducts(){
 
   const { data, error } = await db
     .from("products")
-   .select("id,name,price,model,base,version,average_cost,category,item_type,region,country_or_club")
+    .select("id,name,price,model,base,version,average_cost,category,item_type,region,country_or_club")
     .order("name", { ascending:true });
 
   if(error){
-    console.error(error);
+    console.error("商品読み込みエラー:", error);
+    alert("商品データの読み込みに失敗しました");
     return;
   }
 
   console.log("商品一覧:", data);
-　window.products = data;
- document.getElementById("productName").dispatchEvent(new Event("input"));
+
+  window.products = data || [];
+
+  document
+    .getElementById("productName")
+    .dispatchEvent(new Event("input"));
 }
   loadProducts();
   document.getElementById("productName").addEventListener("input", () => {
