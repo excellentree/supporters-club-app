@@ -946,6 +946,7 @@ function addSetSale(){
     cost: cost,
     shipping: shipping,
     quantity: 1,
+    setQuantity: setQuantity,
     orderNo: orderNo
   });
 
@@ -1055,7 +1056,7 @@ const profit =
 
   <td>¥${saleTotal.toLocaleString()}</td>
 
-  <td>${sale.quantity}</td>
+  <td>${sale.setQuantity || sale.quantity}</td>
 
   <td>¥${costTotal.toLocaleString()}</td>
 
