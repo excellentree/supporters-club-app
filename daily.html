@@ -313,7 +313,23 @@ td{
 <option value="その他">その他</option>
 </select>
    </div>
-      <div class="form-item">
+      <div class="form-item full">
+  <label>セット点数</label>
+
+  <div class="quantity-control">
+    <button type="button" id="quantityMinus">−</button>
+    <span id="quantityDisplay">1</span>
+    <button type="button" id="quantityPlus">＋</button>
+  </div>
+
+  <input
+    id="quantity"
+    type="number"
+    value="1"
+    min="1"
+    style="display:none;"
+  >
+</div>
  <label>商品名</label>
 
 <input
@@ -369,24 +385,6 @@ td{
       <div class="form-item">
   <label>送料</label>
   <input id="shipping" type="number" value="210">
-</div>
-
- <div class="form-item">
-  <label>数量</label>
-
-  <div class="quantity-control">
-    <button type="button" id="quantityMinus">−</button>
-    <span id="quantityDisplay">1</span>
-    <button type="button" id="quantityPlus">＋</button>
-  </div>
-
-  <input
-    id="quantity"
-    type="number"
-    value="1"
-    min="1"
-    style="display:none;"
-  >
 </div>
       <div class="form-item">
         <label>注文番号</label>
