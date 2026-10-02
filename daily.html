@@ -899,7 +899,94 @@ const shipping =
 
 }
 
+function addSetSale(){
 
+  const productName =
+    document.getElementById("productName").value.trim();
+
+  const model =
+    document.getElementById("model").value;
+
+  const price =
+    Number(document.getElementById("price").value);
+
+  const cost =
+    Number(document.getElementById("cost").value);
+
+  const shipping =
+    Number(document.getElementById("shipping").value);
+
+  const orderNo =
+    document.getElementById("orderNo").value.trim();
+
+  const setQuantity =
+    Number(document.getElementById("quantity").value);
+
+  if(!productName){
+    alert("商品名を入力してください");
+    return;
+  }
+
+  if(setQuantity < 2){
+    alert("セット点数を2以上にしてください");
+    return;
+  }
+
+  setItems.push({
+    productName: productName,
+    base: selectedProduct ? selectedProduct.base : "",
+    version: selectedProduct ? selectedProduct.version : "",
+    model: model,
+    productId: selectedProduct ? selectedProduct.id : "",
+    category: selectedProduct ? selectedProduct.category : "",
+    itemType: selectedProduct ? selectedProduct.item_type : "",
+    region: selectedProduct ? selectedProduct.region : "",
+    countryOrClub: selectedProduct ? selectedProduct.country_or_club : "",
+    price: price,
+    cost: cost,
+    shipping: shipping,
+    quantity: 1,
+    orderNo: orderNo
+  });
+
+  if(setItems.length < setQuantity){
+
+    document.getElementById("productName").value = "";
+    document.getElementById("price").value = "";
+    document.getElementById("cost").value = "";
+
+    selectedProduct = null;
+
+    render();
+
+    alert(
+      `セット ${setItems.length}/${setQuantity}点目を登録しました`
+    );
+
+    return;
+  }
+
+  const sales = getSales();
+
+  setItems.forEach(item => {
+    sales.push(item);
+  });
+
+  saveSales(sales);
+
+  setItems = [];
+  selectedProduct = null;
+
+  document.getElementById("productName").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("cost").value = "";
+  document.getElementById("quantity").value = "1";
+  document.getElementById("quantityDisplay").textContent = "1";
+
+  render();
+
+  alert("セット販売を登録しました！");
+}
 function deleteSale(index){
 
   const sales = getSales();
