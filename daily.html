@@ -922,33 +922,88 @@ function addSetSale(){
   const setQuantity =
     Number(document.getElementById("quantity").value);
 
+
   if(!productName){
+
     alert("商品名を入力してください");
+
     return;
+
   }
+
+
+  if(!price || price <= 0){
+
+    alert("販売価格を入力してください");
+
+    return;
+
+  }
+
 
   if(setQuantity < 2){
+
     alert("セット点数を2以上にしてください");
+
     return;
+
   }
 
+
+  /*
+    今回登録する選手をセットの中に保存
+  */
+
   setItems.push({
+
     productName: productName,
-    base: selectedProduct ? selectedProduct.base : "",
-    version: selectedProduct ? selectedProduct.version : "",
+
+    base: selectedProduct
+      ? selectedProduct.base
+      : "",
+
+    version: selectedProduct
+      ? selectedProduct.version
+      : "",
+
     model: model,
-    productId: selectedProduct ? selectedProduct.id : "",
-    category: selectedProduct ? selectedProduct.category : "",
-    itemType: selectedProduct ? selectedProduct.item_type : "",
-    region: selectedProduct ? selectedProduct.region : "",
-    countryOrClub: selectedProduct ? selectedProduct.country_or_club : "",
+
+    productId: selectedProduct
+      ? selectedProduct.id
+      : null,
+
+    category: selectedProduct
+      ? selectedProduct.category
+      : "",
+
+    itemType: selectedProduct
+      ? selectedProduct.item_type
+      : "",
+
+    region: selectedProduct
+      ? selectedProduct.region
+      : "",
+
+    countryOrClub: selectedProduct
+      ? selectedProduct.country_or_club
+      : "",
+
     price: price,
+
     cost: cost,
+
     shipping: shipping,
+
     quantity: 1,
-    setQuantity: setQuantity,
+
     orderNo: orderNo
+
   });
+
+
+  /*
+    まだセットの途中
+  */
 
   if(setItems.length < setQuantity){
 
@@ -965,28 +1020,111 @@ function addSetSale(){
     );
 
     return;
+
   }
+
+
+  /*
+    ここで3人分を1つのセットにまとめる
+  */
 
   const sales = getSales();
 
-  setItems.forEach(item => {
-    sales.push(item);
-  });
+
+  const totalPrice =
+    setItems.reduce(
+      (sum, item) => sum + Number(item.price || 0),
+      0
+    );
+
+
+  const totalCost =
+    setItems.reduce(
+      (sum, item) => sum + Number(item.cost || 0),
+      0
+    );
+
+
+  const totalShipping =
+    Number(shipping || 0);
+
+
+  const setSale = {
+
+    isSet: true,
+
+    productName:
+      setItems
+        .map(item => item.productName)
+        .join(" / "),
+
+    model: "",
+
+    base: "",
+
+    version: "",
+
+    productId: null,
+
+    category:
+      setItems[0].category || "",
+
+    itemType:
+      setItems[0].itemType || "",
+
+    region:
+      setItems[0].region || "",
+
+    countryOrClub:
+      setItems[0].countryOrClub || "",
+
+    price: totalPrice,
+
+    cost: totalCost,
+
+    shipping: totalShipping,
+
+    quantity: setItems.length,
+
+    orderNo: orderNo,
+
+    setItems: [...setItems]
+
+  };
+
+
+  sales.push(setSale);
+
 
   saveSales(sales);
 
+
+  /*
+    セット登録完了
+  */
+
   setItems = [];
+
   selectedProduct = null;
 
   document.getElementById("productName").value = "";
+
   document.getElementById("price").value = "";
+
   document.getElementById("cost").value = "";
+
   document.getElementById("quantity").value = "1";
+
   document.getElementById("quantityDisplay").textContent = "1";
+
+  document.getElementById("orderNo").value = "";
+
 
   render();
 
+
   alert("セット販売を登録しました！");
+
 }
 function deleteSale(index){
 
