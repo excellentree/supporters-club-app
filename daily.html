@@ -161,6 +161,14 @@ select{
   font-weight:bold;
   margin-top:16px;
 }
+  .sale-buttons{
+  display:flex;
+  gap:10px;
+}
+
+.sale-buttons .button{
+  width:calc(50% - 5px);
+}
 
 .button:active{
   transform:scale(.98);
@@ -387,9 +395,16 @@ td{
 
     </div>
 
-    <button class="button" onclick="addSale()">
-      単品販売
-    </button>
+    <div class="sale-buttons">
+  <button class="button" onclick="addSale()">
+    単品販売
+  </button>
+
+  <button class="button" type="button">
+    セット販売
+  </button>
+</div>
+
 
   </div>
 
