@@ -393,23 +393,7 @@ td{
     style="display:none;"
   >
 </div>
-  <div class="form-item">
-  <label>販売点数</label>
 
-  <div class="quantity-control">
-    <button type="button" id="saleQuantityMinus">−</button>
-    <span id="saleQuantityDisplay">1</span>
-    <button type="button" id="saleQuantityPlus">＋</button>
-  </div>
-
-  <input
-    id="saleQuantity"
-    type="number"
-    value="1"
-    min="1"
-    style="display:none;"
-  >
-</div>
       <div class="form-item">
         <label>販売価格</label>
         <input id="price" type="number" placeholder="1080">
@@ -808,43 +792,7 @@ document.getElementById("versionSelect").addEventListener("change", () => {
 const quantityDisplay = document.getElementById("quantityDisplay");
 const quantityMinus = document.getElementById("quantityMinus");
 const quantityPlus = document.getElementById("quantityPlus");
-const saleQuantityInput =
-  document.getElementById("saleQuantity");
 
-const saleQuantityDisplay =
-  document.getElementById("saleQuantityDisplay");
-
-const saleQuantityMinus =
-  document.getElementById("saleQuantityMinus");
-
-const saleQuantityPlus =
-  document.getElementById("saleQuantityPlus");
-
-saleQuantityMinus.addEventListener("click", () => {
-
-  let quantity =
-    Number(saleQuantityInput.value);
-
-  if(quantity > 1){
-    quantity--;
-  }
-
-  saleQuantityInput.value = quantity;
-  saleQuantityDisplay.textContent = quantity;
-
-});
-
-saleQuantityPlus.addEventListener("click", () => {
-
-  let quantity =
-    Number(saleQuantityInput.value);
-
-  quantity++;
-
-  saleQuantityInput.value = quantity;
-  saleQuantityDisplay.textContent = quantity;
-
-});
 quantityMinus.addEventListener("click", () => {
   let quantity = Number(quantityInput.value);
 
@@ -898,8 +846,7 @@ const model =
 const shipping =
 
   Number(document.getElementById("shipping").value);
-  const quantity =
-  Number(document.getElementById("saleQuantity").value);
+  const quantity = 1;
   const orderNo =
     document.getElementById("orderNo").value.trim();
 
@@ -994,8 +941,7 @@ function addSetSale(){
 
   const setQuantity =
     Number(document.getElementById("quantity").value);
-　const saleQuantity =
-    Number(document.getElementById("saleQuantity").value);
+　
 
   if(!productName){
 
