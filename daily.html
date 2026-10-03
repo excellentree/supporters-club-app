@@ -1156,6 +1156,31 @@ function addSetSale(){
 
   render();
 }
+  function updateSetProfit(saleIndex, value){
+
+  const sales = getSales();
+
+  const sale = sales[saleIndex];
+
+  if(!sale || !sale.isSet){
+    return;
+  }
+
+  const newProfit = Number(value);
+
+  if(isNaN(newProfit) || newProfit < 0){
+    alert("粗利を入力してください");
+    render();
+    return;
+  }
+
+  sale.profitOverride = newProfit;
+
+  saveSales(sales);
+
+  render();
+
+}
 function deleteSale(index){
 
   const sales = getSales();
@@ -1256,7 +1281,20 @@ const profit =
 
   <td>¥${costTotal.toLocaleString()}</td>
 
-  <td>¥${profit.toLocaleString()}</td>
+  <td>
+  ${
+    sale.isSet
+      ? `
+        <input
+          type="number"
+          value="${Number(sale.profitOverride ?? profit)}"
+          style="width:120px;padding:6px 8px;border:1px solid #ddd;border-radius:10px;"
+          onchange="updateSetProfit(${index}, this.value)"
+        >
+      `
+      : `¥${profit.toLocaleString()}`
+  }
+</td>
 
   <td>
     <button class="delete"
