@@ -1126,6 +1126,36 @@ function addSetSale(){
   alert("セット販売を登録しました！");
 
 }
+  function updateSetItemPrice(saleIndex, itemIndex, value){
+
+  const sales = getSales();
+
+  const sale = sales[saleIndex];
+
+  if(!sale || !sale.isSet || !Array.isArray(sale.setItems)){
+    return;
+  }
+
+  const newPrice = Number(value);
+
+  if(!newPrice || newPrice < 0){
+    alert("金額を入力してください");
+    render();
+    return;
+  }
+
+  sale.setItems[itemIndex].price = newPrice;
+
+  sale.price =
+    sale.setItems.reduce(
+      (sum, item) => sum + Number(item.price || 0),
+      0
+    );
+
+  saveSales(sales);
+
+  render();
+}
 function deleteSale(index){
 
   const sales = getSales();
@@ -1196,11 +1226,17 @@ const profit =
       ? `
         <div style="margin-top:10px;padding-top:10px;border-top:1px solid #eee;">
           ${sale.setItems.map((item, i) => `
-            <div style="display:flex;justify-content:space-between;margin:6px 0;font-size:13px;">
-              <span>${i + 1}. ${escapeHtml(item.productName || "")}</span>
-              <span>¥${Number(item.price || 0).toLocaleString()}</span>
-            </div>
-          `).join("")}
+  <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;font-size:13px;">
+    <span>${i + 1}. ${escapeHtml(item.productName || "")}</span>
+
+    <input
+      type="number"
+      value="${Number(item.price || 0)}"
+      style="width:110px;padding:6px 8px;border:1px solid #ddd;border-radius:8px;text-align:right;font-size:14px;"
+      onchange="updateSetItemPrice(${index}, ${i}, this.value)"
+    >
+  </div>
+`).join("")}
         </div>
       `
       : ""
