@@ -1157,6 +1157,33 @@ function addSetSale(){
 
   render();
 }
+  function updateSetTotalPrice(saleIndex, value){
+
+  const sales = getSales();
+
+  const sale = sales[saleIndex];
+
+  if(!sale || !sale.isSet){
+    return;
+  }
+
+  const newPrice = Number(value);
+
+  if(!newPrice || newPrice < 0){
+    alert("金額を入力してください");
+    render();
+    return;
+  }
+
+  sale.price = newPrice;
+
+  delete sale.profitOverride;
+
+  saveSales(sales);
+
+  render();
+
+}
   function updateSetProfit(saleIndex, value){
 
   const sales = getSales();
