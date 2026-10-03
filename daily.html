@@ -1190,6 +1190,21 @@ const profit =
 <td>
   ${escapeHtml(sale.category || "")} / ${escapeHtml(sale.productName)}<br>
   ${escapeHtml(sale.base || "")} / ${escapeHtml(sale.version || "")} / ${escapeHtml(sale.model || "")}
+
+  ${
+    sale.isSet && Array.isArray(sale.setItems)
+      ? `
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid #eee;">
+          ${sale.setItems.map((item, i) => `
+            <div style="display:flex;justify-content:space-between;margin:6px 0;font-size:13px;">
+              <span>${i + 1}. ${escapeHtml(item.productName || "")}</span>
+              <span>¥${Number(item.price || 0).toLocaleString()}</span>
+            </div>
+          `).join("")}
+        </div>
+      `
+      : ""
+  }
 </td>
 
   <td>¥${saleTotal.toLocaleString()}</td>
