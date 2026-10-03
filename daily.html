@@ -1151,6 +1151,7 @@ function addSetSale(){
       (sum, item) => sum + Number(item.price || 0),
       0
     );
+    delete sale.profitOverride;
 
   saveSales(sales);
 
