@@ -1272,22 +1272,22 @@ const profit =
    tr.innerHTML = `
 <td>No.${index + 1}</td>
 <td>
-  ${escapeHtml(sale.category || "")} / ${escapeHtml(sale.productName)}<br>
-  ${escapeHtml(sale.base || "")} / ${escapeHtml(sale.version || "")} / ${escapeHtml(sale.model || "")}
-
   ${
     sale.isSet && Array.isArray(sale.setItems)
       ? `
-        <div style="margin-top:10px;padding-top:10px;border-top:1px solid #eee;">
-          ${sale.setItems.map((item, i) => `
-  <div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;font-size:13px;">
-    <span>${i + 1}. ${escapeHtml(item.productName || "")}</span>
-
-  </div>
-`).join("")}
+        <div>
+          ${sale.setItems.map((item) => `
+            <div style="margin:8px 0;font-size:14px;">
+              ${escapeHtml(item.category || "")} / ${escapeHtml(item.productName || "")}<br>
+              ${escapeHtml(item.base || "")} / ${escapeHtml(item.version || "")} / ${escapeHtml(item.model || "")}
+            </div>
+          `).join("")}
         </div>
       `
-      : ""
+      : `
+        ${escapeHtml(sale.category || "")} / ${escapeHtml(sale.productName || "")}<br>
+        ${escapeHtml(sale.base || "")} / ${escapeHtml(sale.version || "")} / ${escapeHtml(sale.model || "")}
+      `
   }
 </td>
 
