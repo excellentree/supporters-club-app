@@ -184,11 +184,16 @@ table{
   min-width:650px;
 }
 
-th,
-td{
-  padding:14px 10px;
-  border-bottom:1px solid #eee;
-  text-align:left;
+th:nth-child(n+3),
+td:nth-child(n+3){
+  text-align:right;
+}
+
+td:nth-child(3) input,
+td:nth-child(6) input{
+  margin-left:auto;
+  display:block;
+  text-align:right;
 }
 
 th{
