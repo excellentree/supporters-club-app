@@ -1140,11 +1140,10 @@ document.getElementById("setItemQuantityDisplay").textContent = "1";
 
     countryOrClub:
       setItems[0].countryOrClub || "",
-
-    price:
-  totalPrice -
+　　originalTotalPrice: totalPrice,
+    price:totalPrice -　Math.max(0, (setItems.length - 1) * 100),
+　　discount:
   Math.max(0, (setItems.length - 1) * 100),
-
     cost: totalCost,
 
     shipping: totalShipping,
