@@ -226,9 +226,9 @@ data.forEach(product => {
 
   tr.innerHTML = `
     <td>
-  <button type="button" class="stock-button">−</button>
+  <button type="button" class="stock-button" onclick="changeStock(${product.id}, -1)">−</button>
   <span class="stock-number">${Number(product.stock || 0)}</span>
-  <button type="button" class="stock-button">＋</button>
+  <button type="button" class="stock-button" onclick="changeStock(${product.id}, 1)">＋</button>
 </td>
     <td>${product.category || ""}</td>
     <td>${product.name || ""}</td>
