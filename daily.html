@@ -14,7 +14,7 @@
 body{
   margin:0;
   font-family:Arial,sans-serif;
-  background:#f5f5f5;
+  background:#f5f5f5;す
   color:#111;
 }
 
@@ -376,24 +376,7 @@ td{
     <option value="">VERSIONを選択してください</option>
   </select>
 </div>
-  <div class="form-item">
-  <label>点数</label>
-
-  <div class="quantity-control">
-    <button type="button" id="setItemQuantityMinus">−</button>
-    <span id="setItemQuantityDisplay">1</span>
-    <button type="button" id="setItemQuantityPlus">＋</button>
-  </div>
-
-  <input
-    id="setItemQuantity"
-    type="number"
-    value="1"
-    min="1"
-    style="display:none;"
-  >
-</div>
-
+      
       <div class="form-item">
         <label>販売価格</label>
         <input id="price" type="number" placeholder="1080">
@@ -786,88 +769,31 @@ document.getElementById("versionSelect").addEventListener("change", () => {
 
 });
   let selectedProduct = null;
-let setItems = [];
+  let setItems = [];
+  const setQuantityInput = document.getElementById("quantity");
+  const quantityInput = document.getElementById("quantity");
+const quantityDisplay = document.getElementById("quantityDisplay");
+const quantityMinus = document.getElementById("quantityMinus");
+const quantityPlus = document.getElementById("quantityPlus");
 
-const setQuantityInput =
-  document.getElementById("quantity");
+quantityMinus.addEventListener("click", () => {
+  let quantity = Number(quantityInput.value);
 
-const setQuantityDisplay =
-  document.getElementById("quantityDisplay");
-
-const setQuantityMinus =
-  document.getElementById("quantityMinus");
-
-const setQuantityPlus =
-  document.getElementById("quantityPlus");
-
-const setItemQuantityInput =
-  document.getElementById("setItemQuantity");
-
-const setItemQuantityDisplay =
-  document.getElementById("setItemQuantityDisplay");
-
-const setItemQuantityMinus =
-  document.getElementById("setItemQuantityMinus");
-
-const setItemQuantityPlus =
-  document.getElementById("setItemQuantityPlus");
-
-
-/* セット点数 */
-setQuantityMinus.addEventListener("click", () => {
-
-  let quantity =
-    Number(setQuantityInput.value);
-
-  if(quantity > 1){
+  if (quantity > 1) {
     quantity--;
   }
 
-  setQuantityInput.value = quantity;
-  setQuantityDisplay.textContent = quantity;
-
+  quantityInput.value = quantity;
+  quantityDisplay.textContent = quantity;
 });
 
-
-setQuantityPlus.addEventListener("click", () => {
-
-  let quantity =
-    Number(setQuantityInput.value);
+quantityPlus.addEventListener("click", () => {
+  let quantity = Number(quantityInput.value);
 
   quantity++;
 
-  setQuantityInput.value = quantity;
-  setQuantityDisplay.textContent = quantity;
-
-});
-
-
-/* 点数 */
-setItemQuantityMinus.addEventListener("click", () => {
-
-  let quantity =
-    Number(setItemQuantityInput.value);
-
-  if(quantity > 1){
-    quantity--;
-  }
-
-  setItemQuantityInput.value = quantity;
-  setItemQuantityDisplay.textContent = quantity;
-
-});
-
-
-setItemQuantityPlus.addEventListener("click", () => {
-
-  let quantity =
-    Number(setItemQuantityInput.value);
-
-  quantity++;
-
-  setItemQuantityInput.value = quantity;
-  setItemQuantityDisplay.textContent = quantity;
-
+  quantityInput.value = quantity;
+  quantityDisplay.textContent = quantity;
 });
   
 function getSales(){
@@ -903,7 +829,9 @@ const model =
 const shipping =
 
   Number(document.getElementById("shipping").value);
-  const quantity = 1;
+  const quantity =
+    Number(document.getElementById("quantity").value);
+
   const orderNo =
     document.getElementById("orderNo").value.trim();
 
@@ -998,8 +926,7 @@ function addSetSale(){
 
   const setQuantity =
     Number(document.getElementById("quantity").value);
-　const itemQuantity =
-  Number(document.getElementById("setItemQuantity").value);
+
 
   if(!productName){
 
@@ -1031,16 +958,7 @@ function addSetSale(){
   /*
     今回登録する選手をセットの中に保存
   */
-const remaining = setQuantity - setItems.length;
 
-if(itemQuantity > remaining){
-
-  alert(`あと${remaining}点です。点数を${remaining}以下にしてください`);
-
-  return;
-
-}
-  for(let i = 0; i < itemQuantity; i++){
   setItems.push({
 
     productName: productName,
@@ -1085,10 +1003,8 @@ if(itemQuantity > remaining){
 
     orderNo: orderNo
 
-}
   });
-}
-                
+
 
   /*
     まだセットの途中
@@ -1099,8 +1015,7 @@ if(itemQuantity > remaining){
     document.getElementById("productName").value = "";
     document.getElementById("price").value = "";
     document.getElementById("cost").value = "";
-　　　document.getElementById("setItemQuantity").value = "1";
-　　　document.getElementById("setItemQuantityDisplay").textContent = "1";
+
     selectedProduct = null;
 
     render();
@@ -1206,8 +1121,7 @@ if(itemQuantity > remaining){
   document.getElementById("quantity").value = "1";
 
   document.getElementById("quantityDisplay").textContent = "1";
-　document.getElementById("setItemQuantity").value = "1";
-　document.getElementById("setItemQuantityDisplay").textContent = "1";
+
   document.getElementById("orderNo").value = "";
 
 
