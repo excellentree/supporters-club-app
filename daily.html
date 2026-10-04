@@ -15,7 +15,7 @@
 body{
   margin:0;
   font-family:Arial,sans-serif;
-  background:#f5f5f5;す
+  background:#f5f5f5;
   color:#111;
 }
 
@@ -895,7 +895,7 @@ async function saveSales(data){
 
   if(deleteError){
     console.error(deleteError);
-    alert("Supabaseへの保存に失敗しました");
+    alert("Supabaseへの保存に失敗しました\n" + deleteError.message);
     return;
   }
 
