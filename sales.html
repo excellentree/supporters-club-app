@@ -264,6 +264,90 @@ document.getElementById("salesMonth").value =
 `${yyyy}-${mm}`;
   document.getElementById("salesMonth").value =
 `${yyyy}-${mm}`;
+  function loadMonthlySales(){
+
+  const month =
+    document.getElementById("salesMonth").value;
+
+  if(!month) return;
+
+  const [year, monthNumber] =
+    month.split("-").map(Number);
+
+  const daysInMonth =
+    new Date(year, monthNumber, 0).getDate();
+
+  let totalSales = 0;
+  let totalQty = 0;
+  let totalOrders = 0;
+  let totalProfit = 0;
+  let totalDiscount = 0;
+
+  for(let day = 1; day <= daysInMonth; day++){
+
+    const date =
+      `${year}-${String(monthNumber).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+
+    const key =
+      "supporters_daily_" + date;
+
+    const sales =
+      JSON.parse(localStorage.getItem(key) || "[]");
+
+    sales.forEach(sale => {
+
+      const saleTotal =
+        Number(sale.price || 0) *
+        Number(sale.quantity || 1);
+
+      const costTotal =
+        Number(sale.cost || 0) *
+        Number(sale.quantity || 1);
+
+      const shippingTotal =
+        Number(sale.shipping || 0) *
+        Number(sale.quantity || 1);
+
+      const mercariFee =
+        saleTotal * 0.10;
+
+      const profit =
+        saleTotal -
+        costTotal -
+        shippingTotal -
+        mercariFee;
+
+      totalSales += saleTotal;
+
+      totalQty +=
+        sale.isSet && Array.isArray(sale.setItems)
+          ? sale.setItems.length
+          : Number(sale.quantity || 0);
+
+      totalOrders += 1;
+
+      totalProfit += profit;
+
+      totalDiscount +=
+        Number(sale.discount || 0);
+
+    });
+
+  }
+
+  document.getElementById("salesTotal").textContent =
+    "¥" + totalSales.toLocaleString();
+
+  document.getElementById("salesCount").textContent =
+    totalQty.toLocaleString();
+
+  document.getElementById("orderCount").textContent =
+    totalOrders.toLocaleString();
+
+  document.getElementById("profitTotal").textContent =
+    "¥" + totalProfit.toLocaleString();
+
+}
 document.getElementById("dailyBtn").addEventListener("click", () => {
   location.href = "daily.html";
 });
