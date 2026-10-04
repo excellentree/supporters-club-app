@@ -1,1 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
+<title>SUPPORTERS CULB 在庫表</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f5f5;
+  color:#111;
+}
+
+header{
+  background:#111;
+  color:#fff;
+  padding:28px 20px;
+}
+
+header h1{
+  margin:0;
+  font-size:28px;
+  letter-spacing:1px;
+}
+
+header p{
+  margin:8px 0 0;
+  color:#aaa;
+  font-size:16px;
+}
+
+.container{
+  padding:28px 20px 60px;
+  max-width:1100px;
+  margin:auto;
+}
+
+.title{
+  font-size:30px;
+  font-weight:bold;
+  margin-bottom:24px;
+}
+
+.section{
+  background:#fff;
+  border-radius:20px;
+  padding:22px;
+  margin-bottom:24px;
+}
+
+.section h2{
+  margin:0 0 18px;
+  font-size:22px;
+}
+
+.table-wrap{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:750px;
+}
+
+th{
+  color:#777;
+  font-size:13px;
+  text-align:left;
+  padding:12px 10px;
+  border-bottom:1px solid #eee;
+}
+
+td{
+  padding:14px 10px;
+  border-bottom:1px solid #eee;
+  font-size:14px;
+}
+
+.stock-number{
+  font-size:18px;
+  font-weight:bold;
+}
+
+.stock-button{
+  border:none;
+  background:#111;
+  color:#fff;
+  width:36px;
+  height:36px;
+  border-radius:9px;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.stock-input{
+  width:70px;
+  padding:8px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  text-align:center;
+  font-size:16px;
+}
+
+.back{
+  display:block;
+  text-align:center;
+  background:#111;
+  color:#fff;
+  text-decoration:none;
+  padding:16px;
+  border-radius:14px;
+  font-weight:bold;
+  margin-top:10px;
+}
+
+.empty{
+  text-align:center;
+  color:#999;
+  padding:30px 10px;
+}
+
+@media(max-width:600px){
+
+  .container{
+    padding:22px 16px 50px;
+  }
+
+  .title{
+    font-size:28px;
+  }
+
+  .section{
+    padding:18px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>SUPPORTERS CULB</h1>
+  <p>SALES MANAGEMENT</p>
+</header>
+
+<div class="container">
+
+  <div class="title">在庫表</div>
+
+  <div class="section">
+
+    <h2>商品在庫</h2>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>カテゴリー</th>
+            <th>商品名</th>
+            <th>MODEL</th>
+            <th>土台</th>
+            <th>VERSION</th>
+            <th>仕入価格</th>
+            <th>在庫数</th>
+          </tr>
+        </thead>
+
+        <tbody id="stockTable">
+        </tbody>
+
+      </table>
+
+      <div id="emptyMessage" class="empty">
+        商品データを読み込んでいます
+      </div>
+
+    </div>
+
+  </div>
+
+  <a href="sales.html" class="back">
+    売上管理へ戻る
+  </a>
+
+</div>
+
+</body>
+</html>
