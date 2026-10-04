@@ -909,7 +909,7 @@ async function saveSales(data){
 
     if(insertError){
       console.error(insertError);
-      alert("Supabaseへの保存に失敗しました");
+      alert("Supabaseへの保存に失敗しました\n" + insertError.message);
       return;
     }
   }
