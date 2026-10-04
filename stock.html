@@ -165,13 +165,13 @@ td{
 
         <thead>
           <tr>
-            <th>カテゴリー</th>
-            <th>商品名</th>
-            <th>MODEL</th>
-            <th>土台</th>
-            <th>VERSION</th>
-            <th>仕入価格</th>
-            <th>在庫数</th>
+          <th>在庫数</th>
+<th>カテゴリー</th>
+<th>商品名</th>
+<th>MODEL</th>
+<th>土台</th>
+<th>VERSION</th>
+<th>仕入価格</th>
           </tr>
         </thead>
 
@@ -215,7 +215,31 @@ async function loadProducts(){
     console.error("商品データ読み込みエラー:", error);
     return;
   }
+const table = document.getElementById("stockTable");
+const empty = document.getElementById("emptyMessage");
 
+table.innerHTML = "";
+
+data.forEach(product => {
+
+  const tr = document.createElement("tr");
+
+  tr.innerHTML = `
+    <td class="stock-number">${Number(product.stock || 0)}</td>
+    <td>${product.category || ""}</td>
+    <td>${product.name || ""}</td>
+    <td>${product.model || ""}</td>
+    <td>${product.base || ""}</td>
+    <td>${product.version || ""}</td>
+    <td>¥${Number(product.average_cost || 0).toLocaleString()}</td>
+  `;
+
+  table.appendChild(tr);
+
+});
+
+empty.style.display =
+  data.length === 0 ? "block" : "none";
   console.log("商品一覧:", data);
 }
 
