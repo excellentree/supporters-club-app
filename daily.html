@@ -1366,6 +1366,8 @@ function render(){
 
   let totalDiscount = 0;
 
+  let totalCost = 0;
+
   sales.forEach((sale,index)=>{
 
     const saleTotal =
@@ -1392,7 +1394,7 @@ const profit =
 
     totalProfit += profit;
 totalDiscount += Number(sale.discount || 0);
-
+totalCost += costTotal;
     const tr = document.createElement("tr");
 
 
@@ -1491,7 +1493,8 @@ totalDiscount += Number(sale.discount || 0);
     "¥" + totalProfit.toLocaleString();
 document.getElementById("totalDiscount").textContent =
   "¥" + totalDiscount.toLocaleString();
-
+document.getElementById("totalCost").textContent =
+  "¥" + totalCost.toLocaleString();
   empty.style.display =
     sales.length === 0 ? "block" : "none";
 
