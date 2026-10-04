@@ -188,7 +188,7 @@ th:first-child{
         <thead>
           <tr>
           <th>在庫数</th>
-<th>カテゴリー</th>
+
 <th>商品名</th>
 <th>MODEL</th>
 <th>土台</th>
@@ -282,7 +282,7 @@ data.forEach(product => {
     <button type="button" class="stock-button" onclick="changeStock(${product.id}, 1)">＋</button>
   </div>
 </td>
-    <td>${product.category || ""}</td>
+    
     <td>${product.name || ""}</td>
     <td>${product.model || ""}</td>
     <td>${product.base || ""}</td>
