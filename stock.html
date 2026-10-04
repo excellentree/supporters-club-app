@@ -101,6 +101,11 @@ td{
   padding:0;
   display:inline-flex;
 }
+  .stock-controls{
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
   .stock-number{
   display:inline-block;
   min-width:28px;
@@ -264,9 +269,11 @@ data.forEach(product => {
 
   tr.innerHTML = `
     <td>
-  <button type="button" class="stock-button" onclick="changeStock(${product.id}, -1)">−</button>
-  <span class="stock-number">${Number(product.stock || 0)}</span>
-  <button type="button" class="stock-button" onclick="changeStock(${product.id}, 1)">＋</button>
+  <div class="stock-controls">
+    <button type="button" class="stock-button" onclick="changeStock(${product.id}, -1)">−</button>
+    <span class="stock-number">${Number(product.stock || 0)}</span>
+    <button type="button" class="stock-button" onclick="changeStock(${product.id}, 1)">＋</button>
+  </div>
 </td>
     <td>${product.category || ""}</td>
     <td>${product.name || ""}</td>
