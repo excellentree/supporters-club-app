@@ -1308,6 +1308,7 @@ function render(){
 
   let totalProfit = 0;
 
+  let totalDiscount = 0;
 
   sales.forEach((sale,index)=>{
 
@@ -1334,7 +1335,7 @@ const profit =
     : sale.quantity;
 
     totalProfit += profit;
-
+totalDiscount += Number(sale.discount || 0);
 
     const tr = document.createElement("tr");
 
@@ -1432,7 +1433,8 @@ const profit =
 
   document.getElementById("totalProfit").textContent =
     "¥" + totalProfit.toLocaleString();
-
+document.getElementById("totalDiscount").textContent =
+  "¥" + totalDiscount.toLocaleString();
 
   empty.style.display =
     sales.length === 0 ? "block" : "none";
