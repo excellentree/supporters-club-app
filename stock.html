@@ -225,7 +225,11 @@ data.forEach(product => {
   const tr = document.createElement("tr");
 
   tr.innerHTML = `
-    <td class="stock-number">${Number(product.stock || 0)}</td>
+    <td>
+  <button type="button" class="stock-button">−</button>
+  <span class="stock-number">${Number(product.stock || 0)}</span>
+  <button type="button" class="stock-button">＋</button>
+</td>
     <td>${product.category || ""}</td>
     <td>${product.name || ""}</td>
     <td>${product.model || ""}</td>
