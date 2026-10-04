@@ -828,6 +828,38 @@ document.getElementById("versionSelect").addEventListener("change", () => {
   }
 
 });
+  document.querySelectorAll("#categoryButtons button").forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    document
+      .querySelectorAll("#categoryButtons button")
+      .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+    document.getElementById("productCategory").value =
+      button.value;
+
+  });
+
+});
+  const categoryButtons =
+  document.querySelectorAll("#categoryButtons button");
+
+categoryButtons.forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    if(button.value === "その他"){
+      document.getElementById("productCategory").style.display = "block";
+    }else{
+      document.getElementById("productCategory").style.display = "none";
+    }
+
+  });
+
+});
   let selectedProduct = null;
   let setItems = [];
   const setQuantityInput = document.getElementById("quantity");
