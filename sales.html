@@ -255,8 +255,7 @@ async function loadProducts(){
   loadProducts();
 document.getElementById("salesMonth").value =
 `${yyyy}-${mm}`;
-  
-  function loadMonthlySales(){
+  async function loadMonthlySales(){
 
   const month =
     document.getElementById("salesMonth").value;
@@ -266,8 +265,33 @@ document.getElementById("salesMonth").value =
   const [year, monthNumber] =
     month.split("-").map(Number);
 
-  const daysInMonth =
-    new Date(year, monthNumber, 0).getDate();
+  const startDate =
+    `${year}-${String(monthNumber).padStart(2,"0")}-01`;
+
+  const nextMonthDate =
+    new Date(year, monthNumber, 1);
+
+  const nextYear =
+    nextMonthDate.getFullYear();
+
+  const nextMonth =
+    String(nextMonthDate.getMonth() + 1).padStart(2,"0");
+
+  const endDate =
+    `${nextYear}-${nextMonth}-01`;
+
+  const { data, error } =
+    await db
+      .from("sales")
+      .select("*")
+      .gte("sale_date", startDate)
+      .lt("sale_date", endDate)
+      .order("sale_date", { ascending:true });
+
+  if(error){
+    console.error("Supabase月計読み込みエラー:", error);
+    return;
+  }
 
   let totalSales = 0;
   let totalQty = 0;
@@ -275,57 +299,45 @@ document.getElementById("salesMonth").value =
   let totalProfit = 0;
   let totalDiscount = 0;
 
-  for(let day = 1; day <= daysInMonth; day++){
+  (data || []).forEach(sale => {
 
-    const date =
-      `${year}-${String(monthNumber).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+    const saleTotal =
+      Number(sale.price || 0) *
+      Number(sale.quantity || 1);
 
-    const key =
-      "supporters_daily_" + date;
+    const costTotal =
+      Number(sale.cost || 0) *
+      Number(sale.quantity || 1);
 
-    const sales =
-      JSON.parse(localStorage.getItem(key) || "[]");
+    const shippingTotal =
+      Number(sale.shipping || 0) *
+      Number(sale.quantity || 1);
 
-    sales.forEach(sale => {
+    const mercariFee =
+      saleTotal * 0.10;
 
-      const saleTotal =
-        Number(sale.price || 0) *
-        Number(sale.quantity || 1);
+    const profit =
+      saleTotal -
+      costTotal -
+      shippingTotal -
+      mercariFee;
 
-      const costTotal =
-        Number(sale.cost || 0) *
-        Number(sale.quantity || 1);
+    totalSales += saleTotal;
 
-      const shippingTotal =
-        Number(sale.shipping || 0) *
-        Number(sale.quantity || 1);
+    totalQty +=
+      sale.is_set &&
+      Array.isArray(sale.set_items)
+        ? sale.set_items.length
+        : Number(sale.quantity || 0);
 
-      const mercariFee =
-        saleTotal * 0.10;
+    totalOrders += 1;
 
-      const profit =
-        saleTotal -
-        costTotal -
-        shippingTotal -
-        mercariFee;
+    totalProfit += profit;
 
-      totalSales += saleTotal;
+    totalDiscount +=
+      Number(sale.discount || 0);
 
-      totalQty +=
-        sale.isSet && Array.isArray(sale.setItems)
-          ? sale.setItems.length
-          : Number(sale.quantity || 0);
-
-      totalOrders += 1;
-
-      totalProfit += profit;
-
-      totalDiscount +=
-        Number(sale.discount || 0);
-
-    });
-
-  }
+  });
 
   document.getElementById("salesTotal").textContent =
     "¥" + totalSales.toLocaleString();
@@ -339,8 +351,8 @@ document.getElementById("salesMonth").value =
   document.getElementById("profitTotal").textContent =
     "¥" + totalProfit.toLocaleString();
 
-    document.getElementById("discountTotal").textContent =
-  "¥" + totalDiscount.toLocaleString();
+  document.getElementById("discountTotal").textContent =
+    "¥" + totalDiscount.toLocaleString();
 }
 loadMonthlySales();
 
