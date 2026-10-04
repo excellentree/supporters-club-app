@@ -1141,7 +1141,9 @@ document.getElementById("setItemQuantityDisplay").textContent = "1";
     countryOrClub:
       setItems[0].countryOrClub || "",
 
-    price: totalPrice,
+    price:
+  totalPrice -
+  Math.max(0, (setItems.length - 1) * 100),
 
     cost: totalCost,
 
