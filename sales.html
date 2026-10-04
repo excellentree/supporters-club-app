@@ -262,8 +262,7 @@ async function loadProducts(){
   loadProducts();
 document.getElementById("salesMonth").value =
 `${yyyy}-${mm}`;
-  document.getElementById("salesMonth").value =
-`${yyyy}-${mm}`;
+  
   function loadMonthlySales(){
 
   const month =
@@ -355,64 +354,7 @@ document.getElementById("salesMonth").addEventListener("change", loadMonthlySale
 document.getElementById("dailyBtn").addEventListener("click", () => {
   location.href = "daily.html";
 });
-  // 商品検索
-const productSearchBtn = document.querySelector('button[id^="prod"]');
-const productSearchArea = document.getElementById("productSearchArea");
-const productSearch = document.getElementById("productSearch");
-const productResults = document.getElementById("productResults");
-
-if(productSearchBtn){
-  productSearchBtn.addEventListener("click", () => {
-    productSearchArea.style.display = "block";
-    productSearch.focus();
-  });
-}
-
-productSearch.addEventListener("input", async () => {
-
-  const keyword = productSearch.value.trim();
-
-  if(!keyword){
-    productResults.innerHTML = "";
-    return;
-  }
-
-  const { data, error } = await db
-    .from("products")
-    .select("id,name,price")
-    .ilike("name", `%${keyword}%`)
-    .order("name", { ascending: false })
-    .limit(20);
-
-  if(error){
-    console.error(error);
-    return;
-  }
-
-  productResults.innerHTML = "";
-
-  data.forEach(product => {
-
-    const item = document.createElement("button");
-
-    item.type = "button";
-    item.textContent = product.name;
-
-    item.addEventListener("click", () => {
-
-      productSearchBtn.textContent = product.name;
-　　　　document.getElementById("productName").value = product.name;
-      document.getElementById("price").value = product.price || "";
-
-      productSearch.value = "";
-      productResults.innerHTML = "";
-      productSearchArea.style.display = "none";
-
-    });
-
-    productResults.appendChild(item);
-});
-});
+  
 </script>
 
 </body>
