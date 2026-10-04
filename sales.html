@@ -193,6 +193,10 @@ header{
       <div class="summary-label">粗利益</div>
       <div class="summary-value" id="profitTotal">¥0</div>
     </div>
+    <div class="summary-card">
+  <div class="summary-label">値引き</div>
+  <div class="summary-value" id="discountTotal">¥0</div>
+</div>
 
   </div>
 
@@ -335,6 +339,8 @@ document.getElementById("salesMonth").value =
   document.getElementById("profitTotal").textContent =
     "¥" + totalProfit.toLocaleString();
 
+    document.getElementById("discountTotal").textContent =
+  "¥" + totalDiscount.toLocaleString();
 }
 loadMonthlySales();
 
