@@ -855,12 +855,64 @@ function getSales(){
 }
 
 
-function saveSales(data){
+async function saveSales(data){
 
+  // いままで通りローカルにも保存
   localStorage.setItem(
     getStorageKey(),
     JSON.stringify(data)
   );
+
+  // Supabaseにも保存
+  const rows = data.map(sale => ({
+    sale_date: salesDate.value,
+    order_no: sale.orderNo || "",
+    is_set: !!sale.isSet,
+    product_name: sale.productName || "",
+    model: sale.model || "",
+    base: sale.base || "",
+    version: sale.version || "",
+    product_id: sale.productId || null,
+    category: sale.category || "",
+    item_type: sale.itemType || "",
+    region: sale.region || "",
+    country_or_club: sale.countryOrClub || "",
+    original_total_price: Number(sale.originalTotalPrice || sale.price || 0),
+    price: Number(sale.price || 0),
+    discount: Number(sale.discount || 0),
+    cost: Number(sale.cost || 0),
+    shipping: Number(sale.shipping || 0),
+    quantity: Number(sale.quantity || 1),
+    set_items: sale.setItems || []
+  }));
+
+  // その日のデータを一度削除
+  const { error: deleteError } =
+    await db
+      .from("sales")
+      .delete()
+      .eq("sale_date", salesDate.value);
+
+  if(deleteError){
+    console.error(deleteError);
+    alert("Supabaseへの保存に失敗しました");
+    return;
+  }
+
+  // その日の最新データを保存
+  if(rows.length > 0){
+
+    const { error: insertError } =
+      await db
+        .from("sales")
+        .insert(rows);
+
+    if(insertError){
+      console.error(insertError);
+      alert("Supabaseへの保存に失敗しました");
+      return;
+    }
+  }
 
 }
 
