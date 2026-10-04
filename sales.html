@@ -348,6 +348,10 @@ document.getElementById("salesMonth").value =
     "¥" + totalProfit.toLocaleString();
 
 }
+loadMonthlySales();
+
+document.getElementById("salesMonth").addEventListener("change", loadMonthlySales);
+
 document.getElementById("dailyBtn").addEventListener("click", () => {
   location.href = "daily.html";
 });
