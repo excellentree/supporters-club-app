@@ -298,7 +298,8 @@ td{
     <button type="button" onclick="changeDate(1)">＞</button>
   </div>
 
-  <input type="date" id="salesDate">
+  <div id="dateDisplay"></div>
+<input type="date" id="salesDate">
 </div>
 
   <div class="summary">
@@ -1621,7 +1622,10 @@ loadSalesFromSupabase();
   input.value =
     `${yyyy}-${mm}-${dd}`;
 
-  loadSales();
+  loadSalesFromSupabase();
+
+document.getElementById("dateDisplay").textContent =
+  document.getElementById("salesDate").value.replaceAll("-", "/");
 }
 
 
@@ -1645,6 +1649,9 @@ function goToday(){
     `${yyyy}-${mm}-${dd}`;
 
   loadSalesFromSupabase();
+
+  document.getElementById("dateDisplay").textContent =
+  document.getElementById("salesDate").value.replaceAll("-", "/");
 }
 
 </script>
