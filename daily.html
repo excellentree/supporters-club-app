@@ -972,7 +972,8 @@ function addSetSale(){
 
   const setQuantity =
     Number(document.getElementById("quantity").value);
-
+　const itemQuantity =
+    Number(document.getElementById("setItemQuantity").value);
 
   if(!productName){
 
@@ -1004,6 +1005,16 @@ function addSetSale(){
   /*
     今回登録する選手をセットの中に保存
   */
+const remaining =
+  setQuantity - setItems.length;
+
+if(itemQuantity > remaining){
+  alert(
+    `あと${remaining}点です。点数を${remaining}以下にしてください`
+  );
+  return;
+}
+  for(let i = 0; i < itemQuantity; i++){
 
   setItems.push({
 
@@ -1051,7 +1062,7 @@ function addSetSale(){
 
   });
 
-
+}
   /*
     まだセットの途中
   */
@@ -1063,7 +1074,8 @@ function addSetSale(){
     document.getElementById("cost").value = "";
 
     selectedProduct = null;
-
+document.getElementById("setItemQuantity").value = "1";
+document.getElementById("setItemQuantityDisplay").textContent = "1";
     render();
 
     alert(
