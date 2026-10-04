@@ -1323,7 +1323,10 @@ const profit =
 
     totalSales += saleTotal;
 
-    totalQty += sale.quantity;
+    totalQty +=
+  sale.isSet && Array.isArray(sale.setItems)
+    ? sale.setItems.length
+    : sale.quantity;
 
     totalProfit += profit;
 
