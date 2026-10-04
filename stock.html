@@ -193,6 +193,33 @@ td{
   </a>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+const SUPABASE_URL = "https://juzrxqrabrvhlwvnvton.supabase.co";
+const SUPABASE_KEY = "sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+async function loadProducts(){
+
+  const { data, error } = await db
+    .from("products")
+    .select("id,name,price,model,base,version,average_cost,category,stock")
+    .order("name", { ascending:true });
+
+  if(error){
+    console.error("商品データ読み込みエラー:", error);
+    return;
+  }
+
+  console.log("商品一覧:", data);
+}
+
+loadProducts();
+</script>
 </body>
 </html>
