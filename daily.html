@@ -1338,10 +1338,17 @@ const profit =
     sale.isSet && Array.isArray(sale.setItems)
       ? `
         <div>
-          ${sale.setItems.map((item) => `
+          ${Object.values(sale.setItems.reduce((groups,item)=>{
+  const key = item.productId || item.productName;
+  if(!groups[key]){
+    groups[key] = { item:item, count:0 };
+  }
+  groups[key].count++;
+  return groups;
+},{})).map(({item,count}) => `
             <div style="margin:8px 0;font-size:14px;">
               ${escapeHtml(item.category || "")} / ${escapeHtml(item.productName || "")}<br>
-              ${escapeHtml(item.base || "")} / ${escapeHtml(item.version || "")} / ${escapeHtml(item.model || "")}
+             ${escapeHtml(item.base || "")} / ${escapeHtml(item.version || "")} / ${escapeHtml(item.model || "")} ×${count}
             </div>
           `).join("")}
         </div>
