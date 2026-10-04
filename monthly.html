@@ -373,7 +373,7 @@ async function loadMonthlySales(){
           Array.isArray(sale.set_items)
 
             ? sale.set_items.map(item => `
-                <div style="margin:8px 0;display:inline-block;">
+               <div style="margin:8px 0;display:block;white-space:nowrap;">
                   ${item.category || ""}
                   / ${item.productName || ""} /
 
