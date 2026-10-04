@@ -376,7 +376,23 @@ td{
     <option value="">VERSIONを選択してください</option>
   </select>
 </div>
-      
+      <div class="form-item">
+  <label>点数</label>
+
+  <div class="quantity-control">
+    <button type="button" id="setItemQuantityMinus">−</button>
+    <span id="setItemQuantityDisplay">1</span>
+    <button type="button" id="setItemQuantityPlus">＋</button>
+  </div>
+
+  <input
+    id="setItemQuantity"
+    type="number"
+    value="1"
+    min="1"
+    style="display:none;"
+  >
+</div>
       <div class="form-item">
         <label>販売価格</label>
         <input id="price" type="number" placeholder="1080">
@@ -775,7 +791,37 @@ document.getElementById("versionSelect").addEventListener("change", () => {
 const quantityDisplay = document.getElementById("quantityDisplay");
 const quantityMinus = document.getElementById("quantityMinus");
 const quantityPlus = document.getElementById("quantityPlus");
+const setItemQuantityInput =
+  document.getElementById("setItemQuantity");
 
+const setItemQuantityDisplay =
+  document.getElementById("setItemQuantityDisplay");
+
+const setItemQuantityMinus =
+  document.getElementById("setItemQuantityMinus");
+
+const setItemQuantityPlus =
+  document.getElementById("setItemQuantityPlus");
+
+setItemQuantityMinus.addEventListener("click", () => {
+  let quantity = Number(setItemQuantityInput.value);
+
+  if(quantity > 1){
+    quantity--;
+  }
+
+  setItemQuantityInput.value = quantity;
+  setItemQuantityDisplay.textContent = quantity;
+});
+
+setItemQuantityPlus.addEventListener("click", () => {
+  let quantity = Number(setItemQuantityInput.value);
+
+  quantity++;
+
+  setItemQuantityInput.value = quantity;
+  setItemQuantityDisplay.textContent = quantity;
+});
 quantityMinus.addEventListener("click", () => {
   let quantity = Number(quantityInput.value);
 
