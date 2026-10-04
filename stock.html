@@ -203,7 +203,35 @@ const db = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
+async function changeStock(productId, amount){
 
+  const { data: product, error: getError } = await db
+    .from("products")
+    .select("stock")
+    .eq("id", productId)
+    .single();
+
+  if(getError){
+    console.error("在庫取得エラー:", getError);
+    return;
+  }
+
+  const currentStock = Number(product.stock || 0);
+  const newStock = Math.max(0, currentStock + amount);
+
+  const { error: updateError } = await db
+    .from("products")
+    .update({ stock: newStock })
+    .eq("id", productId);
+
+  if(updateError){
+    console.error("在庫更新エラー:", updateError);
+    alert("在庫の更新に失敗しました");
+    return;
+  }
+
+  loadProducts();
+}
 async function loadProducts(){
 
   const { data, error } = await db
