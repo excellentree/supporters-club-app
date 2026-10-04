@@ -1509,10 +1509,57 @@ function escapeHtml(text){
 }
 
 
-salesDate.addEventListener("change",render);
+async function loadSalesFromSupabase(){
+
+  const { data, error } = await db
+    .from("sales")
+    .select("*")
+    .eq("sale_date", salesDate.value)
+    .order("id", { ascending:true });
+
+  if(error){
+    console.error("Supabase売上読み込みエラー:", error);
+    return;
+  }
+
+  const sales = data.map(row => ({
+    productName: row.product_name || "",
+    model: row.model || "",
+    base: row.base || "",
+    version: row.version || "",
+    productId: row.product_id || null,
+    category: row.category || "",
+    itemType: row.item_type || "",
+    region: row.region || "",
+    countryOrClub: row.country_or_club || "",
+    originalTotalPrice: Number(row.original_total_price || 0),
+    price: Number(row.price || 0),
+    discount: Number(row.discount || 0),
+    cost: Number(row.cost || 0),
+    shipping: Number(row.shipping || 0),
+    quantity: Number(row.quantity || 1),
+    orderNo: row.order_no || "",
+    isSet: !!row.is_set,
+    setItems: Array.isArray(row.set_items)
+      ? row.set_items
+      : [],
+  }));
+
+  localStorage.setItem(
+    getStorageKey(),
+    JSON.stringify(sales)
+  );
+
+  render();
+}
 
 
-render();
+salesDate.addEventListener("change", async () => {
+  await loadSalesFromSupabase();
+});
+
+
+loadSalesFromSupabase();
 
 </script>
 
