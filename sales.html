@@ -163,14 +163,14 @@ header{
 <div class="container">
 
   <div class="date-area">
-    <div class="date-title">売上管理</div>
+  <div class="date-title">月計</div>
 
-    <input
-      type="date"
-      id="salesDate"
-      class="date-input"
-    >
-  </div>
+  <input
+    type="month"
+    id="salesMonth"
+    class="date-input"
+  >
+</div>
 
   <div class="summary">
 
@@ -199,8 +199,8 @@ header{
   <div class="section">
 
     <div class="section-title">
-      本日の売上
-    </div>
+  今月の売上
+</div>
 
     <div class="empty" id="salesList">
       まだ売上データがありません
@@ -260,11 +260,10 @@ async function loadProducts(){
 
 }
   loadProducts();
-document.getElementById("salesDate").value =
-  `${yyyy}-${mm}-${dd}`;
-document.getElementById("salesDate").value =
-`${yyyy}-${mm}-${dd}`;
-
+document.getElementById("salesMonth").value =
+`${yyyy}-${mm}`;
+  document.getElementById("salesMonth").value =
+`${yyyy}-${mm}`;
 document.getElementById("dailyBtn").addEventListener("click", () => {
   location.href = "daily.html";
 });
