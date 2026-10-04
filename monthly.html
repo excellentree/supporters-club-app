@@ -231,6 +231,216 @@ th{
   </div>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+
+const SUPABASE_URL =
+  "https://juzrxqrabrvhlwvnvton.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
+
+const db =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+const today = new Date();
+
+const yyyy =
+  today.getFullYear();
+
+const mm =
+  String(today.getMonth() + 1)
+    .padStart(2,"0");
+
+document.getElementById("salesMonth").value =
+  `${yyyy}-${mm}`;
+
+
+async function loadMonthlySales(){
+
+  const month =
+    document.getElementById("salesMonth").value;
+
+  if(!month) return;
+
+  const [year, monthNumber] =
+    month.split("-").map(Number);
+
+  const startDate =
+    `${year}-${String(monthNumber).padStart(2,"0")}-01`;
+
+  const nextMonthDate =
+    new Date(year, monthNumber, 1);
+
+  const nextYear =
+    nextMonthDate.getFullYear();
+
+  const nextMonth =
+    String(nextMonthDate.getMonth() + 1)
+      .padStart(2,"0");
+
+  const endDate =
+    `${nextYear}-${nextMonth}-01`;
+
+
+  const { data, error } =
+    await db
+      .from("sales")
+      .select("*")
+      .gte("sale_date", startDate)
+      .lt("sale_date", endDate)
+      .order("sale_date", {
+        ascending:true
+      });
+
+
+  if(error){
+
+    console.error(
+      "Supabase月間明細読み込みエラー:",
+      error
+    );
+
+    return;
+  }
+
+
+  const monthlyTable =
+    document.getElementById(
+      "monthlySalesTable"
+    );
+
+  const monthlyEmpty =
+    document.getElementById(
+      "monthlyEmptyMessage"
+    );
+
+
+  monthlyTable.innerHTML = "";
+
+
+  (data || []).forEach(sale => {
+
+    const saleTotal =
+      Number(sale.price || 0) *
+      Number(sale.quantity || 1);
+
+    const costTotal =
+      Number(sale.cost || 0) *
+      Number(sale.quantity || 1);
+
+    const shippingTotal =
+      Number(sale.shipping || 0) *
+      Number(sale.quantity || 1);
+
+    const mercariFee =
+      saleTotal * 0.10;
+
+    const profit =
+      saleTotal -
+      costTotal -
+      shippingTotal -
+      mercariFee;
+
+
+    const dateParts =
+      String(sale.sale_date || "")
+        .split("-");
+
+    const displayDate =
+      dateParts.length === 3
+        ? `${Number(dateParts[1])}/${Number(dateParts[2])}`
+        : sale.sale_date;
+
+
+    const tr =
+      document.createElement("tr");
+
+
+    tr.innerHTML = `
+
+      <td>
+        ${displayDate}
+      </td>
+
+      <td>
+        ${
+          sale.is_set &&
+          Array.isArray(sale.set_items)
+
+            ? sale.set_items.map(item => `
+                <div style="margin:8px 0;">
+                  ${item.category || ""}
+                  / ${item.productName || ""}<br>
+
+                  ${item.base || ""}
+                  / ${item.version || ""}
+                  / ${item.model || ""}
+                  ×${item.quantity || 1}
+                </div>
+              `).join("")
+
+            : `
+              ${sale.category || ""}
+              / ${sale.product_name || ""}<br>
+
+              ${sale.base || ""}
+              / ${sale.version || ""}
+              / ${sale.model || ""}
+            `
+        }
+      </td>
+
+      <td>
+        ¥${saleTotal.toLocaleString()}
+      </td>
+
+      <td>
+        ${
+          sale.is_set &&
+          Array.isArray(sale.set_items)
+            ? sale.set_items.length
+            : Number(sale.quantity || 1)
+        }
+      </td>
+
+      <td>
+        ¥${costTotal.toLocaleString()}
+      </td>
+
+      <td>
+        ¥${profit.toLocaleString()}
+      </td>
+
+    `;
+
+    monthlyTable.appendChild(tr);
+
+  });
+
+
+  monthlyEmpty.style.display =
+    (data || []).length === 0
+      ? "block"
+      : "none";
+
+}
+
+
+loadMonthlySales();
+
+
+document
+  .getElementById("salesMonth")
+  .addEventListener(
+    "change",
+    loadMonthlySales
+  );
+
+</script>
 </body>
 </html>
