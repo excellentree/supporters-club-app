@@ -263,20 +263,32 @@ const db = window.supabase.createClient(
 );
 async function changeStock(productId, amount){
 
-  const { data: product, error: getError } = await db
-    .from("products")
-    .select("stock")
-    .eq("id", productId)
-    .single();
+  const product = allProducts.find(p => p.id === productId);
 
-  if(getError){
-    console.error("在庫取得エラー:", getError);
+  if(!product){
+    console.error("商品が見つかりません:", productId);
     return;
   }
 
   const currentStock = Number(product.stock || 0);
   const newStock = Math.max(0, currentStock + amount);
 
+  // まず画面を即時更新
+  product.stock = newStock;
+
+  const row = document
+    .querySelector(`button[onclick*="changeStock(${productId},"]`)
+    ?.closest("tr");
+
+  if(row){
+    const stockNumber = row.querySelector(".stock-number");
+
+    if(stockNumber){
+      stockNumber.textContent = newStock;
+    }
+  }
+
+  // そのあとSupabaseを更新
   const { error: updateError } = await db
     .from("products")
     .update({ stock: newStock })
@@ -284,23 +296,21 @@ async function changeStock(productId, amount){
 
   if(updateError){
     console.error("在庫更新エラー:", updateError);
+
+    // 更新失敗したら元に戻す
+    product.stock = currentStock;
+
+    if(row){
+      const stockNumber = row.querySelector(".stock-number");
+
+      if(stockNumber){
+        stockNumber.textContent = currentStock;
+      }
+    }
+
     alert("在庫の更新に失敗しました");
-    return;
   }
-
-  const type = document.getElementById("typeFilter").value;
-  const model = document.getElementById("modelFilter").value;
-
-  await loadProducts();
-
-  document.getElementById("typeFilter").value = type;
-
-  updateModelFilter();
-
-  document.getElementById("modelFilter").value = model;
-
-  filterStock();
-
+}
 }
   let allProducts = [];
   
