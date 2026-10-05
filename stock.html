@@ -291,6 +291,7 @@ async function changeStock(productId, amount){
 
   loadProducts();
 }
+  let allProducts = [];
 async function loadProducts(){
 
   const { data, error } = await db
@@ -302,6 +303,7 @@ async function loadProducts(){
     console.error("商品データ読み込みエラー:", error);
     return;
   }
+  allProducts = data || [];
 const table = document.getElementById("stockTable");
 const empty = document.getElementById("emptyMessage");
 
