@@ -200,18 +200,11 @@ th:first-child{
 
     <h2>商品在庫</h2>
 　　　<div class="filter-area">
-  <label for="categoryFilter">カテゴリー</label>
-  <select id="categoryFilter">
-    <option value="soccerwe">soccerwe</option>
-  </select>
-</div>
-    <div class="filter-area">
-  <label for="typeFilter">種類</label>
-  <select id="typeFilter">
-    <option value="country">国</option>
-    <option value="club">クラブ</option>
-  </select>
-</div>
+  <select id="typeFilter" onchange="updateModelFilter()">
+  <option value="country">国</option>
+  <option value="club">クラブ</option>
+</select>
+   </div>
     <div class="filter-area">
   <label for="modelFilter">MODEL</label>
   <select id="modelFilter">
@@ -296,7 +289,7 @@ async function loadProducts(){
 
   const { data, error } = await db
     .from("products")
-    .select("id,name,price,model,base,version,average_cost,category,stock")
+    .select("id,name,price,model,base,version,average_cost,category,item_type,stock")
     .order("model", { ascending:true });
 
   if(error){
@@ -337,7 +330,42 @@ empty.style.display =
   data.length === 0 ? "block" : "none";
   console.log("商品一覧:", data);
 }
+function updateModelFilter(){
 
+  const type = document.getElementById("typeFilter").value;
+  const modelFilter = document.getElementById("modelFilter");
+
+  modelFilter.innerHTML = '<option value="">MODELを選択</option>';
+
+  const models = [...new Set(
+    allProducts
+      .filter(product => {
+        if(type === "country"){
+          return product.item_type === "代表";
+        }
+
+        if(type === "club"){
+          return product.item_type === "クラブ";
+        }
+
+        return true;
+      })
+      .map(product => product.model)
+      .filter(Boolean)
+  )];
+
+  models.forEach(model => {
+
+    const option = document.createElement("option");
+
+    option.value = model;
+    option.textContent = model;
+
+    modelFilter.appendChild(option);
+
+  });
+
+}
 loadProducts();
 </script>
 </body>
