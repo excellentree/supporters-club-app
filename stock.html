@@ -288,7 +288,19 @@ async function changeStock(productId, amount){
     return;
   }
 
-  loadProducts();
+  const type = document.getElementById("typeFilter").value;
+  const model = document.getElementById("modelFilter").value;
+
+  await loadProducts();
+
+  document.getElementById("typeFilter").value = type;
+
+  updateModelFilter();
+
+  document.getElementById("modelFilter").value = model;
+
+  filterStock();
+
 }
   let allProducts = [];
   
