@@ -50,6 +50,10 @@ button{
   cursor:pointer;
   background:#eee;
 }
+  .category-button.selected{
+  background:#111;
+  color:#fff;
+}
 
 button:hover{
   opacity:.8;
@@ -73,18 +77,17 @@ button:hover{
   <h3>カテゴリー</h3>
 
   <div>
-    <button type="button">LEGO</button>
-    <button type="button">アパレル</button>
-    <button type="button">キーホルダー</button>
-    <button type="button">ステッカー</button>
+<button type="button" class="category-button" onclick="selectCategory(this)">LEGO</button>
+<button type="button" class="category-button" onclick="selectCategory(this)">アパレル</button>
+<button type="button" class="category-button" onclick="selectCategory(this)">キーホルダー</button>
+<button type="button" class="category-button" onclick="selectCategory(this)">ステッカー</button>
   </div>
 
   <div style="margin-top:10px;">
-    <button type="button">フィギュア</button>
-    <button type="button">ペナント</button>
-    <button type="button">ピンバッジ</button>
-    <button type="button">その他</button>
-  </div>
+    <button type="button" class="category-button" onclick="selectCategory(this)">フィギュア</button>
+<button type="button" class="category-button" onclick="selectCategory(this)">ペナント</button>
+<button type="button" class="category-button" onclick="selectCategory(this)">ピンバッジ</button>
+<button type="button" class="category-button" onclick="selectCategory(this)">その他</button>
 
 </div>
     <p>ここにその他商品の登録画面を作ります。</p>
@@ -92,6 +95,15 @@ button:hover{
   </div>
 
 </div>
+<script>
+function selectCategory(button){
 
+  document.querySelectorAll(".category-button").forEach(btn=>{
+    btn.classList.remove("selected");
+  });
+
+  button.classList.add("selected");
+}
+</script>
 </body>
 </html>
