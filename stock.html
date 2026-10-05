@@ -291,7 +291,7 @@ async function changeStock(productId, amount){
   loadProducts();
 }
   let allProducts = [];
-  updateModelFilter();
+  
 async function loadProducts(){
 
   const { data, error } = await db
@@ -304,6 +304,7 @@ async function loadProducts(){
     return;
   }
   allProducts = data || [];
+  updateModelFilter();
 const table = document.getElementById("stockTable");
 const empty = document.getElementById("emptyMessage");
 
