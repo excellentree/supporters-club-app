@@ -346,13 +346,15 @@ function updateModelFilter(){
   const models = [...new Set(
     allProducts
       .filter(product => {
-        if(type === "country"){
-          return product.item_type === "代表";
-        }
+     if(type === "country"){
+  return product.category === "soccerwe"
+      && product.item_type === "代表";
+}
 
         if(type === "club"){
-          return product.item_type === "クラブ";
-        }
+  return product.category === "soccerwe"
+      && product.item_type === "クラブ";
+}
 
         return true;
       })
