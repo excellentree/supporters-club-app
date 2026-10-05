@@ -310,7 +310,6 @@ async function loadProducts(){
     .from("products")
     .select("id,name,price,model,base,version,average_cost,category,item_type,stock")
     .order("model", { ascending:true });
-　　　.order("name", { ascending:true });
   if(error){
     console.error("商品データ読み込みエラー:", error);
     return;
