@@ -291,6 +291,7 @@ async function changeStock(productId, amount){
   loadProducts();
 }
   let allProducts = [];
+  updateModelFilter();
 async function loadProducts(){
 
   const { data, error } = await db
@@ -416,7 +417,7 @@ function updateModelFilter(){
   });
 
 }
-  updateModelFilter();
+
 loadProducts();
 </script>
 </body>
