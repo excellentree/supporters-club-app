@@ -213,7 +213,7 @@ th:first-child{
    </div>
     <div class="filter-area">
   <label for="modelFilter">MODEL</label>
-  <select id="modelFilter">
+ <select id="modelFilter" onchange="filterStock()">
     <option value="">MODELを選択</option>
   </select>
 </div>
@@ -335,6 +335,48 @@ data.forEach(product => {
 empty.style.display =
   data.length === 0 ? "block" : "none";
   console.log("商品一覧:", data);
+}
+  function filterStock(){
+
+  const model = document.getElementById("modelFilter").value;
+  const table = document.getElementById("stockTable");
+
+  table.innerHTML = "";
+
+  const filtered = allProducts.filter(product => {
+
+    if(!model){
+      return true;
+    }
+
+    return product.model === model;
+
+  });
+
+  filtered.forEach(product => {
+
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>
+        <div class="stock-controls">
+          <button type="button" class="stock-button" onclick="changeStock(${product.id}, -1)">−</button>
+          <span class="stock-number">${Number(product.stock || 0)}</span>
+          <button type="button" class="stock-button" onclick="changeStock(${product.id}, 1)">＋</button>
+        </div>
+      </td>
+
+      <td>${product.name || ""}</td>
+      <td>${product.model || ""}</td>
+      <td>${product.base || ""}</td>
+      <td>${product.version || ""}</td>
+      <td>¥${Number(product.average_cost || 0).toLocaleString()}</td>
+    `;
+
+    table.appendChild(tr);
+
+  });
+
 }
 function updateModelFilter(){
 
