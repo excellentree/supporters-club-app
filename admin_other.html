@@ -50,6 +50,24 @@ button{
   cursor:pointer;
   background:#eee;
 }
+  #productInfo{
+  margin-top:30px;
+}
+
+#productInfo label{
+  display:block;
+  margin-top:15px;
+  margin-bottom:6px;
+  font-weight:bold;
+}
+
+#productInfo input{
+  width:100%;
+  padding:12px;
+  border:1px solid #ccc;
+  border-radius:8px;
+  font-size:16px;
+}
   .category-button.selected{
   background:#111;
   color:#fff;
@@ -91,6 +109,35 @@ button:hover{
 
 </div>
   </div>
+
+</div>
+  <div id="productInfo">
+
+  <h3>商品情報</h3>
+
+  <label>画像</label>
+  <input type="file" id="imageInput" accept="image/*">
+
+  <label>品名</label>
+  <input type="text" id="nameInput">
+
+  <label>VERSION</label>
+  <input type="text" id="versionInput">
+
+  <label>MODEL</label>
+  <input type="text" id="modelInput">
+
+  <label>国 or クラブ</label>
+  <input type="text" id="countryClubInput">
+
+  <label>販売価格</label>
+  <input type="number" id="priceInput">
+
+  <label>平均原価</label>
+  <input type="number" id="averageCostInput">
+
+  <label>在庫</label>
+  <input type="number" id="stockInput" value="0">
 
 </div>
 <script>
