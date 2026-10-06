@@ -219,12 +219,12 @@ th:first-child{
   </select>
 </div>
 </div>
-　　　<div class="filter-area">
+　　　<div class="filter-area" id="typeFilterArea">
   <select id="typeFilter" onchange="updateModelFilter()">
-  <option value="country">国</option>
-  <option value="club">クラブ</option>
-</select>
-   </div>
+    <option value="country">国</option>
+    <option value="club">クラブ</option>
+  </select>
+</div>
     <div class="filter-area">
   <label for="modelFilter">MODEL</label>
  <select id="modelFilter" onchange="filterStock()">
@@ -463,10 +463,21 @@ function toggleVersionFilter(){
   const versionArea =
     document.getElementById("versionFilterArea");
 
-  if(category === "soccerwe"){
+  const typeArea =
+    document.getElementById("typeFilterArea");
+
+  if(category === "soccerwe" || category === ""){
+
+    // soccerwe・すべて
     versionArea.style.display = "none";
+    typeArea.style.display = "block";
+
   }else{
+
+    // その他カテゴリー
     versionArea.style.display = "block";
+    typeArea.style.display = "none";
+
   }
 
 }
