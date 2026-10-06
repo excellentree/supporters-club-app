@@ -379,18 +379,30 @@ empty.style.display =
 }
   function filterStock(){
 
-  const model = document.getElementById("modelFilter").value;
-  const table = document.getElementById("stockTable");
+  const category =
+    document.getElementById("categoryFilter").value;
+
+  const model =
+    document.getElementById("modelFilter").value;
+
+  const table =
+    document.getElementById("stockTable");
 
   table.innerHTML = "";
 
   const filtered = allProducts.filter(product => {
 
-    if(!model){
-      return true;
+    // カテゴリーで絞り込み
+    if(category && product.category !== category){
+      return false;
     }
 
-    return product.model === model;
+    // MODELで絞り込み
+    if(model && product.model !== model){
+      return false;
+    }
+
+    return true;
 
   });
 
@@ -418,6 +430,7 @@ empty.style.display =
 
   });
 
+}
 }
 function updateModelFilter(){
 
