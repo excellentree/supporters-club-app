@@ -371,23 +371,65 @@ async function loadOtherProducts(selectedCategory = ""){
     div.style.marginTop = "12px";
 
     div.innerHTML = `
-      <img
-  src="${product.image_url || ""}"
-  style="width:80px;height:80px;object-fit:cover;border-radius:10px;"
->
-      <div style="font-weight:bold;margin-top:8px;">
+
+  <div style="display:flex;gap:15px;align-items:flex-start;">
+
+    <img
+      src="${product.image_url || ""}"
+      style="width:80px;height:80px;object-fit:cover;border-radius:10px;"
+    >
+
+    <div style="flex:1;">
+
+      <div style="font-size:20px;font-weight:bold;margin-bottom:8px;">
         ${product.name || ""}
       </div>
-      <div>VERSION：${product.version || ""}</div>
-      <div>MODEL：${product.model || ""}</div>
-      <div>国 or クラブ：${product.country_or_club || ""}</div>
-      <div>販売価格：${product.price || 0}円</div>
-      <div>平均原価：${product.average_cost || 0}円</div>
-      <div>在庫：${product.stock || 0}</div>
-      <div>カテゴリー：${product.category || ""}</div>
-      <button type="button" style="margin-top:12px;">
-      編集</button>
-      `;
+
+      <div>
+        VERSION：${product.version || ""}
+      </div>
+
+      <div>
+        MODEL：${product.model || ""}
+      </div>
+
+      <div>
+        国 or クラブ：${product.country_or_club || ""}
+      </div>
+
+      <div>
+        販売価格：${product.price || 0}円
+      </div>
+
+      <div>
+        平均原価：${product.average_cost || 0}円
+      </div>
+
+      <div>
+        在庫：${product.stock || 0}
+      </div>
+
+      <div>
+        カテゴリー：${product.category || ""}
+      </div>
+
+      <div style="margin-top:15px;display:flex;gap:10px;flex-wrap:wrap;">
+
+        <button onclick="editOtherProduct('${product.id}')">
+          ✏️ 編集
+        </button>
+
+        <button onclick="deleteOtherProduct('${product.id}')">
+          🗑️ 削除
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+`;
     const editButton = div.querySelector("button");
 
 editButton.addEventListener("click", function(){
