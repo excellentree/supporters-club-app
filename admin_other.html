@@ -412,7 +412,13 @@ async function loadOtherProducts(selectedCategory = ""){
       <div>
         カテゴリー：${product.category || ""}
       </div>
+<div style="margin-top:15px;">
 
+  <button onclick="deleteOtherProduct('${product.id}')">
+    🗑️ 削除
+  </button>
+
+</div>
       <div style="margin-top:15px;display:flex;gap:10px;flex-wrap:wrap;">
 
         <button onclick="editOtherProduct('${product.id}')">
