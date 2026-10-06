@@ -186,6 +186,65 @@ document.getElementById("imageInput").addEventListener("change", async function(
 
   alert("画像をアップロードしました！");
 });
+  document.getElementById("registerButton").addEventListener("click", async function(){
+
+  const selectedButton = document.querySelector(".category-button.selected");
+
+  if(!selectedButton){
+    alert("カテゴリーを選択してください");
+    return;
+  }
+
+  if(!uploadedImageUrl){
+    alert("画像をアップロードしてください");
+    return;
+  }
+
+  const name = document.getElementById("nameInput").value.trim();
+  const version = document.getElementById("versionInput").value.trim();
+  const model = document.getElementById("modelInput").value.trim();
+  const countryClub = document.getElementById("countryClubInput").value.trim();
+  const price = document.getElementById("priceInput").value;
+  const averageCost = document.getElementById("averageCostInput").value;
+  const stock = document.getElementById("stockInput").value;
+
+  if(!name){
+    alert("品名を入力してください");
+    return;
+  }
+
+  if(!price){
+    alert("販売価格を入力してください");
+    return;
+  }
+
+  const { error } = await sb
+    .from("products")
+    .insert([{
+      image_url: uploadedImageUrl,
+      name: name,
+      version: version,
+      model: model,
+      base: null,
+      price: Number(price),
+      average_cost: Number(averageCost) || 0,
+      stock: Number(stock) || 0,
+      category: selectedButton.textContent.trim(),
+      item_type: "その他",
+      is_new: false,
+      region: null,
+      country_or_club: countryClub
+    }]);
+
+  if(error){
+    console.error(error);
+    alert("商品の登録に失敗しました");
+    return;
+  }
+
+  alert("商品を登録しました！");
+
+});
   </script> 
 <script>
 function selectCategory(button){
