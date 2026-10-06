@@ -200,10 +200,18 @@ th:first-child{
 
     <h2>商品在庫</h2>
     <div class="filter-area">
-  <label for="categoryFilter">カテゴリー</label>
-  <select id="categoryFilter">
-    <option value="soccerwe">soccerwe</option>
-  </select>
+  <select id="categoryFilter" onchange="filterStock()">
+  <option value="">すべて</option>
+  <option value="soccerwe">soccerwe</option>
+  <option value="LEGO">LEGO</option>
+  <option value="アパレル">アパレル</option>
+  <option value="キーホルダー">キーホルダー</option>
+  <option value="ステッカー">ステッカー</option>
+  <option value="フィギュア">フィギュア</option>
+  <option value="ペナント">ペナント</option>
+  <option value="ピンバッジ">ピンバッジ</option>
+  <option value="その他">その他</option>
+</select>
 </div>
 　　　<div class="filter-area">
   <select id="typeFilter" onchange="updateModelFilter()">
