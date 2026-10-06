@@ -481,6 +481,9 @@ function toggleVersionFilter(){
   const typeArea =
     document.getElementById("typeFilterArea");
 
+  const versionFilter =
+    document.getElementById("versionFilter");
+
   if(category === "soccerwe" || category === ""){
 
     // soccerwe・すべて
@@ -493,8 +496,34 @@ function toggleVersionFilter(){
     versionArea.style.display = "block";
     typeArea.style.display = "none";
 
+    // 選択したカテゴリーのVERSIONだけ表示
+    versionFilter.innerHTML =
+      '<option value="">VERSIONを選択</option>';
+
+    const versions = [...new Set(
+      allProducts
+        .filter(product =>
+          product.category === category
+        )
+        .map(product => product.version)
+        .filter(Boolean)
+    )];
+
+    versions.forEach(version => {
+
+      const option =
+        document.createElement("option");
+
+      option.value = version;
+      option.textContent = version;
+
+      versionFilter.appendChild(option);
+
+    });
+
   }
 
+  updateModelFilter();
 }
   document
   .getElementById("categoryFilter")
