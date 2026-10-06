@@ -223,7 +223,33 @@ document.getElementById("imageInput").addEventListener("change", async function(
     return;
   }
 
-  const { error } = await sb
+  let error;
+
+if(editingProductId){
+
+  const result = await sb
+    .from("products")
+    .update({
+      image_url: uploadedImageUrl,
+      name: name,
+      version: version,
+      model: model,
+      base: null,
+      price: Number(price),
+      average_cost: Number(averageCost) || 0,
+      stock: Number(stock) || 0,
+      category: selectedButton.textContent.trim(),
+      item_type: "その他",
+      region: null,
+      country_or_club: countryClub
+    })
+    .eq("id", editingProductId);
+
+  error = result.error;
+
+}else{
+
+  const result = await sb
     .from("products")
     .insert([{
       image_url: uploadedImageUrl,
@@ -240,6 +266,9 @@ document.getElementById("imageInput").addEventListener("change", async function(
       region: null,
       country_or_club: countryClub
     }]);
+
+  error = result.error;
+}
 
   if(error){
     console.error(error);
