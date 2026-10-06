@@ -212,7 +212,7 @@ th:first-child{
   <option value="ピンバッジ">ピンバッジ</option>
   <option value="その他">その他</option>
 </select>
-      <div class="filter-area">
+      <div class="filter-area" id="versionFilterArea">
   <label for="versionFilter">VERSION</label>
   <select id="versionFilter">
     <option value="">VERSIONを選択</option>
@@ -455,7 +455,26 @@ function updateModelFilter(){
   });
 
 }
+function toggleVersionFilter(){
 
+  const category =
+    document.getElementById("categoryFilter").value;
+
+  const versionArea =
+    document.getElementById("versionFilterArea");
+
+  if(category === "soccerwe"){
+    versionArea.style.display = "none";
+  }else{
+    versionArea.style.display = "block";
+  }
+
+}
+  document
+  .getElementById("categoryFilter")
+  .addEventListener("change", toggleVersionFilter);
+
+toggleVersionFilter();
 loadProducts();
 </script>
 </body>
