@@ -150,8 +150,58 @@ button:hover{
   商品を登録する
 </button>
 </div>
-  <div class="card">
+<div class="card">
   <h2>登録済み商品</h2>
+
+  <div class="category-buttons">
+
+    <button type="button" class="category-button"
+      onclick="loadOtherProducts('')">
+      すべて
+    </button>
+
+    <button type="button" class="category-button"
+      onclick="loadOtherProducts('LEGO')">
+      LEGO
+    </button>
+
+    <button type="button" class="category-button"
+      onclick="loadOtherProducts('アパレル')">
+      アパレル
+    </button>
+
+    <button type="button" class="category-button"
+      onclick="loadOtherProducts('キーホルダー')">
+      キーホルダー
+    </button>
+
+    <button type="button" class="category-button"
+      onclick="loadOtherProducts('ステッカー')">
+      ステッカー
+    </button>
+
+    <button type="button" class="category-button"
+      onclick="loadOtherProducts('フィギュア')">
+      フィギュア
+    </button>
+
+    <button type="button" class="category-button"
+      onclick="loadOtherProducts('ペナント')">
+      ペナント
+    </button>
+
+    <button type="button" class="category-button"
+      onclick="loadOtherProducts('ピンバッジ')">
+      ピンバッジ
+    </button>
+
+    <button type="button" class="category-button"
+      onclick="loadOtherProducts('その他')">
+      その他
+    </button>
+
+  </div>
+
   <div id="productList"></div>
 </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
