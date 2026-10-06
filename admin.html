@@ -895,6 +895,42 @@ if(error){
   document.getElementById("asiaCountryArea").style.display="none";
 
 });
+  async function loadModelOptions(){
+
+  const select = document.getElementById("modelFilter");
+
+  const { data, error } = await sb
+    .from("products")
+    .select("model")
+    .eq("category", "soccerwe");
+
+  if(error){
+    console.error(error);
+    return;
+  }
+
+  const models = [
+    ...new Set(
+      data
+        .map(function(p){
+          return p.model;
+        })
+        .filter(Boolean)
+    )
+  ];
+
+  models.forEach(function(model){
+
+    const option = document.createElement("option");
+
+    option.value = model;
+    option.textContent = model;
+
+    select.appendChild(option);
+
+  });
+
+}
   async function loadAdminProducts(selectedModel = ""){
 
     let query = sb
