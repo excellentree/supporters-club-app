@@ -157,6 +157,36 @@ const sb =
     SUPABASE_URL,
     SUPABASE_KEY
   );
+  let uploadedImageUrl = "";
+
+document.getElementById("imageInput").addEventListener("change", async function(){
+
+  const file = this.files[0];
+
+  if(!file) return;
+
+  const fileName = Date.now() + "-" + file.name;
+
+  const { data, error } = await sb
+    .storage
+    .from("product-images")
+    .upload(fileName, file);
+
+  if(error){
+    console.error(error);
+    alert("画像のアップロードに失敗しました");
+    return;
+  }
+
+  const { data: publicData } = sb
+    .storage
+    .from("product-images")
+    .getPublicUrl(fileName);
+
+  uploadedImageUrl = publicData.publicUrl;
+
+  alert("画像をアップロードしました！");
+});
   </script> 
 <script>
 function selectCategory(button){
