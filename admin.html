@@ -898,10 +898,11 @@ if(error){
   async function loadAdminProducts(){
 
   const {data,error}=await sb
-    .from("products")
-    .select("*")
-    .order("created_at",{ascending:false});
-
+  .from("products")
+  .select("*")
+  .eq("category","soccerwe")
+  .order("created_at",{ascending:false});
+    
   if(error){
     console.error(error);
     return;
