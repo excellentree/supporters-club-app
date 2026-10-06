@@ -153,53 +153,28 @@ button:hover{
 <div class="card">
   <h2>登録済み商品</h2>
 
-  <div class="category-buttons">
-
-    <button type="button" class="category-button"
-      onclick="loadOtherProducts('')">
-      すべて
-    </button>
-
-    <button type="button" class="category-button"
-      onclick="loadOtherProducts('LEGO')">
-      LEGO
-    </button>
-
-    <button type="button" class="category-button"
-      onclick="loadOtherProducts('アパレル')">
-      アパレル
-    </button>
-
-    <button type="button" class="category-button"
-      onclick="loadOtherProducts('キーホルダー')">
-      キーホルダー
-    </button>
-
-    <button type="button" class="category-button"
-      onclick="loadOtherProducts('ステッカー')">
-      ステッカー
-    </button>
-
-    <button type="button" class="category-button"
-      onclick="loadOtherProducts('フィギュア')">
-      フィギュア
-    </button>
-
-    <button type="button" class="category-button"
-      onclick="loadOtherProducts('ペナント')">
-      ペナント
-    </button>
-
-    <button type="button" class="category-button"
-      onclick="loadOtherProducts('ピンバッジ')">
-      ピンバッジ
-    </button>
-
-    <button type="button" class="category-button"
-      onclick="loadOtherProducts('その他')">
-      その他
-    </button>
-
+  <select
+  onchange="loadOtherProducts(this.value)"
+  style="
+    width:100%;
+    padding:14px;
+    font-size:16px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:#fff;
+    margin-bottom:20px;
+  "
+>
+  <option value="">すべて</option>
+  <option value="LEGO">LEGO</option>
+  <option value="アパレル">アパレル</option>
+  <option value="キーホルダー">キーホルダー</option>
+  <option value="ステッカー">ステッカー</option>
+  <option value="フィギュア">フィギュア</option>
+  <option value="ペナント">ペナント</option>
+  <option value="ピンバッジ">ピンバッジ</option>
+  <option value="その他">その他</option>
+</select>
   </div>
 
   <div id="productList"></div>
