@@ -895,13 +895,19 @@ if(error){
   document.getElementById("asiaCountryArea").style.display="none";
 
 });
-  async function loadAdminProducts(){
+  async function loadAdminProducts(selectedModel = ""){
 
-  const {data,error}=await sb
-  .from("products")
-  .select("*")
-  .eq("category","soccerwe")
-  .order("created_at",{ascending:false});
+    let query = sb
+    .from("products")
+    .select("*")
+    .eq("category", "soccerwe");
+
+  if(selectedModel){
+    query = query.eq("model", selectedModel);
+  }
+
+  const {data,error} = await query
+    .order("created_at", {ascending:false});
     
   if(error){
     console.error(error);
@@ -1138,7 +1144,25 @@ if(savedScrollY !== null){
 </script>
   <div class="card">
   <h2>登録済み商品</h2>
+
+  <select
+    id="modelFilter"
+    onchange="loadAdminProducts(this.value)"
+    style="
+      width:100%;
+      padding:14px;
+      font-size:16px;
+      border:1px solid #ccc;
+      border-radius:8px;
+      background:#fff;
+      margin-bottom:20px;
+    "
+  >
+    <option value="">すべて</option>
+  </select>
+
   <div id="productList"></div>
+</div>
 </div>
 </body>
 </html>
