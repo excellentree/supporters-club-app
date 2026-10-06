@@ -371,7 +371,10 @@ async function loadOtherProducts(selectedCategory = ""){
     div.style.marginTop = "12px";
 
     div.innerHTML = `
-      <img src="${product.image_url}" style="width:100%;max-width:200px;border-radius:8px;">
+      <img
+  src="${product.image_url || ""}"
+  style="width:80px;height:80px;object-fit:cover;border-radius:10px;"
+>
       <div style="font-weight:bold;margin-top:8px;">
         ${product.name || ""}
       </div>
