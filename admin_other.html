@@ -493,7 +493,28 @@ editButton.addEventListener("click", function(){
 }
 
 loadOtherProducts();
-  
+  async function deleteOtherProduct(id){
+
+  if(!confirm("この商品を削除しますか？")){
+    return;
+  }
+
+  const { error } = await sb
+    .from("products")
+    .delete()
+    .eq("id", id);
+
+  if(error){
+    console.error(error);
+    alert("商品の削除に失敗しました");
+    return;
+  }
+
+  alert("商品を削除しました！");
+
+  loadOtherProducts();
+
+}
   </script> 
 <script>
 function selectCategory(button){
