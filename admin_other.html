@@ -313,12 +313,18 @@ document.getElementById("registerButton").textContent =
 loadOtherProducts();
 
 });
-async function loadOtherProducts(){
+async function loadOtherProducts(selectedCategory = ""){
 
-  const { data, error } = await sb
+  let query = sb
     .from("products")
     .select("*")
-    .neq("category", "soccerwe")
+    .neq("category", "soccerwe");
+
+  if(selectedCategory){
+    query = query.eq("category", selectedCategory);
+  }
+
+  const { data, error } = await query
     .order("created_at", { ascending:false });
 
   if(error){
