@@ -274,12 +274,37 @@ if(editingProductId){
 }
 
   if(error){
-    console.error(error);
-    alert("商品の登録に失敗しました");
-    return;
-  }
+  console.error(error);
+  alert("商品の登録に失敗しました");
+  return;
+}
 
+if(editingProductId){
+  alert("商品を更新しました！");
+}else{
   alert("商品を登録しました！");
+}
+
+editingProductId = null;
+uploadedImageUrl = "";
+
+document.getElementById("imageInput").value = "";
+document.getElementById("nameInput").value = "";
+document.getElementById("versionInput").value = "";
+document.getElementById("modelInput").value = "";
+document.getElementById("countryClubInput").value = "";
+document.getElementById("priceInput").value = "";
+document.getElementById("averageCostInput").value = "";
+document.getElementById("stockInput").value = "0";
+
+document.querySelectorAll(".category-button").forEach(btn=>{
+  btn.classList.remove("selected");
+});
+
+document.getElementById("registerButton").textContent =
+  "商品を登録する";
+
+loadOtherProducts();
 
 });
 async function loadOtherProducts(){
