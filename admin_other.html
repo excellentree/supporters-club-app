@@ -287,7 +287,8 @@ async function loadOtherProducts(){
       <div>平均原価：${product.average_cost || 0}円</div>
       <div>在庫：${product.stock || 0}</div>
       <div>カテゴリー：${product.category || ""}</div>
-    `;
+      <button type="button" style="margin-top:12px;">
+      編集</button>`;
 
     list.appendChild(div);
 
