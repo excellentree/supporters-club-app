@@ -288,7 +288,61 @@ async function loadOtherProducts(){
       <div>在庫：${product.stock || 0}</div>
       <div>カテゴリー：${product.category || ""}</div>
       <button type="button" style="margin-top:12px;">
-      編集</button>`;
+      編集</button>
+      `;
+    const editButton = div.querySelector("button");
+
+editButton.addEventListener("click", function(){
+
+  document.getElementById("nameInput").value =
+
+    product.name || "";
+
+  document.getElementById("versionInput").value =
+
+    product.version || "";
+
+  document.getElementById("modelInput").value =
+
+    product.model || "";
+
+  document.getElementById("countryClubInput").value =
+
+    product.country_or_club || "";
+
+  document.getElementById("priceInput").value =
+
+    product.price || "";
+
+  document.getElementById("averageCostInput").value =
+
+    product.average_cost || "";
+
+  document.getElementById("stockInput").value =
+
+    product.stock || 0;
+
+  document.querySelectorAll(".category-button").forEach(btn=>{
+
+    btn.classList.remove("selected");
+
+    if(btn.textContent.trim() === product.category){
+
+      btn.classList.add("selected");
+
+    }
+
+  });
+
+  uploadedImageUrl = product.image_url;
+
+  document.getElementById("productInfo").scrollIntoView({
+
+    behavior:"smooth"
+
+  });
+
+});
 
     list.appendChild(div);
 
