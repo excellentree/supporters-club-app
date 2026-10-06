@@ -150,7 +150,7 @@ const SUPABASE_URL =
   "https://juzrxqrabrvhlwvnvton.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";";
+"sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
   
 const sb =
   supabase.createClient(
@@ -160,7 +160,6 @@ const sb =
   let uploadedImageUrl = "";
 
 document.getElementById("imageInput").addEventListener("change", async function(){
-alert("画像選択を検知しました！");
   const file = this.files[0];
 
   if(!file) return;
