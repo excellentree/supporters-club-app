@@ -274,34 +274,42 @@ width:100%;
 
 <div class="content">
 
-  <!-- 大カテゴリー -->
-  <div class="filters" id="mainFilters">
-    <button class="active" onclick="selectMain('')">
-      すべて
-    </button>
+  <div style="margin-bottom:16px;">
 
-    <button onclick="selectMain('代表')">
-      代表
-    </button>
+  <label
+    for="otherCategory"
+    style="
+      display:block;
+      font-weight:bold;
+      margin-bottom:8px;
+    ">
+    カテゴリー
+  </label>
 
-    <button onclick="selectMain('クラブ')">
-      クラブ
-    </button>
-  </div>
+  <select
+    id="otherCategory"
+    onchange="selectOtherCategory(this.value)"
+    style="
+      width:100%;
+      padding:14px;
+      border:1px solid #ddd;
+      border-radius:12px;
+      font-size:16px;
+      background:#fff;
+    "
+  >
+    <option value="">すべて</option>
+    <option value="LEGO">LEGO</option>
+    <option value="アパレル">アパレル</option>
+    <option value="キーホルダー">キーホルダー</option>
+    <option value="ステッカー">ステッカー</option>
+    <option value="フィギュア">フィギュア</option>
+    <option value="ペナント">ペナント</option>
+    <option value="ピンバッジ">ピンバッジ</option>
+    <option value="その他">その他</option>
+  </select>
 
-  <!-- 国・リーグ -->
-  <div
-    class="filters"
-    id="subFilters"
-    style="display:none">
-  </div>
-
-  <!-- チーム -->
-  <div
-    class="filters"
-    id="teamFilters"
-    style="display:none">
-  </div>
+</div>
 
   <div id="status">
     商品を読み込み中…
@@ -374,6 +382,7 @@ let currentSub="";
 
 let currentTeam="";
 
+let currentOtherCategory="";
 
 /* =========================
    商品を取得
@@ -734,7 +743,13 @@ function buildTeamFilters(){
   });
 
 }
+function selectOtherCategory(category){
 
+  currentOtherCategory = category;
+
+  loadProducts();
+
+}
 
 /* =========================
    商品を表示
@@ -745,8 +760,15 @@ function loadProducts(){
   let data=[
     ...allProducts
   ];
-
-
+  // その他カテゴリーだけ表示
+  data = data.filter(p =>
+    p.category && p.category !== "soccerwe"
+  );
+if(currentOtherCategory){
+  data = data.filter(p =>
+    p.category === currentOtherCategory
+  );
+}
   /* 大カテゴリー */
   if(currentMain){
 
