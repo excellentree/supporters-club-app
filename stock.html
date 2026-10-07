@@ -434,33 +434,62 @@ empty.style.display =
 
 function updateModelFilter(){
 
-  const type = document.getElementById("typeFilter").value;
-  const modelFilter = document.getElementById("modelFilter");
+  const category =
+    document.getElementById("categoryFilter").value;
 
-  modelFilter.innerHTML = '<option value="">MODELを選択</option>';
+  const type =
+    document.getElementById("typeFilter").value;
+
+  const version =
+    document.getElementById("versionFilter").value;
+
+  const modelFilter =
+    document.getElementById("modelFilter");
+
+  modelFilter.innerHTML =
+    '<option value="">MODELを選択</option>';
 
   const models = [...new Set(
+
     allProducts
       .filter(product => {
-     if(type === "country"){
-  return product.category === "soccerwe"
-      && product.item_type === "代表";
-}
 
-        if(type === "club"){
-  return product.category === "soccerwe"
-      && product.item_type === "クラブ";
-}
+        // soccerwe
+        if(category === "soccerwe"){
 
-        return true;
+          if(type === "country"){
+            return product.category === "soccerwe"
+              && product.item_type === "代表";
+          }
+
+          if(type === "club"){
+            return product.category === "soccerwe"
+              && product.item_type === "クラブ";
+          }
+
+        }
+
+        // その他カテゴリー
+        if(category && category !== "soccerwe"){
+
+          return product.category === category
+            && product.version === version;
+
+        }
+
+        return false;
+
       })
+
       .map(product => product.model)
       .filter(Boolean)
+
   )];
 
   models.forEach(model => {
 
-    const option = document.createElement("option");
+    const option =
+      document.createElement("option");
 
     option.value = model;
     option.textContent = model;
