@@ -810,6 +810,7 @@ if(editingProductId){
   const {error}=await sb
     .from("products")
     .update({
+      base:selectedBase,
       image_url:uploadedImageUrl,
       name:document.getElementById("nameInput").value,
       version:document.getElementById("versionInput").value,
