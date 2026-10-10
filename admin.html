@@ -940,14 +940,14 @@ if(error){
   }
 
   const models = [
-    ...new Set(
-      data
-        .map(function(p){
-          return p.model;
-        })
-        .filter(Boolean)
-    )
-  ];
+  ...new Set(
+    data
+      .map(function(p){
+        return p.model;
+      })
+      .filter(Boolean)
+  )
+].sort((a, b) => a.localeCompare(b));
 
   models.forEach(function(model){
 
