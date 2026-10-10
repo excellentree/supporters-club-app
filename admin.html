@@ -1169,12 +1169,21 @@ if(regionButtonId){
 
   alert("商品情報を読み込みました！");
 }
-window.addEventListener("load",function(){
+
+window.addEventListener("load", function(){
 
   loadModelOptions();
   loadAdminProducts();
 
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get("id");
+
+  if(productId){
+    editProduct(productId);
+  }
+
 });
+
 const savedScrollY = sessionStorage.getItem("adminScrollY");
 
 if(savedScrollY !== null){
