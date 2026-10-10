@@ -335,7 +335,7 @@ async function loadProducts(){
 
   const { data, error } = await db
     .from("products")
-    .select("id,name,price,model,base,version,average_cost,category,item_type,stock")
+   .select("id,name,price,model,base,version,average_cost,category,item_type,stock,image_url")
     .order("model", { ascending:true })
 .order("name", { ascending:true });
   
@@ -355,8 +355,15 @@ data.forEach(product => {
   const tr = document.createElement("tr");
 
   tr.innerHTML = `
-    <td>
-  <div class="stock-controls">
+    <td style="width:58px;padding:6px;">
+  <img
+    src="${product.image_url || ""}"
+    style="width:48px;height:48px;object-fit:cover;border-radius:6px;display:block;"
+    onerror="this.style.visibility='hidden';"
+  >
+</td>
+<td>
+<div class="stock-controls">
     <button type="button" class="stock-button" onclick="changeStock(${product.id}, -1)">−</button>
     <span class="stock-number">${Number(product.stock || 0)}</span>
     <button type="button" class="stock-button" onclick="changeStock(${product.id}, 1)">＋</button>
@@ -424,8 +431,15 @@ empty.style.display =
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-      <td>
-        <div class="stock-controls">
+      <td style="width:58px;padding:6px;">
+  <img
+    src="${product.image_url || ""}"
+    style="width:48px;height:48px;object-fit:cover;border-radius:6px;display:block;"
+    onerror="this.style.visibility='hidden';"
+  >
+</td>
+<td>
+<div class="stock-controls">
           <button type="button" class="stock-button" onclick="changeStock(${product.id}, -1)">−</button>
           <span class="stock-number">${Number(product.stock || 0)}</span>
           <button type="button" class="stock-button" onclick="changeStock(${product.id}, 1)">＋</button>
