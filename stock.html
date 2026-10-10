@@ -1,4 +1,4 @@
-ぬ<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -451,6 +451,43 @@ empty.style.display =
 
   });
 
+}
+
+async function deleteStockProduct(id){
+  const product = allProducts.find(
+    p => String(p.id) === String(id)
+  );
+
+  if(!product){
+    alert("商品が見つかりません");
+    return;
+  }
+
+  if(!confirm(
+    "「" + (product.name || "この商品") +
+    "」を削除しますか？\nこの操作は元に戻せません。"
+  )){
+    return;
+  }
+
+  const { error } = await db
+    .from("products")
+    .delete()
+    .eq("id", id);
+
+  if(error){
+    console.error("商品削除エラー:", error);
+    alert("商品の削除に失敗しました");
+    return;
+  }
+
+  allProducts = allProducts.filter(
+    p => String(p.id) !== String(id)
+  );
+
+  filterStock();
+
+  alert("商品を削除しました");
 }
 
 function editStockProduct(id){
