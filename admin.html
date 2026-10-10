@@ -1155,7 +1155,8 @@ if(regionButtonId){
   document.getElementById("versionInput").value=data.version||"";
   document.getElementById("modelInput").value=data.model||"";
   document.getElementById("priceInput").value=data.price||"";
-
+　document.getElementById("averageCostInput").value = data.average_cost ?? "";
+document.getElementById("stockInput").value = data.stock ?? 0;
   uploadedImageUrl=data.image_url||"";
 
   const preview=document.getElementById("imagePreview");
