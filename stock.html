@@ -368,7 +368,19 @@ data.forEach(product => {
     <td>${product.base || ""}</td>
     <td>${product.version || ""}</td>
     <td>¥${Number(product.average_cost || 0).toLocaleString()}</td>
-  `;
+<td>
+
+      <div style="display:flex;gap:6px;white-space:nowrap;align-items:center;">
+
+        <button onclick="editStockProduct(${product.id})">修正</button>
+
+        <button onclick="toggleStockNew(${product.id})">NEW</button>
+
+        <button onclick="deleteStockProduct(${product.id})">削除</button>
+
+      </div>
+
+    </td>`;
 
   table.appendChild(tr);
 
