@@ -452,7 +452,23 @@ empty.style.display =
   });
 
 }
+function editStockProduct(id){
+const product = allProducts.find(
+p => String(p.id) === String(id)
+);
 
+if(!product){
+alert(“商品が見つかりません”);
+return;
+}
+
+const page = product.category === “soccerwe”
+? “admin.html”
+: “admin_other.html”;
+
+window.location.href =
+page + “?id=” + encodeURIComponent(id);
+}
 function updateModelFilter(){
 
   const category =
