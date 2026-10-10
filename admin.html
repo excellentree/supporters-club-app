@@ -1176,12 +1176,23 @@ window.addEventListener("load", function(){
   loadModelOptions();
   loadAdminProducts();
 
-  const params = new URLSearchParams(window.location.search);
-  const productId = params.get("id");
+  
+const params = new URLSearchParams(window.location.search);
+const productId = params.get("id");
 
-  if(productId){
-    editProduct(productId);
-  }
+if(productId){
+  editProduct(productId);
+
+  params.delete("id");
+
+  const query = params.toString();
+  const cleanUrl = window.location.pathname
+    + (query ? "?" + query : "")
+    + window.location.hash;
+
+  window.history.replaceState({}, "", cleanUrl);
+}
+
 
 });
 
