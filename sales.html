@@ -238,34 +238,8 @@ td{
   </div>
 
 </div>
-  <!-- 在庫サマリー -->
-<div class="section">
-  <div class="section-title">在庫サマリー</div>
 
-  <div class="summary">
-    <div class="summary-card">
-      <div class="summary-label">SOCCERWE</div>
-      <div class="summary-value" id="soccerweStock">0</div>
-    </div>
-
-    <div class="summary-card">
-      <div class="summary-label">代表</div>
-      <div class="summary-value" id="representativeStock">0</div>
-    </div>
-
-    <div class="summary-card">
-      <div class="summary-label">クラブ</div>
-      <div class="summary-value" id="clubStock">0</div>
-    </div>
-
-    <div class="summary-card">
-      <div class="summary-label">総在庫数</div>
-      <div class="summary-value" id="totalStock">0</div>
-    </div>
-  </div>
-
-  <div id="otherCategoryStock"></div>
-</div>
+  
     <div class="section-title">
       管理メニュー
     </div>
@@ -326,61 +300,6 @@ async function loadProducts(){
   }
 
 }
-  async function loadStockSummary(){
-
-  const { data, error } = await db
-    .from("products")
-    .select("stock,category,item_type");
-
-  if(error){
-    console.error("在庫集計エラー:", error);
-    return;
-  }
-
-  const products = data || [];
-
-  const soccerwe = products.filter(
-    p => p.category === "soccerwe"
-  );
-
-  const sumStock = list => list.reduce(
-    (sum, p) => sum + Number(p.stock || 0),
-    0
-  );
-
-  document.getElementById("soccerweStock").textContent =
-    sumStock(soccerwe).toLocaleString();
-
-  document.getElementById("representativeStock").textContent =
-    sumStock(soccerwe.filter(p => p.item_type === "代表")).toLocaleString();
-
-  document.getElementById("clubStock").textContent =
-    sumStock(soccerwe.filter(p => p.item_type === "クラブ")).toLocaleString();
-
-  document.getElementById("totalStock").textContent =
-    sumStock(products).toLocaleString();
-
-  const categories = {};
-
-  products.forEach(p => {
-    if(p.category === "soccerwe") return;
-
-    const category = p.category || "その他";
-    categories[category] = (categories[category] || 0)
-      + Number(p.stock || 0);
-  });
-
-  document.getElementById("otherCategoryStock").innerHTML =
-    Object.entries(categories)
-      .sort((a, b) => a[0].localeCompare(b[0], "ja"))
-      .map(([name, count]) =>
-        `<div style="padding:10px 0;border-top:1px solid #eee;">
-          ${name}：<strong>${count.toLocaleString()}個</strong>
-        </div>`
-      ).join("");
-}
-
-loadStockSummary();
   loadProducts();
 document.getElementById("salesMonth").value =
 `${yyyy}-${mm}`;
