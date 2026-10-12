@@ -396,7 +396,7 @@ async function changeStock(productId, amount){
 
 }
   let allProducts = [];
-  function updateStockSummary(){
+function updateStockSummary(){
 const products = allProducts || [];
 
 const getStock = list =>
@@ -407,40 +407,27 @@ p => p.category === “soccerwe”
 );
 
 const otherProducts = products.filter(
-p => p.category === "soccerwe"
+p => p.category !== “soccerwe”
 );
 
 document.getElementById(“soccerweStock”).textContent =
-getStock(soccerwe).toLocaleString() + “個”;
+getStock(soccerwe) + “個”;
 
 document.getElementById(“otherTotalStock”).textContent =
-getStock(otherProducts).toLocaleString() + “個”;
+getStock(otherProducts) + “個”;
 
 document.getElementById(“representativeStock”).textContent =
-getStock(soccerwe.filter(p => p.item_type === “代表”)).toLocaleString() + “個”;
+getStock(soccerwe.filter(p => p.item_type === “代表”)) + “個”;
 
 document.getElementById(“clubStock”).textContent =
-getStock(soccerwe.filter(p => p.item_type === “クラブ”)).toLocaleString() + “個”;
+getStock(soccerwe.filter(p => p.item_type === “クラブ”)) + “個”;
 
 document.getElementById(“totalStock”).textContent =
-getStock(products).toLocaleString() + “個”;
+getStock(products) + “個”;
 
-const categoryTotals = {};
-
-otherProducts.forEach(p => {
-const category = p.category || “その他”;
-categoryTotals[category] =
-(categoryTotals[category] || 0) + Number(p.stock || 0);
-});
-
-document.getElementById(“otherCategoryStock”).innerHTML =
-Object.entries(categoryTotals)
-.sort((a, b) => a[0].localeCompare(b[0], “ja”))
-.map(([category, stock]) =>
-<div class="summary-card" style="margin-top:10px;"> <div class="summary-label">${category}</div> <div class="summary-value">${stock.toLocaleString()}個</div> </div>
-).join(””);
+document.getElementById(“otherCategoryStock”).innerHTML = “”;
 }
-async function loadProducts(){
+  async function loadProducts(){
 
   const { data, error } = await db
     .from("products")
