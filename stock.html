@@ -436,9 +436,13 @@ document.getElementById(“otherCategoryStock”).innerHTML = “”;
 .order("name", { ascending:true });
   
   if(error){
-    console.error("商品データ読み込みエラー:", error);
-    return;
-  }
+console.error(“商品データ読み込みエラー:”, error);
+
+document.getElementById(“emptyMessage”).textContent =
+“読み込みエラー: “ + error.message;
+
+return;
+}
   allProducts = data || [];
   updateModelFilter();
   updateStockSummary();
