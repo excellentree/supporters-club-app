@@ -277,6 +277,7 @@ button.selected{
   <button type="button" id="serieAButton">セリエA</button>
   <button type="button" id="bundesligaButton">ブンデスリーガ</button>
   <button type="button" id="otherLeagueButton">その他リーグ</button>
+    <button type="button" id="headcoachButton">監督</button>
 <div id="clubTeamArea" style="display:none; margin-top:20px;">
 
   <h2>チーム</h2>
@@ -620,7 +621,8 @@ const clubLeagueButtons = [
   "ligue1Button",
   "serieAButton",
   "bundesligaButton",
-  "otherLeagueButton"
+  "otherLeagueButton",
+  "headcoachButton"
 ];
   const teams={
   premierLeagueButton:[
@@ -671,7 +673,11 @@ const clubLeagueButtons = [
 
   otherLeagueButton:[
     "その他"
-  ]
+  ],
+   headcoachButton:[
+    "監督"
+  ] 
+    
 };
 
 clubLeagueButtons.forEach(function(id){
