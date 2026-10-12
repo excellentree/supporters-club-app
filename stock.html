@@ -288,10 +288,13 @@ th:first-child{
 </div>
 <div class="filter-area" id="typeFilterArea">
   <label for="typeFilter">国 or クラブ</label>
-  <select id="typeFilter" onchange="updateModelFilter()">
-    <option value="country">国</option>
-    <option value="club">クラブ</option>
-  </select>
+
+<select id="typeFilter" onchange="filterStock()">
+  <option value="all">すべて</option>
+  <option value="country">国</option>
+  <option value="club">クラブ</option>
+</select>
+
 </div>
     <div class="filter-area">
   <label for="modelFilter">MODEL</label>
@@ -628,9 +631,8 @@ function updateModelFilter(){
 
   const category =
     document.getElementById("categoryFilter").value;
-
-  const type =
-    document.getElementById("typeFilter").value;
+const type =
+  document.getElementById("typeFilter").value;
 
   const version =
     document.getElementById("versionFilter").value;
