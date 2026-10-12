@@ -59,6 +59,37 @@ header p{
   margin:0 0 18px;
   font-size:22px;
 }
+  
+.summary{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:15px;
+}
+
+.summary-card{
+  background:#f5f5f5;
+  border-radius:12px;
+  padding:14px;
+}
+
+.summary-label{
+  font-size:13px;
+  color:#777;
+  margin-bottom:8px;
+}
+
+.summary-value{
+  font-size:24px;
+  font-weight:bold;
+}
+
+@media(min-width:700px){
+  .summary{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+
 #versionFilterArea,
 #typeFilterArea{
   padding-top:20px;
@@ -197,6 +228,40 @@ th:first-child{
 
   <div class="title">在庫表</div>
 
+<!-- 在庫サマリー -->
+<div class="section">
+  <h2>在庫サマリー</h2>
+
+  <div class="summary">
+    <div class="summary-card">
+      <div class="summary-label">SOCCERWE合計</div>
+      <div class="summary-value" id="soccerweStock">0</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-label">その他カテゴリー合計</div>
+      <div class="summary-value" id="otherTotalStock">0</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-label">代表</div>
+      <div class="summary-value" id="representativeStock">0</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-label">クラブ</div>
+      <div class="summary-value" id="clubStock">0</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-label">総在庫数</div>
+      <div class="summary-value" id="totalStock">0</div>
+    </div>
+  </div>
+
+  <div id="otherCategoryStock"></div>
+</div>
+
   <div class="section">
 
     <h2>商品在庫</h2>
@@ -293,7 +358,7 @@ async function changeStock(productId, amount){
 
   // まず画面を即時更新
   product.stock = newStock;
-
+　updateStockSummary();
   const row = document
     .querySelector(`button[onclick*="changeStock(${productId},"]`)
     ?.closest("tr");
@@ -317,7 +382,7 @@ async function changeStock(productId, amount){
 
     // 更新失敗したら元に戻す
     product.stock = currentStock;
-
+　　　updateStockSummary();
     if(row){
       const stockNumber = row.querySelector(".stock-number");
 
@@ -331,7 +396,50 @@ async function changeStock(productId, amount){
 
 }
   let allProducts = [];
-  
+  function updateStockSummary(){
+const products = allProducts || [];
+
+const getStock = list =>
+list.reduce((sum, p) => sum + Number(p.stock || 0), 0);
+
+const soccerwe = products.filter(
+p => p.category === “soccerwe”
+);
+
+const otherProducts = products.filter(
+p => p.category !== “soccerwe”
+);
+
+document.getElementById(“soccerweStock”).textContent =
+getStock(soccerwe).toLocaleString() + “個”;
+
+document.getElementById(“otherTotalStock”).textContent =
+getStock(otherProducts).toLocaleString() + “個”;
+
+document.getElementById(“representativeStock”).textContent =
+getStock(soccerwe.filter(p => p.item_type === “代表”)).toLocaleString() + “個”;
+
+document.getElementById(“clubStock”).textContent =
+getStock(soccerwe.filter(p => p.item_type === “クラブ”)).toLocaleString() + “個”;
+
+document.getElementById(“totalStock”).textContent =
+getStock(products).toLocaleString() + “個”;
+
+const categoryTotals = {};
+
+otherProducts.forEach(p => {
+const category = p.category || “その他”;
+categoryTotals[category] =
+(categoryTotals[category] || 0) + Number(p.stock || 0);
+});
+
+document.getElementById(“otherCategoryStock”).innerHTML =
+Object.entries(categoryTotals)
+.sort((a, b) => a[0].localeCompare(b[0], “ja”))
+.map(([category, stock]) =>
+<div class="summary-card" style="margin-top:10px;"> <div class="summary-label">${category}</div> <div class="summary-value">${stock.toLocaleString()}個</div> </div>
+).join(””);
+}
 async function loadProducts(){
 
   const { data, error } = await db
@@ -346,6 +454,7 @@ async function loadProducts(){
   }
   allProducts = data || [];
   updateModelFilter();
+  updateStockSummary();
 const table = document.getElementById("stockTable");
 const empty = document.getElementById("emptyMessage");
 
