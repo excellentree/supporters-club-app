@@ -397,36 +397,37 @@ async function changeStock(productId, amount){
 }
   let allProducts = [];
 function updateStockSummary(){
-const products = allProducts || [];
+  const products = allProducts || [];
 
-const getStock = list =>
-list.reduce((sum, p) => sum + Number(p.stock || 0), 0);
+  const getStock = list =>
+    list.reduce((sum, p) => sum + Number(p.stock || 0), 0);
 
-const soccerwe = products.filter(
-p => p.category === "soccerwe"
-);
+  const soccerwe = products.filter(
+    p => p.category === "soccerwe"
+  );
 
-const otherProducts = products.filter(
-p => p.category !== "soccerwe"
-);
+  const otherProducts = products.filter(
+    p => p.category !== "soccerwe"
+  );
 
-document.getElementById(“soccerweStock”).textContent =
-getStock(soccerwe) + "個";
+  document.getElementById("soccerweStock").textContent =
+    getStock(soccerwe) + "個";
 
-document.getElementById(“otherTotalStock”).textContent =
-getStock(otherProducts) + "個";
+  document.getElementById("otherTotalStock").textContent =
+    getStock(otherProducts) + "個";
 
-document.getElementById(“representativeStock”).textContent =
-getStock(soccerwe.filter(p => p.item_type === "代表")) + "個";
+  document.getElementById("representativeStock").textContent =
+    getStock(soccerwe.filter(p => p.item_type === "代表")) + "個";
 
-document.getElementById(“clubStock”).textContent =
-getStock(soccerwe.filter(p => p.item_type === "クラブ")) + "個";
+  document.getElementById("clubStock").textContent =
+    getStock(soccerwe.filter(p => p.item_type === "クラブ")) + "個";
 
-document.getElementById(“totalStock”).textContent =
-getStock(products) + "個";
+  document.getElementById("totalStock").textContent =
+    getStock(products) + "個";
 
-document.getElementById(“otherCategoryStock”).innerHTML = "";
+  document.getElementById("otherCategoryStock").innerHTML = "";
 }
+
   async function loadProducts(){
 
   const { data, error } = await db
