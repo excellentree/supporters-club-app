@@ -411,21 +411,21 @@ p => p.category !== "soccerwe"
 );
 
 document.getElementById(“soccerweStock”).textContent =
-getStock(soccerwe) + “個”;
+getStock(soccerwe) + "個";
 
 document.getElementById(“otherTotalStock”).textContent =
-getStock(otherProducts) + “個”;
+getStock(otherProducts) + "個";
 
 document.getElementById(“representativeStock”).textContent =
-getStock(soccerwe.filter(p => p.item_type === “代表”)) + “個”;
+getStock(soccerwe.filter(p => p.item_type === "代表")) + "個";
 
 document.getElementById(“clubStock”).textContent =
-getStock(soccerwe.filter(p => p.item_type === “クラブ”)) + “個”;
+getStock(soccerwe.filter(p => p.item_type === "クラブ")) + "個";
 
 document.getElementById(“totalStock”).textContent =
-getStock(products) + “個”;
+getStock(products) + "個";
 
-document.getElementById(“otherCategoryStock”).innerHTML = “”;
+document.getElementById(“otherCategoryStock”).innerHTML = "";
 }
   async function loadProducts(){
 
@@ -436,10 +436,10 @@ document.getElementById(“otherCategoryStock”).innerHTML = “”;
 .order("name", { ascending:true });
   
   if(error){
-console.error(“商品データ読み込みエラー:”, error);
+console.error("商品データ読み込みエラー:", error);
 
-document.getElementById(“emptyMessage”).textContent =
-“読み込みエラー: “ + error.message;
+document.getElementById("emptyMessage").textContent =
+"読み込みエラー: " + error.message;
 
 return;
 }
