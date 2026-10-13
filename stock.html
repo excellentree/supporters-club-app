@@ -296,9 +296,15 @@ th:first-child{
 </select>
 
 </div>
-    <div class="filter-area">
+  <div class="filter-area" id="countryOrClubFilterArea">
+  <label for="countryOrClubFilter">国・クラブ名</label>
+  <select id="countryOrClubFilter" onchange="updateModelFilter(); filterStock()">
+    <option value="">国・クラブ名を選択</option>
+  </select>
+</div>
+<div class="filter-area">
   <label for="modelFilter">MODEL</label>
- <select id="modelFilter" onchange="filterStock()">
+  <select id="modelFilter" onchange="filterStock()">
     <option value="">MODELを選択</option>
   </select>
 </div>
