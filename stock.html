@@ -516,7 +516,8 @@ const type =
   document.getElementById("typeFilter").value;
   const model =
     document.getElementById("modelFilter").value;
-
+const countryOrClub =
+  document.getElementById("countryOrClubFilter").value;
   const table =
     document.getElementById("stockTable");
 
@@ -542,7 +543,14 @@ const type =
     if(model && product.model !== model){
       return false;
     }
-
+// 国・クラブ名で絞り込み
+if(
+  category === "soccerwe" &&
+  countryOrClub &&
+  product.country_or_club !== countryOrClub
+){
+  return false;
+}
     return true;
 
   });
