@@ -660,7 +660,9 @@ const type =
 
         // soccerwe
         if(category === "soccerwe"){
-
+　　　　　　if(type === "all"){
+         return product.category === "soccerwe";
+　　　　　　　}
           if(type === "country"){
             return product.category === "soccerwe"
               && product.item_type === "代表";
