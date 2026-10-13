@@ -435,7 +435,7 @@ function updateStockSummary(){
 
   const { data, error } = await db
     .from("products")
-   .select("id,name,price,model,base,version,average_cost,category,item_type,stock,image_url")
+  .select("id,name,price,model,base,version,average_cost,category,item_type,region,country_or_club,stock,image_url")
     .order("model", { ascending:true })
 .order("name", { ascending:true });
   
