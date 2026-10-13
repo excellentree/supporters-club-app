@@ -645,108 +645,105 @@ function editStockProduct(id){
 
 function updateModelFilter(){
 
-  const category =
-    document.getElementById("categoryFilter").value;
+const category =
+document.getElementById(“categoryFilter”).value;
 
-  const type =
-    document.getElementById("typeFilter").value;
+const type =
+document.getElementById(“typeFilter”).value;
 
-  const modelFilter =
-    document.getElementById("modelFilter");
+const modelFilter =
+document.getElementById(“modelFilter”);
 
-  const countryOrClubFilter =
-    document.getElementById("countryOrClubFilter");
+const countryOrClubFilter =
+document.getElementById(“countryOrClubFilter”);
 
-  const selectedCountryOrClub =
-    countryOrClubFilter.value;
+const selectedCountryOrClub =
+countryOrClubFilter.value;
 
-  modelFilter.innerHTML =
-    '<option value="">MODELを選択</option>';
+modelFilter.innerHTML =
+‘MODELを選択’;
 
-  // SOCCERWE：国・クラブ名の選択肢を作成
-  if(category === "soccerwe"){
+if(category === “soccerwe”){
 
-    const countryOrClubs = [...new Set(
-      allProducts
-        .filter(product => {
-          if(product.category !== "soccerwe"){
-            return false;
-          }
-
-          if(type === "country"){
-            return product.item_type === "代表";
-          }
-
-          if(type === "club"){
-            return product.item_type === "クラブ";
-          }
-
-          return false;
-        })
-        .map(product => product.country_or_club)
-        .filter(Boolean)
-    )].sort();
-
-    countryOrClubFilter.innerHTML =
-      '<option value="">国・クラブ名を選択</option>';
-
-    countryOrClubs.forEach(name => {
-      const option = document.createElement("option");
-      option.value = name;
-      option.textContent = name;
-      countryOrClubFilter.appendChild(option);
-    });
-
-    // 選択した国・クラブに該当するMODELだけ表示
-    const models = [...new Set(
-      allProducts
-        .filter(product =>
-          product.category === "soccerwe" &&
-          (
-            type === "all" ||
-            (type === "country" && product.item_type === "代表") ||
-            (type === "club" && product.item_type === "クラブ")
-          ) &&
-          (
-            !selectedCountryOrClub ||
-            product.country_or_club === selectedCountryOrClub
-          )
-        )
-        .map(product => product.model)
-        .filter(Boolean)
-    )].sort();
-
-    models.forEach(model => {
-      const option = document.createElement("option");
-      option.value = model;
-      option.textContent = model;
-      modelFilter.appendChild(option);
-    });
-
-    return;
-  }
-
-  // その他カテゴリー：VERSIONに応じてMODELを絞り込む
-  const version =
-    document.getElementById("versionFilter").value;
-
-  const models = [...new Set(
-    allProducts
-      .filter(product =>
-        category !== "" &&
-        product.category === category &&
-        product.version === version
+const countryOrClubs = [...new Set(
+  allProducts
+    .filter(product => {
+      if(product.category !== "soccerwe"){
+        return false;
+      }
+      if(type === "country"){
+        return product.item_type === "代表";
+      }
+      if(type === "club"){
+        return product.item_type === "クラブ";
+      }
+      return false;
+    })
+    .map(product => product.country_or_club)
+    .filter(Boolean)
+)].sort();
+// 現在の選択値を保持する
+const previousValue = countryOrClubFilter.value;
+countryOrClubFilter.innerHTML =
+  '<option value="">国・クラブ名を選択</option>';
+countryOrClubs.forEach(name => {
+  const option = document.createElement("option");
+  option.value = name;
+  option.textContent = name;
+  countryOrClubFilter.appendChild(option);
+});
+if(countryOrClubs.includes(previousValue)){
+  countryOrClubFilter.value = previousValue;
+}
+const currentCountryOrClub =
+  countryOrClubFilter.value;
+const models = [...new Set(
+  allProducts
+    .filter(product =>
+      product.category === "soccerwe" &&
+      (
+        type === "all" ||
+        (type === "country" && product.item_type === "代表") ||
+        (type === "club" && product.item_type === "クラブ")
+      ) &&
+      (
+        !currentCountryOrClub ||
+        product.country_or_club === currentCountryOrClub
       )
-      .map(product => product.model)
-      .filter(Boolean)
-  )].sort();
+    )
+    .map(product => product.model)
+    .filter(Boolean)
+)].sort();
+models.forEach(model => {
+  const option = document.createElement("option");
+  option.value = model;
+  option.textContent = model;
+  modelFilter.appendChild(option);
+});
+return;
 
-  models.forEach(model => {
-    const option = document.createElement("option");
-    option.value = model;
-    option.textContent = model;
-    modelFilter.appendChild(option);
-  });
+}
+
+const version =
+document.getElementById(“versionFilter”).value;
+
+const models = […new Set(
+allProducts
+.filter(product =>
+category !== “” &&
+product.category === category &&
+product.version === version
+)
+.map(product => product.model)
+.filter(Boolean)
+)].sort();
+
+models.forEach(model => {
+const option = document.createElement(“option”);
+option.value = model;
+option.textContent = model;
+modelFilter.appendChild(option);
+});
 }
 function toggleVersionFilter(){
 
