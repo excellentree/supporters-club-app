@@ -687,8 +687,10 @@ function updateModelFilter(){
         .filter(Boolean)
     )].sort();
 
-    countryOrClubFilter.innerHTML =
-      '<option value="">国・クラブ名を選択</option>';
+    const previousValue = countryOrClubFilter.value;
+
+countryOrClubFilter.innerHTML =
+  '<option value="">国・クラブ名を選択</option>';
 
     countryOrClubs.forEach(name => {
       const option = document.createElement("option");
@@ -696,7 +698,13 @@ function updateModelFilter(){
       option.textContent = name;
       countryOrClubFilter.appendChild(option);
     });
-
+if(
+  [...countryOrClubFilter.options].some(
+    option => option.value === previousValue
+  )
+){
+  countryOrClubFilter.value = previousValue;
+}
     // 選択した国・クラブに該当するMODELだけ表示
     const models = [...new Set(
       allProducts
