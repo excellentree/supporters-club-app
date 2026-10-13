@@ -298,7 +298,7 @@ th:first-child{
 </div>
   <div class="filter-area" id="countryOrClubFilterArea">
   <label for="countryOrClubFilter">国・クラブ名</label>
-  <select id="countryOrClubFilter" onchange="document.getElementById('modelFilter').value=''; updateModelFilter(); filterStock()">
+  <select id="countryOrClubFilter" onchange="updateModelFilter(); filterStock()">
     <option value="">国・クラブ名を選択</option>
   </select>
 </div>
@@ -537,17 +537,7 @@ const type =
     if(category && product.category !== category){
       return false;
     }
-    // 国・クラブ名で絞り込み
-    const countryOrClub =
-      document.getElementById("countryOrClubFilter").value;
 
-    if(
-      category === "soccerwe" &&
-      countryOrClub &&
-      product.country_or_club !== countryOrClub
-    ){
-      return false;
-    }
     // MODELで絞り込み
     if(model && product.model !== model){
       return false;
@@ -668,70 +658,28 @@ const type =
 
   modelFilter.innerHTML =
     '<option value="">MODELを選択</option>';
-  const countryOrClubFilter =
-    document.getElementById("countryOrClubFilter");
-  countryOrClubFilter.innerHTML =
-    '<option value="">国・クラブ名を選択</option>';
-  const countryOrClubs = [...new Set(
-    allProducts
-      .filter(product => {
-        if(product.category !== "soccerwe"){
-          return false;
-        }
-        if(type === "country"){
-          return product.item_type === "代表";
-        }
-        if(type === "club"){
-          return product.item_type === "クラブ";
-        }
-        return false;
-      })
-      .map(product => product.country_or_club)
-      .filter(Boolean)
-  )].sort();
-  countryOrClubs.forEach(name => {
-    const option = document.createElement("option");
-    option.value = name;
-    option.textContent = name;
-    countryOrClubFilter.appendChild(option);
-  });
-    const selectedCountryOrClub =
-    countryOrClubFilter.value;
 
   const models = [...new Set(
+
     allProducts
       .filter(product => {
+
+        // soccerwe
         if(category === "soccerwe"){
-          if(product.category !== "soccerwe"){
-            return false;
+　　　　　　if(type === "all"){
+         return product.category === "soccerwe";
+　　　　　　　}
+          if(type === "country"){
+            return product.category === "soccerwe"
+              && product.item_type === "代表";
           }
 
-          if(type === "country" && product.item_type !== "代表"){
-            return false;
+          if(type === "club"){
+            return product.category === "soccerwe"
+              && product.item_type === "クラブ";
           }
 
-          if(type === "club" && product.item_type !== "クラブ"){
-            return false;
-          }
-
-          if(selectedCountryOrClub &&
-             product.country_or_club !== selectedCountryOrClub){
-            return false;
-          }
-
-          return true;
         }
-
-        if(category && category !== "soccerwe"){
-          return product.category === category
-            && product.version === version;
-        }
-
-        return false;
-      })
-      .map(product => product.model)
-      .filter(Boolean)
-  )];
 
         // その他カテゴリー
         if(category && category !== "soccerwe"){
@@ -750,6 +698,19 @@ const type =
 
   )];
 
+  models.forEach(model => {
+
+    const option =
+      document.createElement("option");
+
+    option.value = model;
+    option.textContent = model;
+
+    modelFilter.appendChild(option);
+
+  });
+
+}
 function toggleVersionFilter(){
 
   const category =
