@@ -289,7 +289,7 @@ th:first-child{
 <div class="filter-area" id="typeFilterArea">
   <label for="typeFilter">国 or クラブ</label>
 
-<select id="typeFilter" onchange="filterStock()">
+<select id="typeFilter" onchange="updateModelFilter(); filterStock()">
   <option value="all">すべて</option>
   <option value="country">国</option>
   <option value="club">クラブ</option>
