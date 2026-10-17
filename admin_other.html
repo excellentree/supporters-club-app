@@ -124,7 +124,12 @@ button:hover{
 
   <label>画像</label>
   <input type="file" id="imageInput" accept="image/*">
-
+<label style="margin-top:15px;">画像アップロードキー</label>
+<input
+  type="password"
+  id="uploadKeyInput"
+  placeholder="CloudflareのUPLOAD_SECRET"
+  autocomplete="new-password">
   <label>品名</label>
   <input type="text" id="nameInput">
 
@@ -207,25 +212,32 @@ document.getElementById("imageInput").addEventListener("change", async function(
 
   const fileName = Date.now() + "-" + file.name;
 
-  const { data, error } = await sb
-    .storage
-    .from("product-images")
-    .upload(fileName, file);
+  const uploadKey = document.getElementById("uploadKeyInput").value.trim();
 
-  if(error){
-    console.error(error);
-    alert("画像のアップロードに失敗しました");
-    return;
+if (!uploadKey) {
+  alert("画像アップロードキーを入力してください");
+  return;
+}
+
+const response = await fetch(
+  "https://supporters-image-api.excellentree-55.workers.dev/upload",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": file.type,
+      "X-Upload-Key": uploadKey
+    },
+    body: file
   }
+);
 
-  const { data: publicData } = sb
-    .storage
-    .from("product-images")
-    .getPublicUrl(fileName);
+const result = await response.json();
 
-  uploadedImageUrl = publicData.publicUrl;
+if (!response.ok) {
+  throw new Error(result.error || result.message || "アップロード失敗");
+}
 
-  
+uploadedImageUrl = result.url;
 });
   document.getElementById("registerButton").addEventListener("click", async function(){
 
