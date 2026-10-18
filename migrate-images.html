@@ -47,7 +47,7 @@ document.getElementById("check").addEventListener("click", async () => {
           offset,
           sortBy: {column: "name", order: "asc"}
         });
-        log.textContent = "取得結果：" + JSON.stringify(data);
+log.textContent = "取得結果：" + JSON.stringify(data);
         if (error) throw error;
         if (!data || data.length === 0) break;
 
