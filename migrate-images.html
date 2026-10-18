@@ -35,29 +35,7 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const log = document.getElementById("log");
 const button = document.getElementById("start");
 document.getElementById("checkUpdates")?.addEventListener("click", async () => {
-  const log = document.getElementById("log");
-  log.textContent = "コピー記録を確認中…";
-
-  try {
-    const mapping = JSON.parse(
-      localStorage.getItem("supporters_r2_image_migration_v1") || "{}"
-    );
-
-    const entries = Object.entries(mapping);
-
-    log.textContent =
-      "R2コピー記録の確認結果\n\n" +
-      "記録件数：" + entries.length + "件\n\n" +
-      "先頭5件：\n" +
-      entries.slice(0, 5).map(([oldPath, newUrl]) =>
-        oldPath + "\n→ " + newUrl
-      ).join("\n\n") +
-      "\n\n商品データはまだ変更していません。";
-  } catch (error) {
-    log.textContent = "確認エラー：\n" +
-      (error.message || String(error));
-  }
-});
+  
 button.addEventListener("click", async () => {
   const uploadKey = document.getElementById("uploadKey").value.trim();
   if (!uploadKey) {
