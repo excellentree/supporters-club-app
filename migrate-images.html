@@ -31,7 +31,7 @@ document.getElementById("check").addEventListener("click", async () => {
   log.textContent = "Supabaseに接続中…";
   try {
     const result = await sb.storage.from(BUCKET).list("", {
-      limit: 10,
+      limit: 100,
       offset: 0,
       sortBy: { column: "name", order: "asc" }
     });
