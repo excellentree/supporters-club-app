@@ -30,7 +30,7 @@ const log = document.getElementById("log");
 document.getElementById("check").addEventListener("click", async () => {
   log.textContent = "Supabaseに接続中…";
   try {
-       const files = [];
+           const files = [];
     let offset = 0;
 
     while (true) {
@@ -48,6 +48,11 @@ document.getElementById("check").addEventListener("click", async () => {
       offset += data.length;
     }
 
+    log.textContent =
+      "取得成功\n" +
+      "返却件数: " + files.length + "\n\n" +
+      "返却データ:\n" +
+      JSON.stringify(files, null, 2);
     log.textContent =
       "取得成功\n" +
       "返却件数: " + files.length + "\n\n" +
