@@ -1,26 +1,22 @@
 
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SUPPORTERS CULB 画像移行</title>
+<title>SUPPORTERS CULB 画像確認</title>
 <style>
 body{font-family:Arial,sans-serif;padding:20px;max-width:700px;margin:auto;background:#f7f7f7}
 button{padding:12px 18px;margin:8px 0;border:0;border-radius:8px;background:#222;color:white;font-size:16px}
-input{width:100%;padding:10px;margin:8px 0;box-sizing:border-box}
 #log{white-space:pre-wrap;overflow-wrap:anywhere;background:white;padding:12px;border-radius:8px}
 </style>
 </head>
 <body>
 <h2>SUPPORTERS CULB</h2>
-<h3>既存画像の移行準備</h3>
-<p>このページでは画像の一覧と件数だけを確認します。画像のコピーや削除、商品データの更新は行いません。</p>
-
-<label>Cloudflare Workerのアップロードキー</label>
-<input id="uploadKey" type="password" autocomplete="off" placeholder="今回はまだ入力不要">
-
-<button id="check">Supabaseの画像を確認</button>
+<h3>Supabase画像の取得テスト</h3>
+<p>このテストは画像一覧の取得だけを行います。画像のコピー・削除・商品データの変更は行いません。</p>
+<button id="check">画像一覧を確認</button>
 <div id="log">まだ確認していません。</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -28,51 +24,35 @@ input{width:100%;padding:10px;margin:8px 0;box-sizing:border-box}
 const SUPABASE_URL = "https://juzrxqrabrvhlwvnvton.supabase.co";
 const SUPABASE_KEY = "sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
 const BUCKET = "product-images";
-
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const log = document.getElementById("log");
 
 document.getElementById("check").addEventListener("click", async () => {
-  log.textContent = "画像一覧を確認中…";
-  let total = 0;
-  let folders = [""];
-  let files = [];
+  log.textContent = "Supabaseに接続中…";
   try {
-    while (folders.length) {
-      const folder = folders.shift();
-      let offset = 0;
-      while (true) {
-        const {data, error} = await sb.storage.from(BUCKET).list(folder, {
-          limit: 100,
-          offset,
-          sortBy: {column: "name", order: "asc"}
-        });
-log.textContent = "取得結果：" + JSON.stringify(data);
-        if (error) throw error;
-        if (!data || data.length === 0) break;
+    const result = await sb.storage.from(BUCKET).list("", {
+      limit: 10,
+      offset: 0,
+      sortBy: { column: "name", order: "asc" }
+    });
 
-        for (const item of data) {
-          const path = folder ? folder + "/" + item.name : item.name;
-          if (item.name) {
-  files.push(path);
-  total++;
-}
-        }
-        if (data.length < 100) break;
-        offset += data.length;
-      }
+    if (result.error) {
+      log.textContent = "取得エラー:\n" +
+        result.error.message + "\n\n詳細:\n" +
+        JSON.stringify(result.error, null, 2);
+      return;
     }
+
     log.textContent =
-      "確認完了！\n\n画像ファイル数：" + total +
-      "\n\n最初の20件：\n" + files.slice(0,20).join("\n") +
-      "\n\nまだ画像のコピー・削除・URL更新はしていません。";
-  } catch (e) {
-    log.textContent = "確認できませんでした。\n" +
-      (e.message || String(e)) +
-      "\n\nバケット名やSupabaseの権限を確認する必要があります。";
+      "取得成功\n" +
+      "返却件数: " + (result.data?.length ?? 0) + "\n\n" +
+      "返却データ:\n" +
+      JSON.stringify(result.data, null, 2);
+  } catch (error) {
+    log.textContent = "処理エラー:\n" +
+      (error?.message || String(error));
   }
 });
 </script>
 </body>
 </html>
-
