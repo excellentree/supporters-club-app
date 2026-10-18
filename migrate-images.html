@@ -52,12 +52,10 @@ document.getElementById("check").addEventListener("click", async () => {
 
         for (const item of data) {
           const path = folder ? folder + "/" + item.name : item.name;
-          if (item.id === null) {
-            folders.push(path);
-          } else {
-            files.push(path);
-            total++;
-          }
+          if (item.name) {
+  files.push(path);
+  total++;
+}
         }
         if (data.length < 100) break;
         offset += data.length;
