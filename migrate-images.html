@@ -116,7 +116,7 @@ button.addEventListener("click", async () => {
           method: "POST",
           headers: {
             "Content-Type": type,
-            "X-Upload-Key": uploadKey
+          "X-Image-Key": path,
           },
           body: blob
         });
