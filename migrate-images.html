@@ -115,9 +115,10 @@ button.addEventListener("click", async () => {
         const response = await fetch(WORKER_URL + "/upload", {
           method: "POST",
           headers: {
-            "Content-Type": type,
-          "X-Image-Key": path,
-          },
+  "Content-Type": type,
+  "X-Upload-Key": uploadKey,
+  "X-Image-Key": path,
+},
           body: blob
         });
 
