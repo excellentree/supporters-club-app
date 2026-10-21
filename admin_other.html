@@ -549,7 +549,7 @@ loadOtherProducts().then(() => {
   </script> 
 <script>
   async function editOtherProduct(id){
-  const { data: product, error } = await db
+  const { data: product, error } = await sb
     .from("products")
     .select("*")
     .eq("id", id)
