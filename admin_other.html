@@ -520,7 +520,7 @@ loadOtherProducts();
     return;
   }
 
-  const { error } = await sb
+  const { data: product, error } = await sb
     .from("products")
     .delete()
     .eq("id", id);
