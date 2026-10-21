@@ -285,7 +285,7 @@ if(editingProductId){
   const result = await sb
     .from("products")
     .update({
-      image_url: uploadedImageUrl,
+      image_url: uploadedImageUrl || undefined,
       name: name,
       version: version,
       model: model,
