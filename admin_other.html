@@ -575,6 +575,9 @@ loadOtherProducts().then(() => {
   });
 
   uploadedImageUrl = product.image_url || "";
+    const preview = document.getElementById("imagePreview");
+preview.src = uploadedImageUrl;
+preview.style.display = uploadedImageUrl ? "block" : "none";
  <img id="imagePreview" style="display:none;width:120px;height:120px;object-fit:contain;margin-top:10px;">
    editingProductId = product.id;
 
