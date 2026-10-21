@@ -513,7 +513,12 @@ editButton.addEventListener("click", function(){
   });
 }
 
-loadOtherProducts();
+loadOtherProducts().then(() => {
+  const id = new URLSearchParams(window.location.search).get("id");
+  if (id) {
+    editOtherProduct(id);
+  }
+});
   async function deleteOtherProduct(id){
 
   if(!confirm("この商品を削除しますか？")){
