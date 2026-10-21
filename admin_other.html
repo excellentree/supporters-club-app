@@ -533,11 +533,48 @@ loadOtherProducts();
 
   alert("商品を削除しました！");
 
-  loadOtherProducts();
+loadOtherProducts().then(() => {
+  const id = new URLSearchParams(window.location.search).get("id");
+  if (id) {
+    editOtherProduct(id);
+  }
+});
 
 }
   </script> 
 <script>
+  async function editOtherProduct(id){
+  const { data: product, error } = await db
+    .from("products")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if(error || !product){
+    alert("商品データを読み込めませんでした");
+    return;
+  }
+
+  document.getElementById("nameInput").value = product.name || "";
+  document.getElementById("versionInput").value = product.version || "";
+  document.getElementById("modelInput").value = product.model || "";
+  document.getElementById("countryClubInput").value = product.country_or_club || "";
+  document.getElementById("priceInput").value = product.price || "";
+  document.getElementById("averageCostInput").value = product.average_cost || "";
+  document.getElementById("stockInput").value = product.stock || 0;
+
+  document.querySelectorAll(".category-button").forEach(btn => {
+    btn.classList.toggle("selected", btn.textContent.trim() === product.category);
+  });
+
+  uploadedImageUrl = product.image_url || "";
+  editingProductId = product.id;
+
+  document.getElementById("productInfo").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+  
 function selectCategory(button){
 
   document.querySelectorAll(".category-button").forEach(btn=>{
