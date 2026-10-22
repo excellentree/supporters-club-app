@@ -240,7 +240,15 @@ if (!response.ok) {
 }
 
   uploadedImageUrl = result.url;
+const reader = new FileReader();
 
+reader.onload = function(e){
+  const preview = document.getElementById("imagePreview");
+  preview.src = e.target.result;
+  preview.style.display = "block";
+};
+
+reader.readAsDataURL(file);
   } catch(error) {
     uploadedImageUrl = "";
     console.error("画像アップロード失敗:", error);
