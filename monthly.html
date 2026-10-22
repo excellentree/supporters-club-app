@@ -201,7 +201,8 @@ th{
             <th>売上</th>
             <th>数量</th>
             <th>仕入</th>
-            <th>粗利益</th>
+　　　　　　　　<th>送料</th>
+　　　　　　　　<th>粗利益</th>
           </tr>
         </thead>
 
@@ -415,7 +416,9 @@ async function loadMonthlySales(){
       <td>
         ¥${costTotal.toLocaleString()}
       </td>
-
+<td>
+  ¥${shippingTotal.toLocaleString()}
+</td>
       <td>
         ¥${profit.toLocaleString()}
       </td>
