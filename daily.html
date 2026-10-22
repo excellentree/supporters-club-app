@@ -723,7 +723,57 @@ document.getElementById("modelSelect").addEventListener("change", () => {
       String(product.name).trim().includes(name) &&
       String(product.model || "").trim() === model
     );
+  // その他商品は土台を経由せずVERSIONを表示
+  const categoryType =
+    document.querySelector("#categoryButtons button.active")?.value;
 
+  if (categoryType === "その他") {
+
+    const versionButtons =
+      document.getElementById("versionButtons");
+
+    versionButtons.innerHTML = "";
+
+    versionSelect.innerHTML =
+      '<option value="">VERSIONを選択してください</option>';
+
+    const versions = [
+      ...new Set(
+        products
+          .map(product => String(product.version || "").trim())
+          .filter(Boolean)
+      )
+    ];
+
+    versions.forEach(version => {
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = version;
+
+      button.addEventListener("click", () => {
+
+        document
+          .querySelectorAll("#versionButtons button")
+          .forEach(btn => btn.classList.remove("active"));
+
+        button.classList.add("active");
+        versionSelect.value = version;
+
+        versionSelect.dispatchEvent(new Event("change"));
+      });
+
+      versionButtons.appendChild(button);
+
+      const option = document.createElement("option");
+      option.value = version;
+      option.textContent = version;
+
+      versionSelect.appendChild(option);
+    });
+
+    return;
+  }
   /* 土台 */
   const bases = [
     ...new Set(
