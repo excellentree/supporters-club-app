@@ -587,7 +587,9 @@ loadOtherProducts().then(() => {
   });
 
   uploadedImageUrl = product.image_url || "";
-    
+    const preview = document.getElementById("imagePreview");
+preview.src = product.image_url || "";
+preview.style.display = product.image_url ? "block" : "none";
 
    editingProductId = product.id;
 
