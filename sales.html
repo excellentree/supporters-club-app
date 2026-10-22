@@ -350,6 +350,7 @@ document.getElementById("salesMonth").value =
   let totalProfit = 0;
   let totalDiscount = 0;
   let totalCost = 0;
+  let totalShipping = 0;
 
   (data || []).forEach(sale => {
 
@@ -389,6 +390,7 @@ document.getElementById("salesMonth").value =
     totalDiscount +=
       Number(sale.discount || 0);
 　　　totalCost += costTotal;
+    totalShipping += shippingTotal;
   });
   const monthlyTable =
     document.getElementById("monthlySalesTable");
@@ -489,6 +491,8 @@ document.getElementById("salesMonth").value =
     "¥" + totalDiscount.toLocaleString();
 document.getElementById("costTotal").textContent =
   "¥" + totalCost.toLocaleString();
+    document.getElementById("shippingTotal").textContent =
+  "¥" + totalShipping.toLocaleString();
   }
 loadMonthlySales();
 
