@@ -1462,6 +1462,28 @@ document.getElementById("setItemQuantityDisplay").textContent = "1";
   render();
 
 }
+  function updateSaleShipping(saleIndex, value){
+
+  const sales = getSales();
+  const sale = sales[saleIndex];
+
+  if(!sale){
+    return;
+  }
+
+  const newShipping = Number(value);
+
+  if(!Number.isFinite(newShipping) || newShipping < 0){
+    alert("送料は0以上の数字を入力してください");
+    render();
+    return;
+  }
+
+  sale.shipping = newShipping;
+
+  saveSales(sales);
+  render();
+}
   function updateSetProfit(saleIndex, value){
 
   const sales = getSales();
@@ -1605,6 +1627,14 @@ totalCost += costTotal;
     : sale.quantity
 }</td>
   <td>¥${shippingTotal.toLocaleString()}</td>
+    <td>
+    <input
+      type="number"
+      value="${Number(sale.shipping || 0)}"
+      style="width:100px;padding:8px;border:1px solid #ddd;border-radius:8px;text-align:right;font-size:16px;"
+      onchange="updateSaleShipping(${index}, this.value)"
+    >
+  </td>
   <td>¥${costTotal.toLocaleString()}</td>
 
 
