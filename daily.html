@@ -684,7 +684,18 @@ initialBaseButtons.innerHTML = "";
 });
 /* MODEL変更 */
 document.getElementById("modelSelect").addEventListener("change", () => {
+  // その他商品では土台を使わない
+  const category =
+    document.getElementById("productCategory").value;
 
+  const baseArea =
+    document.getElementById("baseSelect").parentElement;
+
+  if (category !== "" && category !== "soccerwe") {
+    baseArea.style.display = "none";
+  } else {
+    baseArea.style.display = "";
+  }
   const name =
     document.getElementById("productName").value.trim();
 
