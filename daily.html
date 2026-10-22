@@ -1653,7 +1653,8 @@ document.getElementById("totalDiscount").textContent =
   "¥" + totalDiscount.toLocaleString();
 document.getElementById("totalCost").textContent =
   "¥" + totalCost.toLocaleString();
-  empty.style.display =
+  document.getElementById("totalShipping").textContent =
+  "¥" + totalShipping.toLocaleString();empty.style.display =
     sales.length === 0 ? "block" : "none";
 
 }
