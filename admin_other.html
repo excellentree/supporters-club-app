@@ -509,6 +509,9 @@ editButton.addEventListener("click", function(){
   });
 
   uploadedImageUrl = product.image_url;
+  const preview = document.getElementById("imagePreview");
+preview.src = product.image_url || "";
+preview.style.display = product.image_url ? "block" : "none";
 　document.getElementById("imagePreview").src = product.image_url || "";
   editingProductId = product.id;
   document.getElementById("productInfo").scrollIntoView({
