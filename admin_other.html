@@ -509,7 +509,8 @@ editButton.addEventListener("click", function(){
   });
 
   uploadedImageUrl = product.image_url;
-　editingProductId = product.id;
+　document.getElementById("imagePreview").src = product.image_url || "";
+  editingProductId = product.id;
   document.getElementById("productInfo").scrollIntoView({
 
     behavior:"smooth"
