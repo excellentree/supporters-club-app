@@ -329,8 +329,13 @@ if (!counts[key]) {
       }
     });
 
-    window.rankingCounts = Object.values(counts)
-      .sort((a, b) => b.count - a.count);
+    const selectedTeamType = document.querySelector(
+  '#teamType button.active'
+)?.dataset.value || "クラブ";
+
+window.rankingCounts = Object.values(counts)
+  .filter(item => item.itemType === selectedTeamType)
+  .sort((a, b) => b.count - a.count);
 
     if (status) {
       status.textContent =
