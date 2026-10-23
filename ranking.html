@@ -236,6 +236,7 @@ setupButtons("productType", value => {
 });
 setupButtons("teamType", value => {
   console.log("クラブ／代表:", value);
+loadRankingSales();
   const filter = document.getElementById("teamFilter");
   filter.innerHTML = '<button type="button" class="active" data-value="all">すべて</button>';
   const options = value === "クラブ"
