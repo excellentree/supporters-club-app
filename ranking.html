@@ -262,7 +262,11 @@ setupButtons("teamFilter", value => {
 });
   
 /* ===== 売上データ読み込み・個数集計 ===== */
-
+function escapeRankingHtml(value) {
+  const div = document.createElement("div");
+  div.textContent = value ?? "";
+  return div.innerHTML;
+}
 async function loadRankingSales() {
   const status = document.getElementById("rankingStatus");
 
