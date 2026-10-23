@@ -334,6 +334,23 @@ async function loadRankingSales() {
     }
 
     console.log("販売個数ランキング:", window.rankingCounts);
+
+    const list = document.getElementById("rankingList");
+
+    if (window.rankingCounts.length === 0) {
+      list.innerHTML = "<p>集計できる販売データがありません。</p>";
+    } else {
+      list.innerHTML = window.rankingCounts.map((item, index) => `
+        <div class="ranking-row">
+          <div class="rank-number">
+            ${index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1}
+          </div>
+          <div class="team-name">${escapeRankingHtml(item.name)}</div>
+          <div class="sales-count">${item.count}体</div>
+        </div>
+      `).join("");
+    }
+
   } catch (error) {
     console.error("ランキング読み込みエラー:", error);
 
