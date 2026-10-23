@@ -295,19 +295,19 @@ async function loadRankingSales() {
 
       if (!name || (!productId && !country)) return;
 
-      const key = productId || `${name}|${item.model || ""}|${item.version || ""}`;
+      const key = `${itemType}|${country}`;
 
-      if (!counts[key]) {
-        counts[key] = {
-          name,
-          productId,
-          category,
-          itemType,
-          region,
-          country,
-          count: 0
-        };
-      }
+if (!counts[key]) {
+  counts[key] = {
+    name: country,
+    productId: "",
+    category,
+    itemType,
+    region,
+    country,
+    count: 0
+  };
+}
 
       counts[key].count += Math.max(1, Number(quantity) || 1);
     }
