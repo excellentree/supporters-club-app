@@ -1,1 +1,255 @@
-
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SUPPORTERS CULB ランキング</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  color: #111;
+}
+header {
+  background: #111;
+  color: #fff;
+  padding: 24px 18px;
+}
+header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+header p {
+  margin: 8px 0 0;
+  color: #bbb;
+  font-size: 13px;
+}
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px 14px 50px;
+}
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 16px;
+}
+h2 {
+  margin: 0 0 16px;
+  font-size: 20px;
+}
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+button, input, select {
+  font: inherit;
+}
+button {
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #111;
+  border-radius: 10px;
+  padding: 11px 14px;
+  cursor: pointer;
+}
+button.active {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+.period-buttons button {
+  flex: 1 1 28%;
+}
+.date-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+.date-fields label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+.date-fields input {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+}
+#customDates {
+  display: none;
+}
+.note {
+  color: #777;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.ranking-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+}
+.ranking-row:last-child {
+  border-bottom: none;
+}
+.rank-number {
+  width: 36px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+.team-name {
+  flex: 1;
+  font-weight: bold;
+}
+.sales-count {
+  font-weight: bold;
+  white-space: nowrap;
+}
+#rankingList {
+  color: #777;
+  text-align: center;
+  padding: 20px 0;
+}
+.back {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  background: #111;
+  color: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  margin-top: 20px;
+}
+@media (max-width: 480px) {
+  .date-fields {
+    grid-template-columns: 1fr;
+  }
+  .card {
+    padding: 15px;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>SUPPORTERS CULB</h1>
+  <p>TEAM RANKING</p>
+</header>
+<main class="container">
+  <section class="card">
+    <h2>ランキング対象</h2>
+    <div class="button-row" id="productType">
+      <button type="button" class="active" data-value="all">全商品</button>
+      <button type="button" data-value="soccerwe">Soccerwe限定</button>
+    </div>
+    <p class="note">
+      全商品は、チームを特定できるSoccerwe商品とその他商品を対象にする予定です。
+    </p>
+  </section>
+  <section class="card">
+    <h2>カテゴリー</h2>
+    <div class="button-row" id="teamType">
+      <button type="button" class="active" data-value="クラブ">クラブ</button>
+      <button type="button" data-value="代表">代表</button>
+    </div>
+  </section>
+  <section class="card">
+    <h2>集計期間</h2>
+    <div class="button-row period-buttons" id="periodType">
+      <button type="button" data-value="day">DAY</button>
+      <button type="button" data-value="week">WEEK</button>
+      <button type="button" class="active" data-value="month">MONTH</button>
+      <button type="button" data-value="year">YEAR</button>
+      <button type="button" data-value="total">合計</button>
+      <button type="button" data-value="custom">期間指定</button>
+    </div>
+    <div id="customDates">
+      <div class="date-fields">
+        <div>
+          <label for="startDate">開始日</label>
+          <input type="date" id="startDate">
+        </div>
+        <div>
+          <label for="endDate">終了日</label>
+          <input type="date" id="endDate">
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="card" id="filterCard">
+    <h2>絞り込み</h2>
+    <div class="button-row" id="teamFilter">
+      <button type="button" class="active" data-value="all">すべて</button>
+    </div>
+    <p class="note">
+      クラブはリーグ別、代表は地域別に絞り込めるようにする予定です。
+    </p>
+  </section>
+  <section class="card">
+    <h2>🏆 販売数ランキング</h2>
+    <div id="rankingList">
+      これから販売データを接続します。
+    </div>
+    <p class="note">
+      ※現在は画面の土台です。順位と販売数はまだ実データではありません。
+    </p>
+  </section>
+  <a href="index.html" class="back">トップページへ戻る</a>
+</main>
+<script>
+function setupButtons(containerId, onSelect) {
+  const container = document.getElementById(containerId);
+  container.querySelectorAll("button").forEach(button => {
+    button.addEventListener("click", () => {
+      container.querySelectorAll("button").forEach(item => {
+        item.classList.remove("active");
+      });
+      button.classList.add("active");
+      onSelect(button.dataset.value);
+    });
+  });
+}
+setupButtons("productType", value => {
+  console.log("ランキング対象:", value);
+});
+setupButtons("teamType", value => {
+  console.log("クラブ／代表:", value);
+  const filter = document.getElementById("teamFilter");
+  filter.innerHTML = '<button type="button" class="active" data-value="all">すべて</button>';
+  const options = value === "クラブ"
+    ? ["プレミアリーグ", "ラリーガ", "ブンデスリーガ", "セリエA", "リーグアン", "その他リーグ"]
+    : ["ヨーロッパ", "アフリカ", "南米", "アジア"];
+  options.forEach(option => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.value = option;
+    button.textContent = option;
+    filter.appendChild(button);
+  });
+  setupButtons("teamFilter", selected => {
+    console.log("絞り込み:", selected);
+  });
+});
+setupButtons("periodType", value => {
+  document.getElementById("customDates").style.display =
+    value === "custom" ? "block" : "none";
+  console.log("集計期間:", value);
+});
+setupButtons("teamFilter", value => {
+  console.log("絞り込み:", value);
+});
+</script>
+</body>
+</html>
