@@ -3,6 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://juzrxqrabrvhlwvnvton.supabase.co";
+const SUPABASE_KEY = "sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+</script>
 <title>SUPPORTERS CULB ランキング</title>
 <style>
 * {
@@ -250,6 +260,89 @@ setupButtons("periodType", value => {
 setupButtons("teamFilter", value => {
   console.log("絞り込み:", value);
 });
+  
+/* ===== 売上データ読み込み・個数集計 ===== */
+
+async function loadRankingSales() {
+  const status = document.getElementById("rankingStatus");
+
+  if (status) {
+    status.textContent = "売上データを読み込み中...";
+  }
+
+  try {
+    const { data, error } = await db
+      .from("sales")
+      .select(
+        "sale_date, product_id, product_name, category, item_type, region, country_or_club, quantity, is_set, set_items"
+      );
+
+    if (error) throw error;
+
+    const counts = {};
+
+    function addItem(item, date, quantity = 1) {
+      const productId = item.productId || item.product_id || "";
+      const name = item.productName || item.product_name || "";
+      const category = item.category || "";
+      const itemType = item.itemType || item.item_type || "";
+      const region = item.region || "";
+      const country = item.countryOrClub || item.country_or_club || "";
+
+      if (!name || (!productId && !country)) return;
+
+      const key = productId || `${name}|${item.model || ""}|${item.version || ""}`;
+
+      if (!counts[key]) {
+        counts[key] = {
+          name,
+          productId,
+          category,
+          itemType,
+          region,
+          country,
+          count: 0
+        };
+      }
+
+      counts[key].count += Math.max(1, Number(quantity) || 1);
+    }
+
+    data.forEach(sale => {
+      if (sale.is_set && Array.isArray(sale.set_items)) {
+        sale.set_items.forEach(item => {
+          addItem(item, sale.sale_date, item.quantity || 1);
+        });
+      } else {
+        addItem({
+          productId: sale.product_id,
+          productName: sale.product_name,
+          category: sale.category,
+          itemType: sale.item_type,
+          region: sale.region,
+          countryOrClub: sale.country_or_club
+        }, sale.sale_date, sale.quantity);
+      }
+    });
+
+    window.rankingCounts = Object.values(counts)
+      .sort((a, b) => b.count - a.count);
+
+    if (status) {
+      status.textContent =
+        `売上データ読み込み完了：${data.length}件`;
+    }
+
+    console.log("販売個数ランキング:", window.rankingCounts);
+  } catch (error) {
+    console.error("ランキング読み込みエラー:", error);
+
+    if (status) {
+      status.textContent = "売上データを読み込めませんでした";
+    }
+  }
+}
+
 </script>
 </body>
 </html>
