@@ -230,11 +230,17 @@ setupButtons("teamType", value => {
   console.log("クラブ／代表:", value);
   loadRankingSales();
 });
+
 setupButtons("periodType", value => {
   document.getElementById("customDates").style.display =
     value === "custom" ? "block" : "none";
   console.log("集計期間:", value);
+  loadRankingSales();
 });
+
+document.getElementById("startDate").addEventListener("change", loadRankingSales);
+document.getElementById("endDate").addEventListener("change", loadRankingSales);
+
 
 /* ===== 売上データ読み込み・個数集計 ===== */
 function escapeRankingHtml(value) {
