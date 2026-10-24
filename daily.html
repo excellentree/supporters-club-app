@@ -942,6 +942,20 @@ categoryButtons.forEach(button => {
   });
 
 });
+  
+let selectedRankingType = "";
+
+document.querySelectorAll("#rankingTypeButtons button")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+      document.querySelectorAll("#rankingTypeButtons button")
+        .forEach(btn => btn.classList.remove("active"));
+
+      button.classList.add("active");
+      selectedRankingType = button.value;
+    });
+  });
+
   let selectedProduct = null;
   let setItems = [];
   const setQuantityInput = document.getElementById("quantity");
