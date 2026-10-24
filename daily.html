@@ -943,10 +943,12 @@ categoryButtons.forEach(button => {
   button.addEventListener("click", () => {
 
     if(button.value === "その他"){
-      document.getElementById("productCategory").style.display = "block";
-    }else{
-      document.getElementById("productCategory").style.display = "none";
-    }
+  document.getElementById("productCategory").style.display = "block";
+  document.getElementById("rankingTypeArea").style.display = "block";
+}else{
+  document.getElementById("productCategory").style.display = "none";
+  document.getElementById("rankingTypeArea").style.display = "none";
+}
 
   });
 
