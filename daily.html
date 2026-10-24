@@ -1357,7 +1357,7 @@ document.getElementById("setItemQuantityDisplay").textContent = "1";
       setItems[0].category || "",
 
     itemType:
-      setItems[0].itemType || "",
+    (document.querySelector("#categoryButtons button.active")?.value === "その他" ? selectedRankingType : setItems[0].itemType) || "",
 
     region:
       setItems[0].region || "",
