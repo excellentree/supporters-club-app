@@ -225,6 +225,8 @@ function setupButtons(containerId, onSelect) {
 }
 setupButtons("productType", value => {
   console.log("ランキング対象:", value);
+  const list = document.getElementById("rankingList");
+  list.innerHTML = '<p id="rankingStatus">読み込み中...</p>';
   loadRankingSales();
 });
 setupButtons("teamType", value => {
