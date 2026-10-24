@@ -289,34 +289,45 @@ if (!counts[key]) {
 
     data.forEach(sale => {
   const period = document.querySelector('#periodType button.active')?.dataset.value || "month";
-  const date = new Date(sale.sale_date);
-  const now = new Date();
-  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+const now = new Date();
+const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
 
+const filteredSales = data.filter(sale => {
   if (period === "total") return true;
   if (!sale.sale_date) return false;
+
+  const date = new Date(sale.sale_date);
+
   if (period === "day") return date >= start && date < end;
+
   if (period === "week") {
-    start.setDate(start.getDate() - ((start.getDay() + 6) % 7));
-    return date >= start && date < end;
+    const weekStart = new Date(start);
+    weekStart.setDate(weekStart.getDate() - ((weekStart.getDay() + 6) % 7));
+    return date >= weekStart && date < end;
   }
+
   if (period === "month") {
-    start.setDate(1);
-    return date >= start && date < end;
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    return date >= monthStart && date < end;
   }
+
   if (period === "year") {
-    start.setMonth(0, 1);
-    return date >= start && date < end;
+    const yearStart = new Date(now.getFullYear(), 0, 1);
+    return date >= yearStart && date < end;
   }
+
   if (period === "custom") {
     const startDate = document.getElementById("startDate").value;
     const endDate = document.getElementById("endDate").value;
-    if (!startDate || !endDate) return false;
-    return sale.sale_date >= startDate && sale.sale_date <= endDate;
+    if (!startDate || !endDate || startDate > endDate) return false;
+    return sale.sale_date >= startDate && sale.sale_date < endDate + "T23:59:59.999";
   }
+
   return true;
-}).forEach(sale => {
+});
+
+filteredSales.forEach(sale => {
       if (sale.is_set && Array.isArray(sale.set_items)) {
         sale.set_items.forEach(item => {
           addItem(item, sale.sale_date, item.quantity || 1);
