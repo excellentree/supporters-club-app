@@ -1,12 +1,248 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SUPPORTERS CULB 発注表</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5;color:#111}
+header{background:#111;color:white;padding:22px 16px}
+header h1{margin:0;font-size:24px}
+header p{margin:6px 0 0;color:#bbb;font-size:13px}
+.container{max-width:1100px;margin:auto;padding:20px 12px 50px}
+.section{background:white;border-radius:14px;padding:16px;margin-bottom:18px}
+h2{font-size:19px;margin:0 0 14px}
+.summary{background:#f5f5f5;padding:12px;border-radius:10px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;font-family:monospace}
+.total{font-weight:bold;font-size:20px;margin-top:12px}
+button,select{font-size:15px;border-radius:8px;padding:9px;border:1px solid #ddd}
+button{cursor:pointer}
+.copy{background:#111;color:white;border:0;width:100%;margin-top:12px;padding:13px;font-weight:bold}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:680px}
+th,td{padding:10px 7px;border-bottom:1px solid #eee;text-align:left;font-size:13px}
+th{color:#777}
+td img{width:48px;height:48px;object-fit:cover;border-radius:6px}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{background:#111;color:white;border:0;width:32px;height:34px;padding:0;font-size:19px}
+.qty span{min-width:22px;text-align:center;font-weight:bold}
+.stock{text-align:center}
+.filters{display:grid;gap:10px;margin-bottom:14px}
+.filters select{width:100%;background:white}
+.message{padding:20px;text-align:center;color:#777}
+.back{display:block;text-align:center;background:#111;color:white;text-decoration:none;padding:14px;border-radius:10px}
+</style>
 </head>
 <body>
-<h1>SUPPORTERS CULB 発注表</h1>
-<p>発注表を準備中です。</p>
+<header>
+<h1>SUPPORTERS CULB</h1>
+<p>SOCCERWE ORDER MANAGEMENT</p>
+</header>
+<div class="container">
+
+<div class="section">
+<h2>発注サマリー</h2>
+<div id="orderSummary" class="summary">商品を選択すると、ここに発注内容が表示されます。</div>
+<div id="orderTotal" class="total">TOTAL 0 PCS</div>
+<button class="copy" onclick="copyOrder()">発注内容をコピー</button>
+</div>
+
+<div class="section">
+<h2>商品一覧</h2>
+<div class="filters">
+<select id="typeFilter" onchange="renderProducts()">
+<option value="">代表・クラブ：すべて</option>
+<option value="代表">代表</option>
+<option value="クラブ">クラブ</option>
+</select>
+<select id="teamFilter" onchange="renderProducts()">
+<option value="">国・クラブ：すべて</option>
+</select>
+<select id="modelFilter" onchange="renderProducts()">
+<option value="">MODEL：すべて</option>
+</select>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr>
+<th>発注</th><th>画像</th><th>在庫数</th><th>商品名</th><th>MODEL</th><th>土台</th><th>VERSION</th>
+</tr></thead>
+<tbody id="productTable"></tbody>
+</table>
+</div>
+<div id="message" class="message">商品データを読み込んでいます…</div>
+</div>
+<a class="back" href="stock.html">在庫表へ戻る</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://juzrxqrabrvhlwvnvton.supabase.co";
+const SUPABASE_KEY = "sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+let products = [];
+const quantities = {};
+
+async function loadProducts(){
+  const {data,error} = await db
+    .from("products")
+    .select("id,name,model,base,version,category,item_type,region,country_or_club,stock,image_url,order_series,name_en")
+    .eq("category","soccerwe")
+    .order("model",{ascending:true})
+    .order("name",{ascending:true});
+
+  const message = document.getElementById("message");
+  if(error){
+    console.error(error);
+    message.textContent = "商品読み込みエラー：" + error.message;
+    return;
+  }
+
+  products = data || [];
+  buildFilters();
+  renderProducts();
+}
+
+function buildFilters(){
+  const teamFilter = document.getElementById("teamFilter");
+  const modelFilter = document.getElementById("modelFilter");
+  const oldTeam = teamFilter.value;
+  const oldModel = modelFilter.value;
+
+  teamFilter.innerHTML = '<option value="">国・クラブ：すべて</option>';
+  [...new Set(products.map(p=>p.country_or_club).filter(Boolean))].sort().forEach(name=>{
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    teamFilter.appendChild(option);
+  });
+  teamFilter.value = oldTeam;
+
+  modelFilter.innerHTML = '<option value="">MODEL：すべて</option>';
+  [...new Set(products.map(p=>p.model).filter(Boolean))].sort().forEach(name=>{
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    modelFilter.appendChild(option);
+  });
+  modelFilter.value = oldModel;
+}
+
+function renderProducts(){
+  const type = document.getElementById("typeFilter").value;
+  const team = document.getElementById("teamFilter").value;
+  const model = document.getElementById("modelFilter").value;
+  const table = document.getElementById("productTable");
+  table.innerHTML = "";
+
+  const filtered = products.filter(p=>
+    (!type || p.item_type === type) &&
+    (!team || p.country_or_club === team) &&
+    (!model || p.model === model)
+  );
+
+  filtered.forEach(p=>{
+    const tr = document.createElement("tr");
+    const qty = Number(quantities[p.id] || 0);
+    tr.innerHTML = `
+      <td><div class="qty">
+        <button type="button" onclick="changeQty(${p.id},-1)">−</button>
+        <span>${qty}</span>
+        <button type="button" onclick="changeQty(${p.id},1)">＋</button>
+      </div></td>
+      <td>${p.image_url ? `<img src="${p.image_url}" onerror="this.style.visibility='hidden'">` : ""}</td>
+      <td class="stock">${Number(p.stock || 0)}</td>
+      <td>${escapeHtml(p.name || "")}</td>
+      <td>${escapeHtml(p.model || "")}</td>
+      <td>${escapeHtml(p.base || "")}</td>
+      <td>${escapeHtml(p.version || "")}</td>`;
+    table.appendChild(tr);
+  });
+
+  document.getElementById("message").textContent =
+    filtered.length ? "" : "該当する商品がありません";
+  updateSummary();
+}
+
+function escapeHtml(value){
+  return String(value).replace(/[&<>"']/g, c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+function changeQty(id,amount){
+  quantities[id] = Math.max(0,Number(quantities[id] || 0) + amount);
+  renderProducts();
+}
+
+function updateSummary(){
+  const selected = products.filter(p=>Number(quantities[p.id] || 0)>0);
+  const groups = new Map();
+  let total = 0;
+
+  selected.forEach(p=>{
+    const series = (p.order_series || "").trim() || "シリーズ未設定";
+    const name = (p.name_en || "").trim() || p.name || "商品名未設定";
+    if(!groups.has(series)) groups.set(series,[]);
+    groups.get(series).push({name,qty:Number(quantities[p.id])});
+    total += Number(quantities[p.id]);
+  });
+
+  const lines = [];
+  groups.forEach((items,series)=>{
+    lines.push(series);
+    items.forEach(item=>lines.push(item.name + " " + item.qty));
+    lines.push("");
+  });
+
+  document.getElementById("orderSummary").textContent =
+    lines.length ? lines.join("\n").trim() : "商品を選択すると、ここに発注内容が表示されます。";
+  document.getElementById("orderTotal").textContent = "TOTAL " + total + " PCS";
+}
+
+async function copyOrder(){
+  const selected = products.filter(p=>Number(quantities[p.id] || 0)>0);
+  if(!selected.length){
+    alert("先に発注数量を選択してください");
+    return;
+  }
+
+  const lines = [];
+  const groups = new Map();
+  let total = 0;
+
+  selected.forEach(p=>{
+    const series = (p.order_series || "").trim() || "シリーズ未設定";
+    const name = (p.name_en || "").trim() || p.name || "商品名未設定";
+    if(!groups.has(series)) groups.set(series,[]);
+    groups.get(series).push({name,qty:Number(quantities[p.id])});
+    total += Number(quantities[p.id]);
+  });
+
+  groups.forEach((items,series)=>{
+    lines.push(series);
+    items.forEach(item=>lines.push(item.name + " " + item.qty));
+    lines.push("");
+  });
+  lines.push("TOTAL " + total + " PCS");
+
+  try{
+    await navigator.clipboard.writeText(lines.join("\n").trim());
+    alert("発注内容をコピーしました");
+  }catch(e){
+    const area = document.createElement("textarea");
+    area.value = lines.join("\n").trim();
+    document.body.appendChild(area);
+    area.select();
+    const success = document.execCommand("copy");
+    area.remove();
+    alert(success ? "発注内容をコピーしました" : "コピーできませんでした。表示された発注内容を選択してコピーしてください");
+  }
+}
+
+loadProducts();
+</script>
 </body>
 </html>
