@@ -271,9 +271,14 @@ async function loadRankingSales() {
       const productId = item.productId || item.product_id || "";
       const name = item.productName || item.product_name || "";
       const category = item.category || "";
-      const itemType = item.itemType || item.item_type || "";
-      const region = item.region || "";
-      const country = item.countryOrClub || item.country_or_club || "";
+const selectedProductType =
+  document.querySelector('#productType button.active')?.dataset.value || "all";
+
+if (selectedProductType === "soccerwe" && category !== "soccerwe") return;
+
+const itemType = item.itemType || item.item_type || "";
+const region = item.region || "";
+const country = item.countryOrClub || item.country_or_club || "";
 
       if (!name || (!productId && !country)) return;
 
