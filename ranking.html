@@ -288,6 +288,36 @@ if (!counts[key]) {
     }
 
     data.forEach(sale => {
+      data.filter(sale => {
+  const period = document.querySelector('#periodType button.active')?.dataset.value || "month";
+  const date = new Date(sale.sale_date);
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+
+  if (period === "total") return true;
+  if (!sale.sale_date) return false;
+  if (period === "day") return date >= start && date < end;
+  if (period === "week") {
+    start.setDate(start.getDate() - ((start.getDay() + 6) % 7));
+    return date >= start && date < end;
+  }
+  if (period === "month") {
+    start.setDate(1);
+    return date >= start && date < end;
+  }
+  if (period === "year") {
+    start.setMonth(0, 1);
+    return date >= start && date < end;
+  }
+  if (period === "custom") {
+    const startDate = document.getElementById("startDate").value;
+    const endDate = document.getElementById("endDate").value;
+    if (!startDate || !endDate) return false;
+    return sale.sale_date >= startDate && sale.sale_date <= endDate;
+  }
+  return true;
+}).forEach(sale => {
       if (sale.is_set && Array.isArray(sale.set_items)) {
         sale.set_items.forEach(item => {
           addItem(item, sale.sale_date, item.quantity || 1);
