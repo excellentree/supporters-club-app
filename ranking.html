@@ -287,8 +287,7 @@ if (!counts[key]) {
       counts[key].count += Math.max(1, Number(quantity) || 1);
     }
 
-    data.forEach(sale => {
-  const period = document.querySelector('#periodType button.active')?.dataset.value || "month";
+    const period = document.querySelector('#periodType button.active')?.dataset.value || "month";
 const now = new Date();
 const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
