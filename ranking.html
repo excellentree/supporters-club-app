@@ -225,6 +225,7 @@ function setupButtons(containerId, onSelect) {
 }
 setupButtons("productType", value => {
   console.log("ランキング対象:", value);
+  loadRankingSales();
 });
 setupButtons("teamType", value => {
   console.log("クラブ／代表:", value);
