@@ -228,32 +228,14 @@ setupButtons("productType", value => {
 });
 setupButtons("teamType", value => {
   console.log("クラブ／代表:", value);
-loadRankingSales();
-  const filter = document.getElementById("teamFilter");
-  filter.innerHTML = '<button type="button" class="active" data-value="all">すべて</button>';
-  const options = value === "クラブ"
-    ? ["プレミアリーグ", "ラリーガ", "ブンデスリーガ", "セリエA", "リーグアン", "その他リーグ"]
-    : ["ヨーロッパ", "アフリカ", "南米", "アジア"];
-  options.forEach(option => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.dataset.value = option;
-    button.textContent = option;
-    filter.appendChild(button);
-  });
-  setupButtons("teamFilter", selected => {
-    console.log("絞り込み:", selected);
-  });
+  loadRankingSales();
 });
 setupButtons("periodType", value => {
   document.getElementById("customDates").style.display =
     value === "custom" ? "block" : "none";
   console.log("集計期間:", value);
 });
-setupButtons("teamFilter", value => {
-  console.log("絞り込み:", value);
-});
-  
+
 /* ===== 売上データ読み込み・個数集計 ===== */
 function escapeRankingHtml(value) {
   const div = document.createElement("div");
