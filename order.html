@@ -111,14 +111,22 @@ function buildFilters(){
   const oldTeam = teamFilter.value;
   const oldModel = modelFilter.value;
 
-  teamFilter.innerHTML = '<option value="">国・クラブ：すべて</option>';
-  [...new Set(products.map(p=>p.country_or_club).filter(Boolean))].sort().forEach(name=>{
-    const option = document.createElement("option");
-    option.value = name;
-    option.textContent = name;
-    teamFilter.appendChild(option);
-  });
-  teamFilter.value = oldTeam;
+    teamFilter.innerHTML = '<option value="">国・クラブ：すべて</option>';
+
+  const type = document.getElementById("typeFilter").value;
+
+  const teamProducts = products.filter(p =>
+    !type || p.item_type === type
+  );
+
+  [...new Set(teamProducts.map(p => p.country_or_club).filter(Boolean))]
+    .sort()
+    .forEach(name => {
+      const option = document.createElement("option");
+      option.value = name;
+      option.textContent = name;
+      teamFilter.appendChild(option);
+    });
 
   modelFilter.innerHTML = '<option value="">MODEL：すべて</option>';
   [...new Set(products.map(p=>p.model).filter(Boolean))].sort().forEach(name=>{
