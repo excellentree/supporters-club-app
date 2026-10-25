@@ -108,11 +108,9 @@ async function loadProducts(){
 function buildFilters(){
   const teamFilter = document.getElementById("teamFilter");
   const modelFilter = document.getElementById("modelFilter");
-  const oldTeam = teamFilter.value;
-  const oldModel = modelFilter.value;
-
+  const oldTeam = "";
     teamFilter.innerHTML = '<option value="">国・クラブ：すべて</option>';
-
+teamFilter.value = "";
   const type = document.getElementById("typeFilter").value;
 
   const teamProducts = products.filter(p =>
