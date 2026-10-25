@@ -129,7 +129,7 @@ function buildFilters(){
     });
 
   modelFilter.innerHTML = '<option value="">MODEL：すべて</option>';
-  [...new Set(products.map(p=>p.model).filter(Boolean))].sort().forEach(name=>{
+[...new Set(products.filter(p=>(!type || p.item_type===type) && (!teamFilter.value || p.country_or_club===teamFilter.value)).map(p=>p.model).filter(Boolean))].sort().forEach(name=>{
     const option = document.createElement("option");
     option.value = name;
     option.textContent = name;
