@@ -180,9 +180,20 @@ function escapeHtml(value){
   }[c]));
 }
 
-function changeQty(id,amount){
-  quantities[id] = Math.max(0,Number(quantities[id] || 0) + amount);
-  renderProducts();
+
+  function changeQty(id,amount){
+quantities[id] = Math.max(0,Number(quantities[id] || 0) + amount);
+renderProducts();
+}
+
+function resetOrder(){
+if(!confirm(“すべての発注数量をリセットしますか？”)) return;
+
+Object.keys(quantities).forEach(id=>{
+quantities[id] = 0;
+});
+
+renderProducts();
 }
 
 function updateSummary(){
