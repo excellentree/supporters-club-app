@@ -56,7 +56,7 @@ td img{width:48px;height:48px;object-fit:cover;border-radius:6px}
 <option value="代表">代表</option>
 <option value="クラブ">クラブ</option>
 </select>
-<select id="teamFilter" onchange="renderProducts()">
+<select id="teamFilter" onchange="buildFilters(); renderProducts()">
 <option value="">国・クラブ：すべて</option>
 </select>
 <select id="modelFilter" onchange="renderProducts()">
