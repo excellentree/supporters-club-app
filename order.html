@@ -124,6 +124,7 @@ teamFilter.innerHTML = '<option value="">国・クラブ：すべて</option>';
       option.value = name;
       option.textContent = name;
       teamFilter.appendChild(option);
+      teamFilter.value = oldTeam;
     });
 
   modelFilter.innerHTML = '<option value="">MODEL：すべて</option>';
