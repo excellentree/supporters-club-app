@@ -1046,7 +1046,7 @@ async function saveSales(data){
   const rows = data.map(sale => ({
     sale_key: sale.saleKey,
     sale_date: salesDate.value,
-    order_no: sale.orderNo || "",
+    stock_tracked: !!sale.stockTracked,order_no: sale.orderNo || "",
     is_set: !!sale.isSet,
     product_name: sale.productName || "",
     model: sale.model || "",
@@ -1741,6 +1741,7 @@ async function loadSalesFromSupabase(){
 
   const sales = data.map(row => ({
     saleKey: row.sale_key || crypto.randomUUID(),
+    stockTracked: row.stock_tracked === true,
     productName: row.product_name || "",
     model: row.model || "",
     base: row.base || "",
