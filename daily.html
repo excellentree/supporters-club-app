@@ -1041,7 +1041,7 @@ async function saveSales(data){
     getStorageKey(),
     JSON.stringify(data)
   );
-alert("saleKey: " + JSON.stringify(data.map(s => s.saleKey)));
+
   // Supabaseにも保存
   const rows = data.map(sale => ({
     sale_key: sale.saleKey,
