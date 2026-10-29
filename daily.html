@@ -1044,6 +1044,7 @@ async function saveSales(data){
 
   // Supabaseにも保存
   const rows = data.map(sale => ({
+    sale_key: sale.saleKey,
     sale_date: salesDate.value,
     order_no: sale.orderNo || "",
     is_set: !!sale.isSet,
