@@ -1740,6 +1740,7 @@ async function loadSalesFromSupabase(){
   }
 
   const sales = data.map(row => ({
+    saleKey: row.sale_key || crypto.randomUUID(),
     productName: row.product_name || "",
     model: row.model || "",
     base: row.base || "",
