@@ -1196,7 +1196,9 @@ itemType: document.querySelector("#categoryButtons button.active")?.value === "ã
 
 
     saveSales(sales).then(() => loadProducts());
-
+    document.querySelectorAll("#categoryButtons button").forEach(button => {
+  button.classList.remove("active");
+});
     document.getElementById("productName").value = "";
   document.getElementById("productName").dispatchEvent(new Event("input"));
 
