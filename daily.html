@@ -450,6 +450,17 @@ td{
     <option value="">VERSIONを選択してください</option>
   </select>
 </div>
+  <div class="form-item full">
+  <label>現在庫</label>
+  <div id="currentStock" style="
+    padding:12px 14px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    background:#fff;
+    font-size:18px;
+    font-weight:bold;
+  ">商品を選択してください</div>
+</div>
       <div class="form-item">
   <label>点数</label>
 
@@ -569,7 +580,7 @@ async function loadProducts(){
 
   const { data, error } = await db
     .from("products")
-   .select("id,name,price,model,base,version,average_cost,category,item_type,region,country_or_club")
+.select("id,name,price,model,base,version,average_cost,category,item_type,region,country_or_club,stock")
     .order("name", { ascending:true });
 
   if(error){
@@ -915,7 +926,8 @@ document.getElementById("versionSelect").addEventListener("change", () => {
 
     document.getElementById("price").value =
       selectedProduct.price ?? "";
-
+document.getElementById("currentStock").textContent =
+  `現在庫：${selectedProduct.stock ?? 0}個`;
   }
 
 });
