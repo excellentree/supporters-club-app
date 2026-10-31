@@ -1094,7 +1094,17 @@ async function saveSales(data){
       return;
     }
   }
+  // 保存完了後に在庫を同期
+  const { error: stockError } = await db.rpc(
+    "sync_daily_stock",
+    { p_sale_date: salesDate.value }
+  );
 
+  if(stockError){
+    console.error("在庫同期エラー:", stockError);
+    alert("売上は保存されましたが、在庫同期に失敗しました。\n" + stockError.message);
+    return;
+  }
 }
   
 
