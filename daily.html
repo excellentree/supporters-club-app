@@ -1465,7 +1465,44 @@ document.getElementById("setItemQuantityDisplay").textContent = "1";
   setItems = [];
 
   selectedProduct = null;
+document.querySelectorAll("#categoryButtons button")
+  .forEach(button => button.classList.remove("active"));
 
+document.getElementById("productCategory").value = "";
+document.getElementById("productCategory").style.display = "none";
+
+document.getElementById("rankingTypeArea").style.display = "none";
+document.querySelectorAll("#rankingTypeButtons button")
+  .forEach(button => button.classList.remove("active"));
+selectedRankingType = "";
+
+document.getElementById("productName").dispatchEvent(new Event("input"));
+
+document.getElementById("modelSelect").value = "";
+document.getElementById("modelButtons").innerHTML =
+  '<button type="button" class="select-placeholder">MODEL</button>';
+
+document.getElementById("baseSelect").innerHTML = "";
+["ACTION", "FIXED"].forEach(base => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = base;
+  document.getElementById("baseSelect").appendChild(button);
+});
+
+document.getElementById("versionSelect").value = "";
+document.getElementById("versionButtons").innerHTML = "";
+["normal", "smiley", "newhead"].forEach(version => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = version;
+  document.getElementById("versionButtons").appendChild(button);
+});
+
+const stockDisplay = document.getElementById("currentStock");
+stockDisplay.textContent = "0個";
+stockDisplay.style.background = "#fff";
+stockDisplay.style.color = "#111";
   document.getElementById("productName").value = "";
 
   document.getElementById("price").value = "";
