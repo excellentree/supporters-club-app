@@ -1568,7 +1568,7 @@ document.getElementById("setItemQuantityDisplay").textContent = "1";
 
   sale.profitOverride = newProfit;
 
-  saveSales(sales);
+    saveSales(sales).then(() => loadProducts());
 
   render();
 
