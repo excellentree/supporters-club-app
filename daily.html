@@ -1201,12 +1201,15 @@ itemType: document.querySelector("#categoryButtons button.active")?.value === "�
   document.getElementById("productName").dispatchEvent(new Event("input"));
 
   document.getElementById("modelSelect").value = "";
-  document.getElementById("baseSelect").innerHTML =
-    '<div class="select-placeholder">MODEL</div>';
+document.getElementById("modelButtons").innerHTML =
+    '<button type="button" class="select-placeholder">MODEL</button>';
 
-  document.getElementById("versionSelect").value = "";
-  document.getElementById("versionButtons").innerHTML =
-    '<div class="select-placeholder">土台</div>';
+document.getElementById("baseSelect").innerHTML =
+    '<div class="select-placeholder">MODELを選択してください</div>';
+
+document.getElementById("versionSelect").value = "";
+document.getElementById("versionButtons").innerHTML =
+    '<div class="select-placeholder">土台を選択してください</div>';
 
   document.getElementById("currentStock").textContent =
     "0個";
