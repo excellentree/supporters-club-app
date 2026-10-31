@@ -1,1 +1,981 @@
 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>SUPPORTERS CULB 経費管理</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f4f4f0;
+  color: #222;
+  font-family: Arial, "Noto Sans JP", sans-serif;
+}
+
+header {
+  background: #222;
+  color: white;
+  padding: 22px 16px;
+}
+
+header h1 {
+  font-size: 21px;
+  margin: 0 0 6px;
+}
+
+header p {
+  margin: 0;
+  color: #ccc;
+  font-size: 12px;
+}
+
+main {
+  max-width: 760px;
+  margin: auto;
+  padding: 14px;
+}
+
+.panel {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px #0000000a;
+}
+
+h2 {
+  font-size: 17px;
+  margin: 0 0 15px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin: 12px 0 6px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  background: white;
+}
+
+textarea {
+  min-height: 65px;
+  resize: vertical;
+}
+
+button {
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.primary {
+  width: 100%;
+  background: #222;
+  color: white;
+  margin-top: 16px;
+}
+
+.secondary {
+  background: #eee;
+  color: #222;
+}
+
+.danger {
+  background: #f8e4e1;
+  color: #a22;
+}
+
+.receipt {
+  width: 100%;
+  background: #eee;
+  color: #555;
+  border: 2px solid transparent;
+}
+
+.receipt.on {
+  background: #e2f2e6;
+  color: #17652d;
+  border-color: #65a875;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.tabs button {
+  flex: 1;
+  background: #e5e5e0;
+  color: #444;
+}
+
+.tabs button.active {
+  background: #222;
+  color: white;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.summary-card {
+  background: #f4f4f0;
+  border-radius: 9px;
+  padding: 13px;
+}
+
+.summary-card span {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.summary-card strong {
+  font-size: 19px;
+  overflow-wrap: anywhere;
+}
+
+.summary-card.total {
+  background: #222;
+  color: white;
+  grid-column: 1 / -1;
+}
+
+.summary-card.total span {
+  color: #ddd;
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.month-nav button {
+  background: #eee;
+}
+
+.month-nav strong {
+  font-size: 17px;
+}
+
+.list-date {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 12px 0 8px;
+  border-bottom: 1px solid #ddd;
+  margin-top: 8px;
+}
+
+.item {
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.item-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.item-name {
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+.item-amount {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.item-detail {
+  color: #666;
+  font-size: 12px;
+  margin-top: 6px;
+  line-height: 1.7;
+}
+
+.item-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 9px;
+}
+
+.item-actions button {
+  padding: 7px 12px;
+}
+
+.day-total {
+  text-align: right;
+  color: #555;
+  font-size: 12px;
+  padding: 8px 0;
+}
+
+.receipt-badge {
+  display: inline-block;
+  font-size: 11px;
+  padding: 3px 7px;
+  border-radius: 5px;
+  background: #eee;
+  margin-top: 5px;
+}
+
+.receipt-badge.yes {
+  background: #e2f2e6;
+  color: #17652d;
+}
+
+.empty {
+  color: #888;
+  font-size: 13px;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.status {
+  font-size: 13px;
+  margin-top: 10px;
+  white-space: pre-wrap;
+}
+
+footer {
+  text-align: center;
+  color: #888;
+  font-size: 11px;
+  padding: 20px;
+}
+
+@media (max-width: 380px) {
+  .summary-card strong {
+    font-size: 16px;
+  }
+
+  main {
+    padding: 10px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>SUPPORTERS CULB</h1>
+  <p>経費管理 / EXPENSES</p>
+</header>
+
+<main>
+
+  <section class="panel">
+    <div class="month-nav">
+      <button onclick="changeMonth(-1)">◀ 前月</button>
+      <strong id="monthTitle">----</strong>
+      <button onclick="changeMonth(1)">翌月 ▶</button>
+    </div>
+
+    <div class="summary" style="margin-top:16px">
+      <div class="summary-card">
+        <span>📦 商品等の仕入れ</span>
+        <strong id="purchaseTotal">¥0</strong>
+      </div>
+
+      <div class="summary-card">
+        <span>🧾 雑費</span>
+        <strong id="miscTotal">¥0</strong>
+      </div>
+
+      <div class="summary-card total">
+        <span>💰 今月の経費総額</span>
+        <strong id="grandTotal">¥0</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2 id="formTitle">経費を登録</h2>
+
+    <div class="tabs">
+      <button id="purchaseTab"
+        class="active"
+        onclick="switchType('purchase')">
+        📦 商品仕入れ
+      </button>
+
+      <button id="miscTab"
+        onclick="switchType('misc')">
+        🧾 雑費
+      </button>
+    </div>
+
+    <form id="expenseForm">
+
+      <label for="expenseDate">日付</label>
+      <input type="date" id="expenseDate" required>
+
+      <label id="descriptionLabel" for="description">
+        商品名
+      </label>
+      <input
+        type="text"
+        id="description"
+        placeholder="例：サッカーフィギュア"
+        required>
+
+      <div id="purchaseFields">
+        <label for="quantity">数量</label>
+        <input
+          type="number"
+          id="quantity"
+          min="0.01"
+          step="any"
+          value="1"
+          oninput="calculateAmount()">
+
+        <label for="unitPrice">1個あたりの仕入れ価格（円）</label>
+        <input
+          type="number"
+          id="unitPrice"
+          min="0"
+          step="any"
+          placeholder="例：500"
+          oninput="calculateAmount()">
+      </div>
+
+      <div id="miscFields" hidden>
+        <label for="miscAmount">金額（円）</label>
+        <input
+          type="number"
+          id="miscAmount"
+          min="0"
+          step="any"
+          placeholder="例：1200"
+          oninput="calculateAmount()">
+      </div>
+
+      <div id="calculatedArea">
+        <label>合計金額</label>
+        <div id="calculatedAmount"
+          style="font-size:24px;font-weight:bold;padding:8px 0">
+          ¥0
+        </div>
+      </div>
+
+      <label>領収書</label>
+      <button
+        type="button"
+        id="receiptButton"
+        class="receipt"
+        aria-pressed="false"
+        onclick="toggleReceipt()">
+        ⬜ 領収書なし
+      </button>
+
+      <label for="memo">メモ（任意）</label>
+      <textarea
+        id="memo"
+        placeholder="購入先・用途など"></textarea>
+
+      <button type="submit" class="primary" id="saveButton">
+        経費を登録する
+      </button>
+
+      <button
+        type="button"
+        class="secondary"
+        id="cancelEditButton"
+        style="display:none;width:100%;margin-top:8px"
+        onclick="cancelEdit()">
+        編集をキャンセル
+      </button>
+
+      <div id="status" class="status"></div>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h2>📋 今月の経費一覧</h2>
+
+    <div class="tabs">
+      <button id="listAllTab"
+        class="active"
+        onclick="setListFilter('all')">
+        すべて
+      </button>
+
+      <button id="listPurchaseTab"
+        onclick="setListFilter('purchase')">
+        仕入れ
+      </button>
+
+      <button id="listMiscTab"
+        onclick="setListFilter('misc')">
+        雑費
+      </button>
+    </div>
+
+    <div id="expenseList">
+      <div class="empty">読み込み中...</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  SUPPORTERS CULB EXPENSE MANAGEMENT
+</footer>
+
+<script>
+const SUPABASE_URL =
+  "https://juzrxqrabrvhlwvnvton.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+let currentType = "purchase";
+let listFilter = "all";
+let editingId = null;
+let receiptPresent = false;
+let expenses = [];
+
+const now = new Date();
+
+let selectedYear = now.getFullYear();
+let selectedMonth = now.getMonth() + 1;
+
+function money(value) {
+  return "¥" + Number(value || 0).toLocaleString("ja-JP", {
+    maximumFractionDigits: 2
+  });
+}
+
+function localDateString(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+function selectedMonthString() {
+  return `${selectedYear}-${String(selectedMonth).padStart(2, "0")}`;
+}
+
+function showStatus(message, isError = false) {
+  const el = document.getElementById("status");
+
+  el.textContent = message;
+  el.style.color = isError ? "#b00020" : "#17652d";
+}
+
+function switchType(type) {
+  currentType = type;
+
+  document.getElementById("purchaseTab")
+    .classList.toggle("active", type === "purchase");
+
+  document.getElementById("miscTab")
+    .classList.toggle("active", type === "misc");
+
+  document.getElementById("purchaseFields").hidden =
+    type !== "purchase";
+
+  document.getElementById("miscFields").hidden =
+    type !== "misc";
+
+  document.getElementById("descriptionLabel").textContent =
+    type === "purchase" ? "商品名" : "内容";
+
+  document.getElementById("description").placeholder =
+    type === "purchase"
+      ? "例：サッカーフィギュア"
+      : "例：コピー代・梱包資材";
+
+  document.getElementById("calculatedArea").hidden =
+    type !== "purchase";
+
+  if (!editingId) {
+    document.getElementById("formTitle").textContent =
+      type === "purchase" ? "仕入れを登録" : "雑費を登録";
+
+    document.getElementById("saveButton").textContent =
+      type === "purchase" ? "仕入れを登録する" : "雑費を登録する";
+  }
+
+  calculateAmount();
+}
+
+function calculateAmount() {
+  const quantity =
+    Number(document.getElementById("quantity").value || 0);
+
+  const unitPrice =
+    Number(document.getElementById("unitPrice").value || 0);
+
+  const amount =
+    currentType === "purchase"
+      ? quantity * unitPrice
+      : Number(document.getElementById("miscAmount").value || 0);
+
+  document.getElementById("calculatedAmount").textContent =
+    money(amount);
+}
+
+function toggleReceipt() {
+  receiptPresent = !receiptPresent;
+
+  const button = document.getElementById("receiptButton");
+
+  button.classList.toggle("on", receiptPresent);
+  button.setAttribute("aria-pressed", String(receiptPresent));
+
+  button.textContent = receiptPresent
+    ? "☑️ 領収書あり"
+    : "⬜ 領収書なし";
+}
+
+function setReceipt(value) {
+  receiptPresent = Boolean(value);
+
+  const button = document.getElementById("receiptButton");
+
+  button.classList.toggle("on", receiptPresent);
+  button.setAttribute("aria-pressed", String(receiptPresent));
+
+  button.textContent = receiptPresent
+    ? "☑️ 領収書あり"
+    : "⬜ 領収書なし";
+}
+
+function changeMonth(amount) {
+  selectedMonth += amount;
+
+  if (selectedMonth < 1) {
+    selectedMonth = 12;
+    selectedYear--;
+  } else if (selectedMonth > 12) {
+    selectedMonth = 1;
+    selectedYear++;
+  }
+
+  loadExpenses();
+}
+
+function setListFilter(filter) {
+  listFilter = filter;
+
+  document.getElementById("listAllTab")
+    .classList.toggle("active", filter === "all");
+
+  document.getElementById("listPurchaseTab")
+    .classList.toggle("active", filter === "purchase");
+
+  document.getElementById("listMiscTab")
+    .classList.toggle("active", filter === "misc");
+
+  renderExpenses();
+}
+
+async function loadExpenses() {
+  document.getElementById("monthTitle").textContent =
+    `${selectedYear}年${selectedMonth}月`;
+
+  const firstDay = `${selectedMonthString()}-01`;
+
+  const lastDate = new Date(
+    selectedYear,
+    selectedMonth,
+    0
+  );
+
+  const lastDay = localDateString(lastDate);
+
+  document.getElementById("expenseList").innerHTML =
+    '<div class="empty">読み込み中...</div>';
+
+  const { data, error } = await db
+    .from("expenses")
+    .select("*")
+    .gte("expense_date", firstDay)
+    .lte("expense_date", lastDay)
+    .order("expense_date", { ascending: false })
+    .order("id", { ascending: false });
+
+  if (error) {
+    document.getElementById("expenseList").innerHTML =
+      '<div class="empty">データを読み込めませんでした。</div>';
+
+    showStatus("読み込みエラー: " + error.message, true);
+    return;
+  }
+
+  expenses = data || [];
+
+  const purchaseTotal = expenses
+    .filter(item => item.expense_type === "purchase")
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+
+  const miscTotal = expenses
+    .filter(item => item.expense_type === "misc")
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+
+  document.getElementById("purchaseTotal").textContent =
+    money(purchaseTotal);
+
+  document.getElementById("miscTotal").textContent =
+    money(miscTotal);
+
+  document.getElementById("grandTotal").textContent =
+    money(purchaseTotal + miscTotal);
+
+  renderExpenses();
+}
+
+function renderExpenses() {
+  const list = document.getElementById("expenseList");
+
+  const filtered = expenses.filter(item =>
+    listFilter === "all" || item.expense_type === listFilter
+  );
+
+  if (!filtered.length) {
+    list.innerHTML =
+      '<div class="empty">この月の経費データはありません。</div>';
+    return;
+  }
+
+  const grouped = {};
+
+  filtered.forEach(item => {
+    if (!grouped[item.expense_date]) {
+      grouped[item.expense_date] = [];
+    }
+
+    grouped[item.expense_date].push(item);
+  });
+
+  list.innerHTML = "";
+
+  Object.keys(grouped).sort().reverse().forEach(date => {
+    const items = grouped[date];
+
+    const dayTotal = items.reduce(
+      (sum, item) => sum + Number(item.amount || 0),
+      0
+    );
+
+    const dateHeading = document.createElement("div");
+    dateHeading.className = "list-date";
+    dateHeading.textContent =
+      `${date.replaceAll("-", "/")}`;
+
+    list.appendChild(dateHeading);
+
+    items.forEach(item => {
+      const row = document.createElement("div");
+      row.className = "item";
+
+      const top = document.createElement("div");
+      top.className = "item-top";
+
+      const name = document.createElement("div");
+      name.className = "item-name";
+      name.textContent =
+        `${item.expense_type === "purchase" ? "📦" : "🧾"} ${item.description}`;
+
+      const amount = document.createElement("div");
+      amount.className = "item-amount";
+      amount.textContent = money(item.amount);
+
+      top.append(name, amount);
+      row.appendChild(top);
+
+      const detail = document.createElement("div");
+      detail.className = "item-detail";
+
+      if (item.expense_type === "purchase") {
+        detail.textContent =
+          `数量：${item.quantity} / 単価：${money(item.unit_price)}`;
+      } else {
+        detail.textContent = "雑費";
+      }
+
+      row.appendChild(detail);
+
+      const receipt = document.createElement("span");
+      receipt.className =
+        "receipt-badge" + (item.receipt_present ? " yes" : "");
+
+      receipt.textContent = item.receipt_present
+        ? "☑ 領収書あり"
+        : "□ 領収書なし";
+
+      row.appendChild(receipt);
+
+      if (item.memo) {
+        const memo = document.createElement("div");
+        memo.className = "item-detail";
+        memo.textContent = "メモ：" + item.memo;
+        row.appendChild(memo);
+      }
+
+      const actions = document.createElement("div");
+      actions.className = "item-actions";
+
+      const editButton = document.createElement("button");
+      editButton.className = "secondary";
+      editButton.textContent = "編集";
+      editButton.addEventListener("click", () => editExpense(item.id));
+
+      const deleteButton = document.createElement("button");
+      deleteButton.className = "danger";
+      deleteButton.textContent = "削除";
+      deleteButton.addEventListener("click", () => deleteExpense(item.id));
+
+      actions.append(editButton, deleteButton);
+      row.appendChild(actions);
+
+      list.appendChild(row);
+    });
+
+    const total = document.createElement("div");
+    total.className = "day-total";
+    total.textContent = `この日の小計：${money(dayTotal)}`;
+
+    list.appendChild(total);
+  });
+}
+
+document.getElementById("expenseForm")
+  .addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const description =
+      document.getElementById("description").value.trim();
+
+    if (!description) {
+      showStatus("内容を入力してください。", true);
+      return;
+    }
+
+    let quantity = null;
+    let unitPrice = null;
+    let amount = 0;
+
+    if (currentType === "purchase") {
+      quantity = Number(
+        document.getElementById("quantity").value
+      );
+
+      unitPrice = Number(
+        document.getElementById("unitPrice").value
+      );
+
+      if (
+        !Number.isFinite(quantity) ||
+        quantity <= 0 ||
+        !Number.isFinite(unitPrice) ||
+        unitPrice < 0
+      ) {
+        showStatus("数量と単価を正しく入力してください。", true);
+        return;
+      }
+
+      amount = quantity * unitPrice;
+    } else {
+      amount = Number(
+        document.getElementById("miscAmount").value
+      );
+
+      if (!Number.isFinite(amount) || amount < 0) {
+        showStatus("金額を正しく入力してください。", true);
+        return;
+      }
+    }
+
+    const payload = {
+      expense_date: document.getElementById("expenseDate").value,
+      expense_type: currentType,
+      description,
+      quantity,
+      unit_price: unitPrice,
+      amount,
+      receipt_present: receiptPresent,
+      memo: document.getElementById("memo").value.trim()
+    };
+
+    if (!payload.expense_date) {
+      showStatus("日付を入力してください。", true);
+      return;
+    }
+
+    const saveButton = document.getElementById("saveButton");
+    saveButton.disabled = true;
+
+    let result;
+
+    if (editingId) {
+      result = await db
+        .from("expenses")
+        .update(payload)
+        .eq("id", editingId);
+    } else {
+      result = await db
+        .from("expenses")
+        .insert(payload);
+    }
+
+    saveButton.disabled = false;
+
+    if (result.error) {
+      showStatus("保存エラー: " + result.error.message, true);
+      return;
+    }
+
+    const savedMonth = payload.expense_date.slice(0, 7);
+
+    selectedYear = Number(savedMonth.slice(0, 4));
+    selectedMonth = Number(savedMonth.slice(5, 7));
+
+    resetForm();
+    showStatus("保存しました！");
+    await loadExpenses();
+  });
+
+async function editExpense(id) {
+  const item = expenses.find(row => row.id === id);
+
+  if (!item) return;
+
+  editingId = id;
+
+  currentType = item.expense_type;
+  switchType(currentType);
+
+  document.getElementById("expenseDate").value =
+    item.expense_date;
+
+  document.getElementById("description").value =
+    item.description || "";
+
+  document.getElementById("quantity").value =
+    item.quantity ?? 1;
+
+  document.getElementById("unitPrice").value =
+    item.unit_price ?? 0;
+
+  document.getElementById("miscAmount").value =
+    item.amount ?? 0;
+
+  document.getElementById("memo").value =
+    item.memo || "";
+
+  setReceipt(item.receipt_present);
+
+  document.getElementById("formTitle").textContent =
+    "経費を編集";
+
+  document.getElementById("saveButton").textContent =
+    "変更を保存する";
+
+  document.getElementById("cancelEditButton").style.display =
+    "block";
+
+  calculateAmount();
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function deleteExpense(id) {
+  const item = expenses.find(row => row.id === id);
+
+  if (!item) return;
+
+  if (!confirm(`「${item.description}」を削除しますか？`)) {
+    return;
+  }
+
+  const { error } = await db
+    .from("expenses")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    alert("削除エラー: " + error.message);
+    return;
+  }
+
+  if (editingId === id) {
+    resetForm();
+  }
+
+  await loadExpenses();
+}
+
+function cancelEdit() {
+  resetForm();
+}
+
+function resetForm() {
+  editingId = null;
+  receiptPresent = false;
+
+  document.getElementById("expenseForm").reset();
+
+  document.getElementById("expenseDate").value =
+    localDateString();
+
+  document.getElementById("quantity").value = 1;
+
+  document.getElementById("formTitle").textContent =
+    currentType === "purchase" ? "仕入れを登録" : "雑費を登録";
+
+  document.getElementById("saveButton").textContent =
+    currentType === "purchase" ? "仕入れを登録する" : "雑費を登録する";
+
+  document.getElementById("cancelEditButton").style.display =
+    "none";
+
+  setReceipt(false);
+  calculateAmount();
+}
+
+document.getElementById("expenseDate").value =
+  localDateString();
+
+document.getElementById("quantity").value = 1;
+
+loadExpenses();
+</script>
+
+</body>
+</html>
