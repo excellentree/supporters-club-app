@@ -1035,7 +1035,17 @@ function getSales(){
 
 
 async function saveSales(data){
+  // 販売データ保存後に在庫を同期する
+  const { error: stockError } = await db.rpc(
+    "sync_daily_stock",
+    { p_sale_date: salesDate.value }
+  );
 
+  if(stockError){
+    console.error("在庫同期エラー:", stockError);
+    alert("売上は保存されましたが、在庫同期に失敗しました。\n" + stockError.message);
+    return;
+  }
   // いままで通りローカルにも保存
   localStorage.setItem(
     getStorageKey(),
