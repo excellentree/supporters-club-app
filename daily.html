@@ -928,8 +928,10 @@ document.getElementById("versionSelect").addEventListener("change", () => {
 
     document.getElementById("price").value =
       selectedProduct.price ?? "";
-document.getElementById("currentStock").textContent =
-  `${selectedProduct.stock ?? 0}個`;
+const stockDisplay = document.getElementById("currentStock");
+stockDisplay.textContent = `${selectedProduct.stock ?? 0}個`;
+stockDisplay.style.background = "#111";
+stockDisplay.style.color = "#fff";
   }
 
 });
@@ -1202,14 +1204,14 @@ itemType: document.querySelector("#categoryButtons button.active")?.value === "�
 
   document.getElementById("modelSelect").value = "";
   document.getElementById("baseSelect").innerHTML =
-    '<div class="select-placeholder">MODELを選択してください</div>';
+    '<div class="select-placeholder">MODEL</div>';
 
   document.getElementById("versionSelect").value = "";
   document.getElementById("versionButtons").innerHTML =
-    '<div class="select-placeholder">土台を選択してください</div>';
+    '<div class="select-placeholder">土台</div>';
 
   document.getElementById("currentStock").textContent =
-    "商品を選択してください";
+    "0個";
 
   document.getElementById("price").value = "";
   document.getElementById("cost").value = "";
