@@ -1579,7 +1579,7 @@ function deleteSale(index){
 
   sales.splice(index,1);
 
-  saveSales(sales);
+  saveSales(sales).then(() => loadProducts());
 
   render();
 
