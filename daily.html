@@ -481,10 +481,9 @@ td{
   <input id="shipping" type="number" value="210">
 </div>
       <div class="form-item">
-  <label>現在庫</label><div id="currentStock" style="font-weight:bold;font-size:18px;padding:14px;border:1px solid #ddd;border-radius:12px;background:#fff;">
-  商品を選択してください
-</div>
-</div>
+        <label>注文番号</label>
+        <input id="orderNo" type="text" placeholder="例：001">
+      </div>
 
     </div>
 
@@ -570,7 +569,7 @@ async function loadProducts(){
 
   const { data, error } = await db
     .from("products")
-  .select("id,name,price,model,base,version,average_cost,category,item_type,region,country_or_club,stock")
+   .select("id,name,price,model,base,version,average_cost,category,item_type,region,country_or_club")
     .order("name", { ascending:true });
 
   if(error){
@@ -916,8 +915,7 @@ document.getElementById("versionSelect").addEventListener("change", () => {
 
     document.getElementById("price").value =
       selectedProduct.price ?? "";
-document.getElementById("currentStock").textContent =
-  `現在庫：${selectedProduct.stock ?? 0}個`;
+
   }
 
 });
@@ -1127,7 +1125,9 @@ const shipping =
   const quantity =
     Number(document.getElementById("quantity").value);
 
-  const orderNo = "";
+  const orderNo =
+    document.getElementById("orderNo").value.trim();
+
 
   if(!productName){
 
