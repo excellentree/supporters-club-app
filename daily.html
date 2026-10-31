@@ -1204,12 +1204,22 @@ itemType: document.querySelector("#categoryButtons button.active")?.value === "�
 document.getElementById("modelButtons").innerHTML =
     '<button type="button" class="select-placeholder">MODEL</button>';
 
-document.getElementById("baseSelect").innerHTML =
-    '<div class="select-placeholder">MODELを選択してください</div>';
+document.getElementById("baseSelect").innerHTML = "";
+["ACTION", "FIXED"].forEach(base => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = base;
+  document.getElementById("baseSelect").appendChild(button);
+});
 
 document.getElementById("versionSelect").value = "";
-document.getElementById("versionButtons").innerHTML =
-    '<div class="select-placeholder">土台を選択してください</div>';
+document.getElementById("versionButtons").innerHTML = "";
+["normal", "smiley", "newhead"].forEach(version => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = version;
+  document.getElementById("versionButtons").appendChild(button);
+});
 
   const stockDisplay = document.getElementById("currentStock");
 stockDisplay.textContent = "0個";
