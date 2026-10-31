@@ -1568,9 +1568,10 @@ document.getElementById("setItemQuantityDisplay").textContent = "1";
 
   sale.profitOverride = newProfit;
 
-    saveSales(sales).then(() => loadProducts());
+    saveSales(sales);
 
   render();
+
 
 }
 function deleteSale(index){
