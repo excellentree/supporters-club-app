@@ -917,7 +917,8 @@ document.getElementById("versionSelect").addEventListener("change", () => {
 
     document.getElementById("price").value =
       selectedProduct.price ?? "";
-
+document.getElementById("currentStock").textContent =
+  `現在庫：${selectedProduct.stock ?? 0}個`;
   }
 
 });
