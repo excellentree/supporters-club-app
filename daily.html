@@ -1198,9 +1198,14 @@ itemType: document.querySelector("#categoryButtons button.active")?.value === "ã
 
 
     saveSales(sales).then(() => loadProducts());
-    document.querySelectorAll("#categoryButtons button").forEach(button => {
-  button.classList.remove("active");
-});
+    document.querySelectorAll("#categoryButtons button")
+  .forEach(button => button.classList.remove("active"));
+document.getElementById("productCategory").value = "";
+document.getElementById("productCategory").style.display = "none";
+document.getElementById("rankingTypeArea").style.display = "none";
+document.querySelectorAll("#rankingTypeButtons button")
+  .forEach(button => button.classList.remove("active"));
+selectedRankingType = "";
     document.getElementById("productName").value = "";
   document.getElementById("productName").dispatchEvent(new Event("input"));
 
