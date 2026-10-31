@@ -1193,7 +1193,7 @@ itemType: document.querySelector("#categoryButtons button.active")?.value === "ã
   });
 
 
-  saveSales(sales);
+    saveSales(sales).then(() => loadProducts());
 
     document.getElementById("productName").value = "";
   document.getElementById("productName").dispatchEvent(new Event("input"));
