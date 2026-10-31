@@ -1211,8 +1211,10 @@ document.getElementById("versionSelect").value = "";
 document.getElementById("versionButtons").innerHTML =
     '<div class="select-placeholder">土台を選択してください</div>';
 
-  document.getElementById("currentStock").textContent =
-    "0個";
+  const stockDisplay = document.getElementById("currentStock");
+stockDisplay.textContent = "0個";
+stockDisplay.style.background = "#fff";
+stockDisplay.style.color = "#111";
 
   document.getElementById("price").value = "";
   document.getElementById("cost").value = "";
