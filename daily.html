@@ -1195,16 +1195,29 @@ itemType: document.querySelector("#categoryButtons button.active")?.value === "�
 
   saveSales(sales);
 
-  document.getElementById("productName").value = "";
+    document.getElementById("productName").value = "";
+  document.getElementById("productName").dispatchEvent(new Event("input"));
+
+  document.getElementById("modelSelect").value = "";
+  document.getElementById("baseSelect").innerHTML =
+    '<div class="select-placeholder">MODELを選択してください</div>';
+
+  document.getElementById("versionSelect").value = "";
+  document.getElementById("versionButtons").innerHTML =
+    '<div class="select-placeholder">土台を選択してください</div>';
+
+  document.getElementById("currentStock").textContent =
+    "商品を選択してください";
 
   document.getElementById("price").value = "";
-
   document.getElementById("cost").value = "";
 
   document.getElementById("quantity").value = "1";
+  document.getElementById("quantityDisplay").textContent = "1";
 
   document.getElementById("orderNo").value = "";
 
+  selectedProduct = null;
 
   render();
 
