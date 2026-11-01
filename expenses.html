@@ -6,70 +6,530 @@
 <title>SUPPORTERS CULB 経費管理</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box}
-:root{--ink:#222;--paper:#f4f4f0;--muted:#777;--line:#ddd;--green:#e0f1e4;--red:#f8e5e3}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,"Noto Sans JP",sans-serif}
-header{background:#222;color:white;padding:28px 20px}
-header h1{font-size:25px;margin:0 0 8px}
-header p{margin:0;color:#ccc;font-size:15px}
-main{max-width:900px;margin:22px auto;padding:0 14px 36px}
-.card{background:#fff;border-radius:22px;padding:22px;margin-bottom:18px;box-shadow:0 4px 18px #00000008}
-.monthbar{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-bottom:22px}
-.monthbar h2{font-size:23px;text-align:center;margin:0;white-space:nowrap}
-button{font:inherit;font-weight:700;border:0;border-radius:12px;padding:14px 16px;cursor:pointer}
-.btn-light{background:#eee;color:#222}
-.btn-dark{background:#222;color:#fff}
-.btn-red{background:var(--red);color:#a22}
-.monthbar button{background:#eee;color:#222}
-.summary{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.sum-box{background:#f3f3f0;padding:20px;border-radius:18px;color:#666}
-.sum-box strong{display:block;font-size:28px;color:#222;margin-top:8px}
-.sum-total{grid-column:1/-1;background:#222;color:#ccc}
-.sum-total strong{color:white}
-h2.section-title{font-size:23px;margin:0 0 22px}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
-.tabs button{background:#e5e5e1;color:#444}
-.tabs button.active,.filter button.active{background:#222;color:#fff}
-label{display:block;font-weight:700;font-size:17px;margin:18px 0 9px}
-input,textarea{width:100%;padding:16px;border:2px solid #d5d5d5;border-radius:14px;font:inherit;font-size:18px;background:#fff;color:#222}
-textarea{min-height:86px;resize:vertical}
-input:focus,textarea:focus{outline:2px solid #aaa}
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
-.calc-box{padding:16px;background:#f4f4f1;border-radius:14px;margin-top:16px}
-.calc-line{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:4px 0}
-.calc-line strong{font-size:22px}
-.receipt-toggle{width:100%;background:#eee;color:#555;border:2px solid transparent}
-.receipt-toggle.yes{background:var(--green);border-color:#70ae7f;color:#246b3c}
-#saveBtn{width:100%;margin-top:22px;font-size:18px}
-#message{min-height:26px;margin-top:12px;font-weight:700}
-#message.ok{color:#267342}#message.err{color:#b42332}
-.filter{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
-.filter button{background:#e5e5e1;color:#444}
-.day{margin-top:24px}
-.day h3{font-size:18px;border-bottom:1px solid var(--line);padding-bottom:10px}
-.expense-row{padding:16px 0;border-bottom:1px solid #eee}
-.row-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-.row-name{font-size:19px;font-weight:700;overflow-wrap:anywhere}
-.row-amount{font-size:20px;font-weight:700;white-space:nowrap}
-.details{color:#777;font-size:15px;margin-top:8px;line-height:1.6}
-.badge{display:inline-block;background:#eee;color:#444;border-radius:8px;padding:5px 9px;font-size:14px;margin-top:8px}
-.row-actions{display:flex;gap:8px;margin-top:12px}
-.row-actions button{padding:10px 16px}
-.day-total{text-align:right;color:#666;padding-top:12px}
-.month-total{text-align:right;font-weight:700;font-size:21px;margin-top:20px}
-.empty{text-align:center;color:#888;padding:35px 10px}
-footer{text-align:center;color:#888;padding:20px;font-size:14px}
-@media(max-width:560px){
- header{padding:24px 16px}header h1{font-size:23px}
- main{padding:0 12px 28px;margin-top:16px}
- .card{padding:18px;border-radius:20px}
- .monthbar{gap:5px}.monthbar h2{font-size:19px}.monthbar button{padding:12px 8px;font-size:14px}
- .summary{gap:10px}.sum-box{padding:16px}.sum-box strong{font-size:25px}
- .fields{grid-template-columns:1fr}
- .filter{gap:8px}.filter button{padding:13px 5px}
- .row-top{align-items:flex-start}.row-name{font-size:18px}.row-amount{font-size:18px}
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --ink: #222;
+  --paper: #f3f3ef;
+  --muted: #777;
+  --line: #e5e5e0;
+  --green: #e0f1e4;
+  --red: #f8e5e3;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Arial, "Noto Sans JP", sans-serif;
+  line-height: 1.6;
+}
+
+header {
+  background: #222;
+  color: white;
+  padding: 30px 22px;
+}
+
+header h1 {
+  font-size: 26px;
+  letter-spacing: 0.4px;
+  margin: 0 0 8px;
+}
+
+header p {
+  margin: 0;
+  color: #ccc;
+  font-size: 15px;
+}
+
+main {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 0 16px 40px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #ffffff;
+  border-radius: 24px;
+  padding: 26px;
+  margin-bottom: 22px;
+  box-shadow: 0 5px 22px #00000006;
+}
+
+.monthbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.monthbar h2 {
+  font-size: 23px;
+  text-align: center;
+  margin: 0;
+  white-space: nowrap;
+}
+
+button {
+  font: inherit;
+  font-weight: 700;
+  border: 0;
+  border-radius: 14px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+.btn-light {
+  background: #eee;
+  color: #222;
+}
+
+.btn-dark {
+  background: #222;
+  color: #fff;
+}
+
+.btn-red {
+  background: var(--red);
+  color: #a22;
+}
+
+.monthbar button {
+  background: #f0f0ed;
+  color: #222;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.sum-box {
+  background: #f3f3f0;
+  padding: 22px;
+  border-radius: 20px;
+  color: #666;
+  min-width: 0;
+}
+
+.sum-box strong {
+  display: block;
+  font-size: 30px;
+  color: #222;
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+}
+
+.sum-total {
+  grid-column: 1 / -1;
+  background: #222;
+  color: #ccc;
+  padding: 24px;
+}
+
+.sum-total strong {
+  color: white;
+  font-size: 34px;
+}
+
+h2.section-title {
+  font-size: 25px;
+  margin: 0 0 24px;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.tabs button {
+  min-height: 64px;
+  background: #e8e8e4;
+  color: #444;
+}
+
+.tabs button.active,
+.filter button.active {
+  background: #222;
+  color: #fff;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  font-size: 17px;
+  margin: 20px 0 9px;
+}
+
+input,
+textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 15px 16px;
+  border: 1.5px solid #d2d2ce;
+  border-radius: 14px;
+  font: inherit;
+  font-size: 17px;
+  background: #fff;
+  color: #222;
+  box-shadow: 0 1px 2px #00000005;
+}
+
+input {
+  min-height: 58px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #aaa;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px solid #888;
+  outline-offset: 1px;
+  border-color: #888;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+.calc-box {
+  padding: 20px;
+  background: #f4f4f1;
+  border: 1px solid #ecece7;
+  border-radius: 18px;
+  margin-top: 20px;
+}
+
+.calc-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.calc-line strong {
+  font-size: 24px;
+  overflow-wrap: anywhere;
+}
+
+.receipt-toggle {
+  width: 100%;
+  min-height: 58px;
+  background: #eee;
+  color: #555;
+  border: 2px solid transparent;
+  border-radius: 14px;
+}
+
+.receipt-toggle.yes {
+  background: var(--green);
+  border-color: #70ae7f;
+  color: #246b3c;
+}
+
+#saveBtn {
+  width: 100%;
+  min-height: 62px;
+  margin-top: 24px;
+  font-size: 18px;
+  border-radius: 15px;
+  background: #222;
+  color: white;
+}
+
+#message {
+  min-height: 26px;
+  margin-top: 14px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+#message.ok {
+  color: #267342;
+}
+
+#message.err {
+  color: #b42332;
+}
+
+.filter {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 20px 0 24px;
+}
+
+.filter button {
+  background: #e8e8e4;
+  color: #444;
+  padding: 14px 8px;
+}
+
+.day {
+  margin-top: 28px;
+}
+
+.day h3 {
+  font-size: 19px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 12px;
+  margin-bottom: 0;
+}
+
+.expense-row {
+  padding: 20px 0;
+  border-bottom: 1px solid #ecece8;
+}
+
+.row-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.row-name {
+  font-size: 19px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.row-amount {
+  font-size: 21px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.details {
+  color: #777;
+  font-size: 15px;
+  margin-top: 10px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.badge {
+  display: inline-block;
+  background: #f0f0ed;
+  color: #444;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.row-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.row-actions button {
+  min-width: 84px;
+  padding: 11px 17px;
+}
+
+.day-total {
+  text-align: right;
+  color: #666;
+  padding-top: 15px;
+  font-size: 15px;
+}
+
+.month-total {
+  text-align: right;
+  font-weight: 700;
+  font-size: 22px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 2px solid #222;
+}
+
+.empty {
+  text-align: center;
+  color: #888;
+  padding: 42px 10px;
+}
+
+footer {
+  text-align: center;
+  color: #888;
+  padding: 22px 16px;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 560px) {
+  header {
+    padding: 24px 18px;
+  }
+
+  header h1 {
+    font-size: 23px;
+  }
+
+  main {
+    padding: 0 12px 28px;
+    margin-top: 16px;
+  }
+
+  .card {
+    padding: 19px;
+    border-radius: 22px;
+    margin-bottom: 18px;
+  }
+
+  .monthbar {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  .monthbar h2 {
+    font-size: 18px;
+  }
+
+  .monthbar button {
+    padding: 12px 5px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .summary {
+    gap: 10px;
+  }
+
+  .sum-box {
+    padding: 16px 13px;
+    border-radius: 17px;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+
+  .sum-box strong {
+    font-size: 25px;
+  }
+
+  .sum-total {
+    padding: 20px 16px;
+  }
+
+  .sum-total strong {
+    font-size: 30px;
+  }
+
+  h2.section-title {
+    font-size: 23px;
+    margin-bottom: 20px;
+  }
+
+  .tabs {
+    gap: 9px;
+    margin-bottom: 22px;
+  }
+
+  .tabs button {
+    min-height: 58px;
+    padding: 12px 7px;
+    font-size: 16px;
+  }
+
+  label {
+    font-size: 16px;
+    margin-top: 18px;
+  }
+
+  input,
+  textarea {
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  input {
+    min-height: 54px;
+  }
+
+  .fields {
+    grid-template-columns: 1fr;
+  }
+
+  .calc-box {
+    padding: 16px;
+  }
+
+  .calc-line strong {
+    font-size: 22px;
+  }
+
+  #saveBtn {
+    min-height: 58px;
+  }
+
+  .filter {
+    gap: 7px;
+    margin: 18px 0 22px;
+  }
+
+  .filter button {
+    padding: 13px 4px;
+    font-size: 15px;
+  }
+
+  .row-top {
+    gap: 8px;
+  }
+
+  .row-name {
+    font-size: 17px;
+  }
+
+  .row-amount {
+    font-size: 18px;
+  }
+
+  .details {
+    font-size: 14px;
+  }
+
+  .row-actions button {
+    min-width: 78px;
+    padding: 10px 14px;
+  }
+
+  .month-total {
+    font-size: 20px;
+  }
 }
 </style>
+
 </head>
 <body>
 <header>
