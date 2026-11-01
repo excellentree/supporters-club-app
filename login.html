@@ -1,1 +1,416 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
+<title>SUPPORTERS CULB ログイン</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  background:#111;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+.container{
+  width:100%;
+  max-width:420px;
+  text-align:center;
+}
+
+.logo{
+  font-size:27px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+
+.subtitle{
+  color:#c6a64b;
+  margin-top:8px;
+  font-size:14px;
+}
+
+.card{
+  margin-top:35px;
+  padding:25px 18px;
+  background:#1c1c1c;
+  border:1px solid #333;
+  border-radius:20px;
+}
+
+h2{
+  font-size:22px;
+  margin:0 0 12px;
+}
+
+.message{
+  min-height:45px;
+  color:#ccc;
+  font-size:14px;
+  line-height:1.7;
+}
+
+.pattern-area{
+  width:100%;
+  max-width:330px;
+  margin:20px auto;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
+svg{
+  display:block;
+  width:100%;
+  height:auto;
+  overflow:visible;
+}
+
+.line{
+  fill:none;
+  stroke:#c6a64b;
+  stroke-width:5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.dot{
+  fill:#333;
+  stroke:#888;
+  stroke-width:2;
+}
+
+.dot.selected{
+  fill:#c6a64b;
+  stroke:#fff;
+}
+
+button{
+  width:100%;
+  border:none;
+  border-radius:12px;
+  padding:15px;
+  margin-top:10px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.main-button{
+  background:#c6a64b;
+  color:#111;
+}
+
+.sub-button{
+  background:#333;
+  color:#fff;
+}
+
+button:active{
+  opacity:.8;
+}
+
+.hidden{
+  display:none;
+}
+
+.warning{
+  margin-top:20px;
+  color:#888;
+  font-size:11px;
+  line-height:1.7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="logo">SUPPORTERS CULB</div>
+  <div class="subtitle">SALES MANAGEMENT</div>
+
+  <div class="card">
+
+    <h2 id="title">パターン認証</h2>
+
+    <div class="message" id="message">
+      9個の点をなぞってください。
+    </div>
+
+    <div class="pattern-area" id="patternArea">
+
+      <svg id="patternSvg" viewBox="0 0 300 300"
+           aria-label="9個の点をなぞるパターン入力">
+
+        <polyline id="patternLine" class="line" points=""></polyline>
+
+        <circle class="dot" data-index="0" cx="50" cy="50" r="13"></circle>
+        <circle class="dot" data-index="1" cx="150" cy="50" r="13"></circle>
+        <circle class="dot" data-index="2" cx="250" cy="50" r="13"></circle>
+
+        <circle class="dot" data-index="3" cx="50" cy="150" r="13"></circle>
+        <circle class="dot" data-index="4" cx="150" cy="150" r="13"></circle>
+        <circle class="dot" data-index="5" cx="250" cy="150" r="13"></circle>
+
+        <circle class="dot" data-index="6" cx="50" cy="250" r="13"></circle>
+        <circle class="dot" data-index="7" cx="150" cy="250" r="13"></circle>
+        <circle class="dot" data-index="8" cx="250" cy="250" r="13"></circle>
+
+      </svg>
+
+    </div>
+
+    <button class="main-button" id="actionButton">
+      パターンを登録する
+    </button>
+
+    <button class="sub-button hidden" id="resetButton">
+      パターン入力をやり直す
+    </button>
+
+    <div class="warning">
+      ※ この画面は簡易的なパターン入力デモです。
+      重要なデータを保護する本番用認証ではありません。
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+const STORAGE_KEY = "supporters_pattern_demo_v1";
+
+const svg = document.getElementById("patternSvg");
+const line = document.getElementById("patternLine");
+const dots = [...document.querySelectorAll(".dot")];
+
+const title = document.getElementById("title");
+const message = document.getElementById("message");
+const actionButton = document.getElementById("actionButton");
+const resetButton = document.getElementById("resetButton");
+
+let pattern = [];
+let drawing = false;
+let firstPattern = null;
+let mode = localStorage.getItem(STORAGE_KEY)
+  ? "login"
+  : "register";
+
+function updateScreen(){
+  pattern = [];
+  drawing = false;
+  line.setAttribute("points", "");
+
+  dots.forEach(dot => dot.classList.remove("selected"));
+
+  resetButton.classList.add("hidden");
+
+  if(mode === "register"){
+    title.textContent = firstPattern
+      ? "確認のためもう一度"
+      : "パターンを登録";
+
+    message.textContent = firstPattern
+      ? "同じパターンをもう一度なぞってください。"
+      : "好きなパターンをなぞってください。";
+
+    actionButton.textContent = "パターンを登録する";
+
+  }else{
+    title.textContent = "ログイン";
+
+    message.textContent =
+      "登録したパターンをなぞってください。";
+
+    actionButton.textContent = "ログイン";
+  }
+}
+
+function getPoint(event){
+  const rect = svg.getBoundingClientRect();
+
+  return {
+    x: (event.clientX - rect.left) * 300 / rect.width,
+    y: (event.clientY - rect.top) * 300 / rect.height
+  };
+}
+
+function findDot(point){
+  let nearest = null;
+  let minDistance = Infinity;
+
+  dots.forEach(dot => {
+    const x = Number(dot.getAttribute("cx"));
+    const y = Number(dot.getAttribute("cy"));
+
+    const distance = Math.hypot(
+      point.x - x,
+      point.y - y
+    );
+
+    if(distance < 25 && distance < minDistance){
+      nearest = dot;
+      minDistance = distance;
+    }
+  });
+
+  return nearest;
+}
+
+function addDot(dot){
+  const index = Number(dot.dataset.index);
+
+  if(pattern.includes(index)) return;
+
+  pattern.push(index);
+  dot.classList.add("selected");
+
+  const points = pattern.map(i => {
+    const target = dots[i];
+
+    return `${target.getAttribute("cx")},${target.getAttribute("cy")}`;
+  }).join(" ");
+
+  line.setAttribute("points", points);
+}
+
+function clearPattern(){
+  pattern = [];
+  line.setAttribute("points", "");
+
+  dots.forEach(dot => dot.classList.remove("selected"));
+}
+
+svg.addEventListener("pointerdown", event => {
+  event.preventDefault();
+
+  drawing = true;
+  clearPattern();
+
+  const dot = findDot(getPoint(event));
+
+  if(dot) addDot(dot);
+
+  svg.setPointerCapture(event.pointerId);
+});
+
+svg.addEventListener("pointermove", event => {
+  if(!drawing) return;
+
+  event.preventDefault();
+
+  const dot = findDot(getPoint(event));
+
+  if(dot) addDot(dot);
+});
+
+function finishDrawing(){
+  if(!drawing) return;
+
+  drawing = false;
+
+  if(pattern.length < 4){
+    message.textContent =
+      "4個以上の点を使ってください。もう一度どうぞ。";
+
+    clearPattern();
+    return;
+  }
+
+  message.textContent =
+    `${pattern.length}個の点を入力しました。ボタンを押してください。`;
+
+  resetButton.classList.remove("hidden");
+}
+
+svg.addEventListener("pointerup", finishDrawing);
+
+svg.addEventListener("pointercancel", () => {
+  drawing = false;
+  clearPattern();
+});
+
+resetButton.addEventListener("click", () => {
+  clearPattern();
+  updateScreen();
+});
+
+actionButton.addEventListener("click", () => {
+  if(pattern.length < 4){
+    message.textContent =
+      "先に4個以上の点をなぞってください。";
+    return;
+  }
+
+  const currentPattern = pattern.join("-");
+
+  if(mode === "register"){
+
+    if(firstPattern === null){
+      firstPattern = currentPattern;
+
+      clearPattern();
+
+      title.textContent = "確認入力";
+      message.textContent =
+        "同じパターンをもう一度なぞってください。";
+
+      resetButton.classList.add("hidden");
+      return;
+    }
+
+    if(firstPattern !== currentPattern){
+      firstPattern = null;
+      clearPattern();
+
+      title.textContent = "パターンが一致しません";
+      message.textContent =
+        "最初から登録し直してください。";
+
+      mode = "register";
+      updateScreen();
+      return;
+    }
+
+    localStorage.setItem(STORAGE_KEY, currentPattern);
+
+    alert("パターンを登録しました！");
+
+    firstPattern = null;
+    mode = "login";
+    updateScreen();
+
+    return;
+  }
+
+  const savedPattern = localStorage.getItem(STORAGE_KEY);
+
+  if(currentPattern === savedPattern){
+    message.textContent = "ログインしました！";
+
+    location.href = "sales.html";
+  }else{
+    clearPattern();
+
+    message.textContent =
+      "パターンが違います。もう一度試してください。";
+  }
+});
+
+updateScreen();
+</script>
+
+</body>
+</html>
