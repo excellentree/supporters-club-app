@@ -204,9 +204,15 @@ const resetButton = document.getElementById("resetButton");
 let pattern = [];
 let drawing = false;
 let firstPattern = null;
-let mode = localStorage.getItem(STORAGE_KEY)
-  ? "login"
-  : "register";
+let mode = "register";
+
+try {
+  mode = localStorage.getItem(STORAGE_KEY)
+    ? "login"
+    : "register";
+} catch (error) {
+  console.error("パターンの保存状態を確認できません", error);
+}
 
 function updateScreen(){
   pattern = [];
