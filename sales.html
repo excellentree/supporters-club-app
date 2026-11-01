@@ -349,11 +349,32 @@ document.getElementById("salesMonth").value =
       .gte("sale_date", startDate)
       .lt("sale_date", endDate)
       .order("sale_date", { ascending:true });
-
-  if(error){
+   
+    if(error){
     console.error("Supabase月計読み込みエラー:", error);
     return;
   }
+    
+    const { data: expenseData, error: expenseError } =
+    await db
+      .from("expenses")
+      .select("amount")
+      .gte("expense_date", startDate)
+      .lt("expense_date", endDate);
+
+  if(expenseError){
+    console.error("経費データ読み込みエラー:", expenseError);
+  }
+
+  const totalExpenses =
+    (expenseData || []).reduce(
+      (sum, expense) => sum + Number(expense.amount || 0),
+      0
+    );
+
+  document.getElementById("expenseTotal").textContent =
+    "¥" + totalExpenses.toLocaleString();
+  
 
   let totalSales = 0;
   let totalQty = 0;
