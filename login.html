@@ -191,7 +191,10 @@ button:active{
 
 <script>
 const STORAGE_KEY = "supporters_pattern_demo_v1";
-
+alert(
+  "保存状態：" +
+  (localStorage.getItem(STORAGE_KEY) ? "登録データあり" : "登録データなし")
+);
 const svg = document.getElementById("patternSvg");
 const line = document.getElementById("patternLine");
 const dots = [...document.querySelectorAll(".dot")];
