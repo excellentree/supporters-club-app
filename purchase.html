@@ -45,18 +45,12 @@ h2{
   margin:0 0 18px;
   font-size:20px;
 }
-h3{
-  font-size:15px;
-  color:#bbb;
-  margin:18px 0 8px;
-}
 label{
   display:block;
   font-size:14px;
   color:#ccc;
-  margin-bottom:8px;
+  margin:18px 0 8px;
 }
-select,
 input{
   width:100%;
   padding:14px;
@@ -65,10 +59,6 @@ input{
   background:#111;
   color:#fff;
   font-size:16px;
-  margin-bottom:16px;
-}
-select:disabled{
-  opacity:.5;
 }
 button{
   width:100%;
@@ -85,16 +75,14 @@ button:disabled{
   opacity:.5;
   cursor:not-allowed;
 }
-.mode-buttons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-bottom:20px;
-}
-.mode-button.selected{
+.primary{
   background:#d4af37;
   border-color:#d4af37;
   color:#111;
+  margin-top:18px;
+}
+.secondary{
+  margin-top:10px;
 }
 .info{
   background:#111;
@@ -107,7 +95,7 @@ button:disabled{
   display:flex;
   justify-content:space-between;
   gap:12px;
-  padding:10px 0;
+  padding:12px 0;
   border-bottom:1px solid #333;
 }
 .info-row:last-child{
@@ -142,34 +130,30 @@ button:disabled{
   font-size:32px;
   font-weight:bold;
   color:#d4af37;
+  overflow-wrap:anywhere;
 }
 .result-detail{
   color:#ccc;
   font-size:13px;
   margin-top:10px;
-  line-height:1.7;
-}
-.primary{
-  background:#d4af37;
-  border-color:#d4af37;
-  color:#111;
-}
-.secondary{
-  margin-top:10px;
+  line-height:1.8;
+  overflow-wrap:anywhere;
 }
 .notice{
   font-size:13px;
   color:#aaa;
-  line-height:1.8;
+  line-height:1.9;
   margin-top:14px;
 }
 .status{
+  display:none;
   padding:12px;
   border-radius:8px;
   margin-bottom:16px;
   font-size:14px;
-  line-height:1.6;
-  display:none;
+  line-height:1.7;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
 }
 .status.error{
   display:block;
@@ -195,55 +179,16 @@ footer{
 <body>
 <header>
   <h1>SUPPORTERS CULB</h1>
-  <p>仕入れ計算・平均原価管理</p>
+  <p>SOCCERWE専用・仕入れ計算</p>
 </header>
 <main>
   <div class="card">
-    <h2>仕入れ対象</h2>
-    <div class="mode-buttons">
-      <button
-        type="button"
-        id="soccerweMode"
-        class="mode-button selected">
-        ⚽ SOCCERWE
-      </button>
-      <button
-        type="button"
-        id="otherMode"
-        class="mode-button">
-        📦 その他商品
-      </button>
-    </div>
-    <div id="categoryArea" class="hidden">
-      <label for="categorySelect">商品カテゴリー</label>
-      <select id="categorySelect">
-        <option value="">カテゴリーを選択</option>
-        <option value="ピンバッジ">ピンバッジ</option>
-        <option value="ペナント">ペナント</option>
-        <option value="トロフィー">トロフィー</option>
-        <option value="LEGO">LEGO</option>
-        <option value="アパレル">アパレル</option>
-        <option value="キーホルダー">キーホルダー</option>
-        <option value="ステッカー">ステッカー</option>
-        <option value="フィギュア">フィギュア</option>
-        <option value="その他">その他</option>
-      </select>
-      <label for="productSelect">商品</label>
-      <select id="productSelect" disabled>
-        <option value="">先にカテゴリーを選択</option>
-      </select>
-    </div>
+    <h2>⚽ SOCCERWE仕入れ計算</h2>
     <div id="status" class="status"></div>
-    <button type="button" id="reloadButton" class="secondary">
-      🔄 最新データを読み込む
-    </button>
-  </div>
-  <div class="card">
-    <h2>現在の在庫情報</h2>
     <div class="info">
       <div class="info-row">
-        <span class="info-label">商品・対象</span>
-        <span class="info-value" id="currentName">SOCCERWE全体</span>
+        <span class="info-label">仕入れ対象</span>
+        <span class="info-value">SOCCERWE全商品</span>
       </div>
       <div class="info-row">
         <span class="info-label">現在の在庫数</span>
@@ -253,30 +198,53 @@ footer{
         <span class="info-label">現在の平均原価</span>
         <span class="info-value" id="currentCost">読み込み中...</span>
       </div>
+      <div class="info-row">
+        <span class="info-label">対象商品数</span>
+        <span class="info-value" id="productCount">---</span>
+      </div>
     </div>
-    <label for="purchaseQuantity">今回の仕入れ数量（個）</label>
+    <label for="purchaseQuantity">
+      今回の仕入れ数量（個）
+    </label>
     <input
       type="number"
       id="purchaseQuantity"
       min="1"
       step="1"
+      inputmode="numeric"
       placeholder="例：50">
-    <label for="purchaseAmount">今回の仕入れ総額（円）</label>
+    <label for="purchaseAmount">
+      今回の仕入れ総額（円）
+    </label>
     <input
       type="number"
       id="purchaseAmount"
       min="0"
       step="1"
+      inputmode="numeric"
       placeholder="例：12500">
-    <button type="button" id="calculateButton" class="primary">
+    <button
+      type="button"
+      id="calculateButton"
+      class="primary">
       新しい平均原価を計算
+    </button>
+    <button
+      type="button"
+      id="reloadButton"
+      class="secondary">
+      🔄 最新データを読み込む
     </button>
   </div>
   <div id="resultCard" class="card hidden">
     <h2>計算結果</h2>
     <div class="result">
-      <div class="result-title">仕入れ後の平均原価</div>
-      <div class="result-value" id="newAverageCost">---</div>
+      <div class="result-title">
+        仕入れ後の平均原価
+      </div>
+      <div class="result-value" id="newAverageCost">
+        ---
+      </div>
       <div class="result-detail" id="calculationDetail"></div>
     </div>
     <div class="info">
@@ -285,7 +253,7 @@ footer{
         <span class="info-value" id="resultOldStock">---</span>
       </div>
       <div class="info-row">
-        <span class="info-label">仕入れ数量</span>
+        <span class="info-label">今回の仕入れ数量</span>
         <span class="info-value" id="resultPurchaseQuantity">---</span>
       </div>
       <div class="info-row">
@@ -293,28 +261,38 @@ footer{
         <span class="info-value gold" id="resultNewStock">---</span>
       </div>
       <div class="info-row">
-        <span class="info-label">仕入れ後の平均原価</span>
+        <span class="info-label">更新後の平均原価</span>
         <span class="info-value gold" id="resultAverageCost">---</span>
       </div>
     </div>
-    <button type="button" id="confirmButton" class="primary">
+    <button
+      type="button"
+      id="confirmButton"
+      class="primary">
       ✅ この平均原価で確定する
     </button>
-    <button type="button" id="cancelButton" class="secondary">
+    <button
+      type="button"
+      id="cancelButton"
+      class="secondary">
       キャンセル
     </button>
     <p class="notice">
-      確定すると平均原価だけを更新します。商品ごとの在庫数は変更しません。
+      確定すると、SOCCERWE全商品の平均原価だけを更新します。
+      在庫数は変更しません。
     </p>
   </div>
   <div class="card">
-    <h2>操作について</h2>
+    <h2>📌 操作方法</h2>
     <p class="notice">
-      ・SOCCERWEは全商品の平均原価を一括更新します。<br>
-      ・その他商品は選択した商品だけを更新します。<br>
-      ・仕入れ数量は計算に使用しますが、在庫数には加算しません。<br>
-      ・仕入れ計算を確定した後、在庫表で各商品の在庫数を増やしてください。<br>
-      ・平均原価は円単位に四捨五入して保存します。
+      ① 最新の在庫データを読み込みます。<br>
+      ② 仕入れ数量と仕入れ総額を入力します。<br>
+      ③ 新しい平均原価を計算します。<br>
+      ④ 結果を確認して確定します。<br>
+      ⑤ 最後に、既存の在庫表で仕入れ分の在庫を追加します。<br><br>
+      ※平均原価は円単位に四捨五入します。<br>
+      ※仕入れ総額には、原価に含めたい送料なども計上してください。<br>
+      ※このページでは在庫数を変更しません。
     </p>
   </div>
 </main>
@@ -331,17 +309,16 @@ const db = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
-let currentMode = "soccerwe";
-let soccerweProducts = [];
-let otherProduct = null;
+let products = [];
 let calculatedResult = null;
 let busy = false;
+let loading = false;
 const $ = id => document.getElementById(id);
 function yen(value){
-  return "¥" + Number(value || 0).toLocaleString("ja-JP");
+  return "¥" + Number(value).toLocaleString("ja-JP");
 }
 function count(value){
-  return Number(value || 0).toLocaleString("ja-JP") + "個";
+  return Number(value).toLocaleString("ja-JP") + "個";
 }
 function showStatus(message, type = "error"){
   const box = $("status");
@@ -349,9 +326,8 @@ function showStatus(message, type = "error"){
   box.className = "status " + type;
 }
 function clearStatus(){
-  const box = $("status");
-  box.textContent = "";
-  box.className = "status";
+  $("status").textContent = "";
+  $("status").className = "status";
 }
 function clearResult(){
   calculatedResult = null;
@@ -360,378 +336,295 @@ function clearResult(){
 function setBusy(value){
   busy = value;
   [
-    "soccerweMode",
-    "otherMode",
-    "categorySelect",
-    "productSelect",
-    "reloadButton",
+    "purchaseQuantity",
+    "purchaseAmount",
     "calculateButton",
+    "reloadButton",
     "confirmButton",
     "cancelButton"
   ].forEach(id => {
     $(id).disabled = value;
   });
 }
-function setMode(mode){
-  currentMode = mode;
-  clearResult();
-  clearStatus();
-  $("soccerweMode").classList.toggle(
-    "selected",
-    mode === "soccerwe"
-  );
-  $("otherMode").classList.toggle(
-    "selected",
-    mode === "other"
-  );
-  $("categoryArea").classList.toggle(
-    "hidden",
-    mode !== "other"
-  );
-  $("purchaseQuantity").value = "";
-  $("purchaseAmount").value = "";
-  if(mode === "soccerwe"){
-    $("currentName").textContent = "SOCCERWE全体";
-    renderSoccerweInfo();
-  }else{
-    $("currentName").textContent = "商品を選択してください";
-    $("currentStock").textContent = "---";
-    $("currentCost").textContent = "---";
-    otherProduct = null;
-  }
+function getTotalStock(list){
+  return list.reduce((sum, product) => {
+    const stock = Number(product.stock);
+    if(!Number.isFinite(stock) || stock < 0){
+      throw new Error(
+        "在庫数が不正な商品があります。商品データを確認してください。"
+      );
+    }
+    return sum + stock;
+  }, 0);
 }
-async function loadSoccerwe(){
-  clearStatus();
-  const { data, error } = await db
-    .from("products")
-    .select("id,name,stock,average_cost")
-    .eq("category", "soccerwe");
-  if(error){
-    console.error(error);
-    showStatus(
-      "SOCCERWEの商品を読み込めませんでした。\n" +
-      error.message
-    );
-    return;
-  }
-  soccerweProducts = data || [];
-  if(soccerweProducts.length === 0){
-    $("currentStock").textContent = "0個";
-    $("currentCost").textContent = "---";
-    showStatus(
-      "SOCCERWE商品が見つかりませんでした。登録データを確認してください。"
-    );
-    return;
-  }
-  renderSoccerweInfo();
-}
-function renderSoccerweInfo(){
-  if(!soccerweProducts.length) return;
-  const totalStock = soccerweProducts.reduce(
-    (sum, product) => sum + Math.max(0, Number(product.stock) || 0),
-    0
-  );
-  const costs = soccerweProducts
-    .map(product => Number(product.average_cost))
-    .filter(value => Number.isFinite(value) && value >= 0);
-  if(costs.length === 0){
-    $("currentStock").textContent = count(totalStock);
-    $("currentCost").textContent = "---";
-    showStatus("平均原価を取得できませんでした。");
-    return;
-  }
-  const uniqueCosts = [...new Set(costs)];
-  $("currentName").textContent = "SOCCERWE全体";
-  $("currentStock").textContent = count(totalStock);
-  if(uniqueCosts.length > 1){
-    $("currentCost").textContent = "要確認";
-    showStatus(
-      "SOCCERWE商品の平均原価が統一されていません。現在の原価を確認してから操作してください。"
-    );
-    return;
-  }
-  $("currentCost").textContent = yen(uniqueCosts[0]);
-}
-async function loadCategories(){
-  const category = $("categorySelect").value;
-  const select = $("productSelect");
-  clearResult();
-  clearStatus();
-  otherProduct = null;
-  select.innerHTML = "";
-  if(!category){
-    select.innerHTML = '<option value="">先にカテゴリーを選択</option>';
-    select.disabled = true;
-    $("currentName").textContent = "商品を選択してください";
-    $("currentStock").textContent = "---";
-    $("currentCost").textContent = "---";
-    return;
-  }
-  select.innerHTML = '<option value="">商品を読み込み中...</option>';
-  select.disabled = true;
-  const { data, error } = await db
-    .from("products")
-    .select("id,name,stock,average_cost,category,item_type")
-    .eq("category", category)
-    .eq("item_type", "その他")
-    .order("name", { ascending: true });
-  if(error){
-    console.error(error);
-    select.innerHTML = '<option value="">読み込み失敗</option>';
-    showStatus("商品一覧を読み込めませんでした。\n" + error.message);
-    return;
-  }
-  if(!data || data.length === 0){
-    select.innerHTML = '<option value="">該当商品なし</option>';
-    showStatus("このカテゴリーに登録済みの商品がありません。", "error");
-    return;
-  }
-  select.innerHTML = '<option value="">商品を選択してください</option>';
-  data.forEach(product => {
-    const option = document.createElement("option");
-    option.value = String(product.id);
-    option.textContent = product.name || "(品名なし)";
-    select.appendChild(option);
+function getAverageCost(list){
+  const costs = list.map(product => {
+    if(
+      product.average_cost === null ||
+      product.average_cost === undefined ||
+      product.average_cost === ""
+    ){
+      throw new Error(
+        "平均原価が未設定の商品があります。更新を中止しました。"
+      );
+    }
+    const cost = Number(product.average_cost);
+    if(!Number.isFinite(cost) || cost < 0){
+      throw new Error(
+        "平均原価が不正な商品があります。更新を中止しました。"
+      );
+    }
+    return cost;
   });
-  select.disabled = false;
-  // 商品データを選択時に再取得する
-  select.onchange = async function(){
-    clearResult();
-    clearStatus();
-    const id = this.value;
-    if(!id){
-      otherProduct = null;
-      $("currentName").textContent = "商品を選択してください";
-      $("currentStock").textContent = "---";
-      $("currentCost").textContent = "---";
-      return;
-    }
-    const { data: product, error } = await db
+  const uniqueCosts = [...new Set(costs)];
+  if(uniqueCosts.length !== 1){
+    throw new Error(
+      "SOCCERWE全商品の平均原価が統一されていません。現在の原価を確認してください。"
+    );
+  }
+  return uniqueCosts[0];
+}
+function renderInfo(){
+  if(products.length === 0){
+    $("currentStock").textContent = "---";
+    $("currentCost").textContent = "---";
+    $("productCount").textContent = "0件";
+    return;
+  }
+  const stock = getTotalStock(products);
+  const averageCost = getAverageCost(products);
+  $("currentStock").textContent = count(stock);
+  $("currentCost").textContent = yen(averageCost);
+  $("productCount").textContent =
+    products.length.toLocaleString("ja-JP") + "件";
+}
+async function loadProducts(){
+  if(busy || loading) return;
+  loading = true;
+  $("reloadButton").disabled = true;
+  $("calculateButton").disabled = true;
+  clearStatus();
+  clearResult();
+  $("currentStock").textContent = "読み込み中...";
+  $("currentCost").textContent = "読み込み中...";
+  $("productCount").textContent = "読み込み中...";
+  try{
+    const { data, error } = await db
       .from("products")
-      .select("id,name,stock,average_cost,category,item_type")
-      .eq("id", id)
-      .eq("item_type", "その他")
-      .single();
-    if(error || !product){
-      console.error(error);
-      showStatus("商品の詳細を取得できませんでした。");
+      .select("id,name,stock,average_cost")
+      .eq("category", "soccerwe");
+    if(error) throw error;
+    if(!data || data.length === 0){
+      products = [];
+      renderInfo();
+      showStatus(
+        "SOCCERWE商品が見つかりませんでした。商品登録データを確認してください。"
+      );
       return;
     }
-    otherProduct = product;
-    $("currentName").textContent = product.name || "(品名なし)";
-    $("currentStock").textContent = count(product.stock);
-    $("currentCost").textContent = yen(product.average_cost);
-  };
+    products = data;
+    try{
+      renderInfo();
+    }catch(error){
+      $("currentStock").textContent = "---";
+      $("currentCost").textContent = "要確認";
+      $("productCount").textContent =
+        products.length.toLocaleString("ja-JP") + "件";
+      showStatus(error.message);
+    }
+  }catch(error){
+    console.error(error);
+    products = [];
+    $("currentStock").textContent = "---";
+    $("currentCost").textContent = "---";
+    $("productCount").textContent = "---";
+    showStatus(
+      "SOCCERWE商品を読み込めませんでした。\n" +
+      (error.message || "通信エラー")
+    );
+  }finally{
+    loading = false;
+    $("reloadButton").disabled = false;
+    $("calculateButton").disabled = false;
+  }
 }
 function calculate(){
+  if(busy || loading) return;
   clearStatus();
   clearResult();
   const quantity = Number($("purchaseQuantity").value);
   const amount = Number($("purchaseAmount").value);
-  if(!Number.isInteger(quantity) || quantity <= 0){
-    showStatus("仕入れ数量は1以上の整数を入力してください。");
+  if(!Number.isSafeInteger(quantity) || quantity <= 0){
+    showStatus(
+      "仕入れ数量は1以上の整数で入力してください。"
+    );
     return;
   }
-  if(!Number.isFinite(amount) || amount < 0){
-    showStatus("仕入れ総額は0円以上で入力してください。");
+  if(!Number.isSafeInteger(amount) || amount < 0){
+    showStatus(
+      "仕入れ総額は0円以上の整数で入力してください。"
+    );
     return;
   }
-  let stock;
-  let averageCost;
-  let targetId = null;
-  if(currentMode === "soccerwe"){
-    if(!soccerweProducts.length){
-      showStatus("SOCCERWEの商品データがありません。");
-      return;
-    }
-    const costs = soccerweProducts.map(
-      p => Number(p.average_cost)
+  if(products.length === 0){
+    showStatus(
+      "商品データがありません。最新データを読み込んでください。"
     );
-    if(costs.some(c => !Number.isFinite(c) || c < 0)){
-      showStatus("SOCCERWE商品の平均原価を確認してください。");
-      return;
-    }
-    if(new Set(costs).size !== 1){
-      showStatus(
-        "SOCCERWE商品の平均原価が統一されていません。更新を中止しました。"
-      );
-      return;
-    }
-    stock = soccerweProducts.reduce(
-      (sum, p) => sum + Math.max(0, Number(p.stock) || 0),
-      0
-    );
-    averageCost = costs[0];
-  }else{
-    if(!otherProduct){
-      showStatus("仕入れ対象の商品を選択してください。");
-      return;
-    }
-    stock = Math.max(0, Number(otherProduct.stock) || 0);
-    averageCost = Number(otherProduct.average_cost);
-    if(!Number.isFinite(averageCost) || averageCost < 0){
-      showStatus("選択商品の平均原価を確認してください。");
-      return;
-    }
-    targetId = otherProduct.id;
+    return;
   }
-  const oldValue = stock * averageCost;
-  const newStock = stock + quantity;
-  const newAverage = Math.round(
-    (oldValue + amount) / newStock
-  );
-  calculatedResult = {
-    mode: currentMode,
-    targetId,
-    quantity,
-    amount,
-    stock,
-    averageCost,
-    newStock,
-    newAverage,
-    productName: currentMode === "soccerwe"
-      ? "SOCCERWE全体"
-      : otherProduct.name
-  };
-  $("newAverageCost").textContent = yen(newAverage);
-  $("calculationDetail").textContent =
-    "(" + count(stock) + " × " + yen(averageCost) +
-    " ＋ " + yen(amount) + ") ÷ " +
-    count(newStock) +
-    " を計算し、円単位に四捨五入しています。";
-  $("resultOldStock").textContent = count(stock);
-  $("resultPurchaseQuantity").textContent = count(quantity);
-  $("resultNewStock").textContent = count(newStock);
-  $("resultAverageCost").textContent = yen(newAverage);
-  $("resultCard").classList.remove("hidden");
-  $("resultCard").scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
+  try{
+    const stock = getTotalStock(products);
+    const averageCost = getAverageCost(products);
+    if(stock + quantity > Number.MAX_SAFE_INTEGER){
+      showStatus("在庫数が大きすぎるため計算できません。");
+      return;
+    }
+    const oldValue = stock * averageCost;
+    const totalValue = oldValue + amount;
+    const newStock = stock + quantity;
+    const newAverage = Math.round(totalValue / newStock);
+    if(!Number.isSafeInteger(newAverage)){
+      showStatus("計算結果が不正です。入力内容を確認してください。");
+      return;
+    }
+    calculatedResult = {
+      quantity,
+      amount,
+      stock,
+      averageCost,
+      newStock,
+      newAverage,
+      productCount: products.length,
+      productIds: products.map(p => String(p.id)).sort()
+    };
+    $("newAverageCost").textContent = yen(newAverage);
+    $("calculationDetail").textContent =
+      "(" + count(stock) + " × " + yen(averageCost) +
+      " ＋ " + yen(amount) + ") ÷ " +
+      count(newStock) +
+      " ＝ " + yen(newAverage) +
+      "（円単位に四捨五入）";
+    $("resultOldStock").textContent = count(stock);
+    $("resultPurchaseQuantity").textContent = count(quantity);
+    $("resultNewStock").textContent = count(newStock);
+    $("resultAverageCost").textContent = yen(newAverage);
+    $("resultCard").classList.remove("hidden");
+    $("resultCard").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+  }catch(error){
+    showStatus(error.message);
+  }
 }
 async function confirmPurchase(){
-  if(busy || !calculatedResult) return;
+  if(busy || loading || !calculatedResult) return;
   const result = calculatedResult;
   const message =
     "以下の内容で平均原価を更新します。\n\n" +
-    "対象：" + result.productName + "\n" +
-    "現在の在庫：" + result.stock + "個\n" +
-    "仕入れ数量：" + result.quantity + "個\n" +
-    "仕入れ総額：" + yen(result.amount) + "\n" +
+    "対象：SOCCERWE全商品\n" +
+    "対象商品数：" + result.productCount + "件\n" +
+    "現在の在庫：" + count(result.stock) + "\n" +
+    "現在の平均原価：" + yen(result.averageCost) + "\n" +
+    "今回の仕入れ数量：" + count(result.quantity) + "\n" +
+    "今回の仕入れ総額：" + yen(result.amount) + "\n" +
     "更新後の平均原価：" + yen(result.newAverage) + "\n\n" +
     "在庫数は変更されません。\n" +
-    "確定してもよろしいですか？";
+    "確定してよろしいですか？";
   if(!confirm(message)) return;
   setBusy(true);
   clearStatus();
   try{
-    if(result.mode === "soccerwe"){
-      // 更新直前にデータを再取得し、計算時からの変化を確認
-      const { data: latest, error: readError } = await db
-        .from("products")
-        .select("id,stock,average_cost")
-        .eq("category", "soccerwe");
-      if(readError) throw readError;
-      if(!latest || latest.length !== soccerweProducts.length){
-        throw new Error(
-          "SOCCERWEの商品数が計算時から変わっています。最新データを読み込んでください。"
-        );
-      }
-      const latestStock = latest.reduce(
-        (sum, p) => sum + Math.max(0, Number(p.stock) || 0),
-        0
+    // 更新前に最新データを再取得する
+    const { data: latest, error: readError } = await db
+      .from("products")
+      .select("id,name,stock,average_cost")
+      .eq("category", "soccerwe");
+    if(readError) throw readError;
+    if(!latest || latest.length === 0){
+      throw new Error(
+        "SOCCERWE商品を取得できませんでした。更新を中止しました。"
       );
-      const latestCosts = latest.map(
-        p => Number(p.average_cost)
-      );
-      if(
-        latestStock !== result.stock ||
-        latestCosts.some(c => c !== result.averageCost)
-      ){
-        throw new Error(
-          "在庫数または平均原価が計算後に変更されています。最新データを読み込んで再計算してください。"
-        );
-      }
-      const { error } = await db
-        .from("products")
-        .update({ average_cost: result.newAverage })
-        .eq("category", "soccerwe");
-      if(error) throw error;
-    }else{
-      // 選択した商品だけを更新
-      const { data: latest, error: readError } = await db
-        .from("products")
-        .select("id,stock,average_cost,item_type")
-        .eq("id", result.targetId)
-        .eq("item_type", "その他")
-        .single();
-      if(readError || !latest){
-        throw readError || new Error("対象商品が見つかりません。");
-      }
-      if(
-        Number(latest.stock || 0) !== result.stock ||
-        Number(latest.average_cost || 0) !== result.averageCost
-      ){
-        throw new Error(
-          "在庫数または平均原価が計算後に変更されています。最新データを読み込んで再計算してください。"
-        );
-      }
-      const { error } = await db
-        .from("products")
-        .update({ average_cost: result.newAverage })
-        .eq("id", result.targetId)
-        .eq("item_type", "その他");
-      if(error) throw error;
     }
-    calculatedResult = null;
-    $("resultCard").classList.add("hidden");
+    const latestIds = latest
+      .map(p => String(p.id))
+      .sort();
+    const sameIds =
+      JSON.stringify(latestIds) ===
+      JSON.stringify(result.productIds);
+    if(!sameIds){
+      throw new Error(
+        "SOCCERWEの商品構成が変わっています。最新データを読み込んで再計算してください。"
+      );
+    }
+    const latestStock = getTotalStock(latest);
+    const latestCost = getAverageCost(latest);
+    if(
+      latestStock !== result.stock ||
+      latestCost !== result.averageCost
+    ){
+      throw new Error(
+        "在庫数または平均原価が計算後に変更されています。最新データを読み込んで再計算してください。"
+      );
+    }
+    // 平均原価だけを更新。在庫数には触れない
+    const { data: updated, error: updateError } = await db
+      .from("products")
+      .update({
+        average_cost: result.newAverage
+      })
+      .eq("category", "soccerwe")
+      .select("id");
+    if(updateError) throw updateError;
+    if(!updated || updated.length !== result.productCount){
+      throw new Error(
+        "更新対象の商品数が一致しません。データを再読み込みして確認してください。"
+      );
+    }
+    clearResult();
     $("purchaseQuantity").value = "";
     $("purchaseAmount").value = "";
-    await loadSoccerwe();
-    if(currentMode === "other"){
-      await loadCategories();
-    }
+    await loadProducts();
     showStatus(
       "平均原価を " + yen(result.newAverage) +
-      " に更新しました。在庫数は変更していません。在庫表で仕入れ分を追加してください。",
+      " に更新しました。\n" +
+      "更新対象：" + result.productCount + "件\n" +
+      "在庫数は変更していません。\n\n" +
+      "次に、既存の在庫表で仕入れ分の在庫を追加してください。",
       "success"
     );
   }catch(error){
     console.error(error);
     showStatus(
-      "更新に失敗しました。\n" +
+      "更新処理の結果を確認してください。\n" +
       (error.message || "原因不明のエラー") +
-      "\nデータが更新されていないか、在庫表で確認してください。"
+      "\n\n最新データを読み込み、平均原価を確認してください。"
     );
   }finally{
     setBusy(false);
   }
 }
-$("soccerweMode").addEventListener("click", () => {
-  setMode("soccerwe");
-});
-$("otherMode").addEventListener("click", () => {
-  setMode("other");
-});
-$("categorySelect").addEventListener("change", loadCategories);
-$("calculateButton").addEventListener("click", calculate);
-$("confirmButton").addEventListener("click", confirmPurchase);
-$("cancelButton").addEventListener("click", () => {
-  clearResult();
-  clearStatus();
-});
-$("reloadButton").addEventListener("click", async () => {
-  clearResult();
-  clearStatus();
-  await loadSoccerwe();
-  if(currentMode === "other" && $("categorySelect").value){
-    await loadCategories();
+$("calculateButton").addEventListener(
+  "click",
+  calculate
+);
+$("confirmButton").addEventListener(
+  "click",
+  confirmPurchase
+);
+$("cancelButton").addEventListener(
+  "click",
+  () => {
+    if(busy) return;
+    clearResult();
+    clearStatus();
   }
-});
-async function init(){
-  await loadSoccerwe();
-}
-init();
+);
+$("reloadButton").addEventListener(
+  "click",
+  loadProducts
+);
+loadProducts();
 </script>
 </body>
 </html>
