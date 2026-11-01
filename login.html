@@ -2,420 +2,312 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
+<meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#111111">
 <title>SUPPORTERS CULB ログイン</title>
-
 <style>
-*{
-  box-sizing:border-box;
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
-
-body{
-  margin:0;
-  min-height:100vh;
-  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
-  background:#111;
-  color:#fff;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 24px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont,
+               "Helvetica Neue", Arial, sans-serif;
+  background:
+    radial-gradient(ellipse at top, #292317 0%, #111111 48%);
+  color: #ffffff;
 }
-
-.container{
-  width:100%;
-  max-width:420px;
-  text-align:center;
+.container {
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
 }
-
-.logo{
-  font-size:27px;
-  font-weight:800;
-  letter-spacing:1px;
+.logo {
+  font-size: 25px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
 }
-
-.subtitle{
-  color:#c6a64b;
-  margin-top:8px;
-  font-size:14px;
+.subtitle {
+  margin-top: 9px;
+  color: #c6a64b;
+  font-size: 11px;
+  letter-spacing: 4px;
 }
-
-.card{
-  margin-top:35px;
-  padding:25px 18px;
-  background:#1c1c1c;
-  border:1px solid #333;
-  border-radius:20px;
+.card {
+  margin-top: 38px;
+  padding: 30px 24px;
+  background: linear-gradient(145deg, #222222, #171717);
+  border: 1px solid #5a4924;
+  border-radius: 22px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4);
 }
-
-h2{
-  font-size:22px;
-  margin:0 0 12px;
+.lock-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #c6a64b;
+  border-radius: 50%;
+  color: #d7b65c;
+  font-size: 27px;
 }
-
-.message{
-  min-height:45px;
-  color:#ccc;
-  font-size:14px;
-  line-height:1.7;
+h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
 }
-
-.pattern-area{
-  width:100%;
-  max-width:330px;
-  margin:20px auto;
-  touch-action:none;
-  user-select:none;
-  -webkit-user-select:none;
+.message {
+  min-height: 44px;
+  margin-top: 12px;
+  color: #bdbdbd;
+  font-size: 13px;
+  line-height: 1.8;
 }
-
-svg{
-  display:block;
-  width:100%;
-  height:auto;
-  overflow:visible;
+.pin-display {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin: 24px 0 28px;
 }
-
-.line{
-  fill:none;
-  stroke:#c6a64b;
-  stroke-width:5;
-  stroke-linecap:round;
-  stroke-linejoin:round;
+.pin-dot {
+  width: 13px;
+  height: 13px;
+  border: 1px solid #9b854b;
+  border-radius: 50%;
+  background: #333333;
+  transition: background 0.15s, transform 0.15s;
 }
-
-.dot{
-  fill:#333;
-  stroke:#888;
-  stroke-width:2;
+.pin-dot.filled {
+  background: #d7b65c;
+  border-color: #f0d98b;
+  transform: scale(1.1);
 }
-
-.dot.selected{
-  fill:#c6a64b;
-  stroke:#fff;
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
 }
-
-button{
-  width:100%;
-  border:none;
-  border-radius:12px;
-  padding:15px;
-  margin-top:10px;
-  font-size:16px;
-  font-weight:700;
-  cursor:pointer;
+.key {
+  min-height: 62px;
+  border: 1px solid #45403a;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #303030, #222222);
+  color: #ffffff;
+  font-size: 23px;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
 }
-
-.main-button{
-  background:#c6a64b;
-  color:#111;
+.key:active {
+  background: #514526;
+  border-color: #c6a64b;
+  transform: scale(0.97);
 }
-
-.sub-button{
-  background:#333;
-  color:#fff;
+.key.utility {
+  color: #d7b65c;
+  font-size: 14px;
+  font-weight: 700;
 }
-
-button:active{
-  opacity:.8;
+.key.zero {
+  grid-column: 2;
 }
-
-.hidden{
-  display:none;
+.key:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
-
-.warning{
-  margin-top:20px;
-  color:#888;
-  font-size:11px;
-  line-height:1.7;
+.warning {
+  margin-top: 23px;
+  color: #777777;
+  font-size: 10px;
+  line-height: 1.8;
+}
+.shake {
+  animation: shake 0.25s ease-in-out;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+@media (max-width: 360px) {
+  .card {
+    padding: 26px 18px;
+  }
+  .key {
+    min-height: 56px;
+  }
 }
 </style>
 </head>
-
 <body>
-
 <div class="container">
-
   <div class="logo">SUPPORTERS CULB</div>
   <div class="subtitle">SALES MANAGEMENT</div>
-
-  <div class="card">
-
-    <h2 id="title">パターン認証</h2>
-
-    <div class="message" id="message">
-      9個の点をなぞってください。
+  <main class="card" id="loginCard">
+    <div class="lock-icon">♙</div>
+    <h1>暗証番号を入力</h1>
+    <div class="message" id="message" aria-live="polite">
+      4桁の暗証番号を入力してください。
     </div>
-
-    <div class="pattern-area" id="patternArea">
-
-      <svg id="patternSvg" viewBox="0 0 300 300"
-           aria-label="9個の点をなぞるパターン入力">
-
-        <polyline id="patternLine" class="line" points=""></polyline>
-
-        <circle class="dot" data-index="0" cx="50" cy="50" r="13"></circle>
-        <circle class="dot" data-index="1" cx="150" cy="50" r="13"></circle>
-        <circle class="dot" data-index="2" cx="250" cy="50" r="13"></circle>
-
-        <circle class="dot" data-index="3" cx="50" cy="150" r="13"></circle>
-        <circle class="dot" data-index="4" cx="150" cy="150" r="13"></circle>
-        <circle class="dot" data-index="5" cx="250" cy="150" r="13"></circle>
-
-        <circle class="dot" data-index="6" cx="50" cy="250" r="13"></circle>
-        <circle class="dot" data-index="7" cx="150" cy="250" r="13"></circle>
-        <circle class="dot" data-index="8" cx="250" cy="250" r="13"></circle>
-
-      </svg>
-
+    <div class="pin-display" aria-label="入力した桁数">
+      <span class="pin-dot"></span>
+      <span class="pin-dot"></span>
+      <span class="pin-dot"></span>
+      <span class="pin-dot"></span>
     </div>
-
-    <button class="main-button" id="actionButton">
-      パターンを登録する
-    </button>
-
-    <button class="sub-button hidden" id="resetButton">
-      パターン入力をやり直す
-    </button>
-
+    <div class="keypad" id="keypad">
+      <button class="key" data-number="1">1</button>
+      <button class="key" data-number="2">2</button>
+      <button class="key" data-number="3">3</button>
+      <button class="key" data-number="4">4</button>
+      <button class="key" data-number="5">5</button>
+      <button class="key" data-number="6">6</button>
+      <button class="key" data-number="7">7</button>
+      <button class="key" data-number="8">8</button>
+      <button class="key" data-number="9">9</button>
+      <button class="key utility" id="clearButton">クリア</button>
+      <button class="key zero" data-number="0">0</button>
+      <button class="key utility" id="deleteButton">1字戻す</button>
+    </div>
     <div class="warning">
-      ※ この画面は簡易的なパターン入力デモです。
-      重要なデータを保護する本番用認証ではありません。
+      ※ 暗証番号の入力画面です。<br>
+      売上データの保護には、別途サーバー側の認証設定が必要です。
     </div>
-
-  </div>
-
+  </main>
 </div>
-
 <script>
-const STORAGE_KEY = "supporters_pattern_demo_v1";
-const svg = document.getElementById("patternSvg");
-const line = document.getElementById("patternLine");
-const dots = [...document.querySelectorAll(".dot")];
-
-const title = document.getElementById("title");
+/*
+ * 仮の画面認証です。
+ * 本番運用前に、サーバー側で暗証番号を検証する仕組みに
+ * 置き換える必要があります。
+ */
+const PIN = "1234";
+const MAX_ATTEMPTS = 5;
+const LOCK_TIME_MS = 30 * 1000;
+let enteredPin = "";
+let failedAttempts = 0;
+let lockedUntil = 0;
+let checking = false;
 const message = document.getElementById("message");
-const actionButton = document.getElementById("actionButton");
-const resetButton = document.getElementById("resetButton");
-
-let pattern = [];
-let drawing = false;
-let firstPattern = null;
-let mode = "register";
-
-try {
-  mode = localStorage.getItem(STORAGE_KEY)
-    ? "login"
-    : "register";
-} catch (error) {
-  console.error("パターンの保存状態を確認できません", error);
-}
-
-function updateScreen(){
-  pattern = [];
-  drawing = false;
-  line.setAttribute("points", "");
-
-  dots.forEach(dot => dot.classList.remove("selected"));
-
-  resetButton.classList.add("hidden");
-
-  if(mode === "register"){
-    title.textContent = firstPattern
-      ? "確認のためもう一度"
-      : "パターンを登録";
-
-    message.textContent = firstPattern
-      ? "同じパターンをもう一度なぞってください。"
-      : "好きなパターンをなぞってください。";
-
-    actionButton.textContent = "パターンを登録する";
-
-  }else{
-    title.textContent = "ログイン";
-
-    message.textContent =
-      "登録したパターンをなぞってください。";
-
-    actionButton.textContent = "ログイン";
-  }
-}
-
-function getPoint(event){
-  const rect = svg.getBoundingClientRect();
-
-  return {
-    x: (event.clientX - rect.left) * 300 / rect.width,
-    y: (event.clientY - rect.top) * 300 / rect.height
-  };
-}
-
-function findDot(point){
-  let nearest = null;
-  let minDistance = Infinity;
-
-  dots.forEach(dot => {
-    const x = Number(dot.getAttribute("cx"));
-    const y = Number(dot.getAttribute("cy"));
-
-    const distance = Math.hypot(
-      point.x - x,
-      point.y - y
-    );
-
-    if(distance < 25 && distance < minDistance){
-      nearest = dot;
-      minDistance = distance;
-    }
+const loginCard = document.getElementById("loginCard");
+const dots = [...document.querySelectorAll(".pin-dot")];
+const keypad = document.getElementById("keypad");
+const clearButton = document.getElementById("clearButton");
+const deleteButton = document.getElementById("deleteButton");
+function updateDisplay() {
+  dots.forEach((dot, index) => {
+    dot.classList.toggle("filled", index < enteredPin.length);
   });
-
-  return nearest;
 }
-
-function addDot(dot){
-  const index = Number(dot.dataset.index);
-
-  if(pattern.includes(index)) return;
-
-  pattern.push(index);
-  dot.classList.add("selected");
-
-  const points = pattern.map(i => {
-    const target = dots[i];
-
-    return `${target.getAttribute("cx")},${target.getAttribute("cy")}`;
-  }).join(" ");
-
-  line.setAttribute("points", points);
+function setMessage(text) {
+  message.textContent = text;
 }
-
-function clearPattern(){
-  pattern = [];
-  line.setAttribute("points", "");
-
-  dots.forEach(dot => dot.classList.remove("selected"));
+function clearPin() {
+  enteredPin = "";
+  updateDisplay();
 }
-
-svg.addEventListener("pointerdown", event => {
-  event.preventDefault();
-
-  drawing = true;
-  clearPattern();
-
-  const dot = findDot(getPoint(event));
-
-  if(dot) addDot(dot);
-
-  svg.setPointerCapture(event.pointerId);
-});
-
-svg.addEventListener("pointermove", event => {
-  if(!drawing) return;
-
-  event.preventDefault();
-
-  const dot = findDot(getPoint(event));
-
-  if(dot) addDot(dot);
-});
-
-function finishDrawing(){
-  if(!drawing) return;
-
-  drawing = false;
-
-  if(pattern.length < 4){
-    message.textContent =
-      "4個以上の点を使ってください。もう一度どうぞ。";
-
-    clearPattern();
+function setKeypadDisabled(disabled) {
+  keypad.querySelectorAll("button").forEach(button => {
+    button.disabled = disabled;
+  });
+}
+function showError(text) {
+  setMessage(text);
+  loginCard.classList.remove("shake");
+  void loginCard.offsetWidth;
+  loginCard.classList.add("shake");
+}
+function checkPin() {
+  if (checking || enteredPin.length !== 4) return;
+  if (Date.now() < lockedUntil) {
+    showError("一時的にロックされています。");
+    clearPin();
     return;
   }
-
-  message.textContent =
-    `${pattern.length}個の点を入力しました。ボタンを押してください。`;
-
-  resetButton.classList.remove("hidden");
-}
-
-svg.addEventListener("pointerup", finishDrawing);
-
-svg.addEventListener("pointercancel", () => {
-  drawing = false;
-  clearPattern();
-});
-
-resetButton.addEventListener("click", () => {
-  clearPattern();
-  updateScreen();
-});
-
-actionButton.addEventListener("click", () => {
-  if(pattern.length < 4){
-    message.textContent =
-      "先に4個以上の点をなぞってください。";
+  checking = true;
+  setKeypadDisabled(true);
+  if (enteredPin === PIN) {
+    setMessage("認証しました。移動します…");
+    /*
+     * 認証後に売上管理画面へ移動します。
+     * この判定はブラウザ内だけで行われるため、
+     * サーバー側のアクセス制御の代わりにはなりません。
+     */
+    window.location.replace("sales.html");
     return;
   }
-
-  const currentPattern = pattern.join("-");
-
-  if(mode === "register"){
-
-    if(firstPattern === null){
-      firstPattern = currentPattern;
-
-      clearPattern();
-
-      title.textContent = "確認入力";
-      message.textContent =
-        "同じパターンをもう一度なぞってください。";
-
-      resetButton.classList.add("hidden");
-      return;
+  failedAttempts++;
+  clearPin();
+  if (failedAttempts >= MAX_ATTEMPTS) {
+    lockedUntil = Date.now() + LOCK_TIME_MS;
+    failedAttempts = 0;
+    setMessage("5回間違えたため、30秒間ロックします。");
+    setTimeout(() => {
+      checking = false;
+      setKeypadDisabled(false);
+      setMessage("もう一度、暗証番号を入力してください。");
+    }, LOCK_TIME_MS);
+    return;
+  }
+  showError("暗証番号が違います。もう一度入力してください。");
+  checking = false;
+  setKeypadDisabled(false);
+}
+keypad.addEventListener("click", event => {
+  const button = event.target.closest("button");
+  if (!button || button.disabled || checking) return;
+  if (Date.now() < lockedUntil) {
+    showError("一時的にロックされています。");
+    return;
+  }
+  if (button.dataset.number !== undefined) {
+    if (enteredPin.length >= 4) return;
+    enteredPin += button.dataset.number;
+    updateDisplay();
+    if (enteredPin.length === 4) {
+      checkPin();
     }
-
-    if(firstPattern !== currentPattern){
-      firstPattern = null;
-      clearPattern();
-
-      title.textContent = "パターンが一致しません";
-      message.textContent =
-        "最初から登録し直してください。";
-
-      mode = "register";
-      updateScreen();
-      return;
-    }
-
-    localStorage.setItem(STORAGE_KEY, currentPattern);
-
-    alert("パターンを登録しました！");
-
-    firstPattern = null;
-    mode = "login";
-    updateScreen();
-
     return;
   }
-
-  const savedPattern = localStorage.getItem(STORAGE_KEY);
-
-  if(currentPattern === savedPattern){
-    message.textContent = "ログインしました！";
-
-    location.href = "sales.html";
-  }else{
-    clearPattern();
-
-    message.textContent =
-      "パターンが違います。もう一度試してください。";
+  if (button.id === "clearButton") {
+    clearPin();
+    setMessage("4桁の暗証番号を入力してください。");
+    return;
+  }
+  if (button.id === "deleteButton") {
+    enteredPin = enteredPin.slice(0, -1);
+    updateDisplay();
   }
 });
-
-updateScreen();
+/* キーボード入力にも対応 */
+document.addEventListener("keydown", event => {
+  if (checking || Date.now() < lockedUntil) return;
+  if (/^[0-9]$/.test(event.key)) {
+    if (enteredPin.length < 4) {
+      enteredPin += event.key;
+      updateDisplay();
+      if (enteredPin.length === 4) {
+        checkPin();
+      }
+    }
+  } else if (event.key === "Backspace") {
+    enteredPin = enteredPin.slice(0, -1);
+    updateDisplay();
+  } else if (event.key === "Escape") {
+    clearPin();
+  }
+});
+updateDisplay();
 </script>
-
 </body>
 </html>
