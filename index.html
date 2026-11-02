@@ -909,7 +909,7 @@ ${getCartOrder(p.id) ? `<span class="cartOrderBadge">${circledNumber(getCartOrde
           </div>
 
         </div>
-　　　　　　${p.sold_out ? `
+　　　　　${Number(p.stock) <= 0 ? `
 <div style="color:#e00000;font-weight:bold;font-size:18px;margin:10px 0;">
 🔴 SOLD OUT
 </div>
@@ -956,6 +956,11 @@ function esc(x){
 ========================= */
 
 function add(p, btn){
+
+    if(Number(p.stock) <= 0){
+    alert("この商品はSOLD OUTです！");
+    return;
+  }
 
   cart.push(p);
   p.added = true;
