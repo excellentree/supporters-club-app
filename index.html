@@ -406,7 +406,8 @@ async function init(){
   .from("products")
   .select("*")
   .eq("category","soccerwe")
-  .order("id",{ascending:false});
+  .order("id",{ascending:false})
+  .range(0,19);
 
   if(error){
 
