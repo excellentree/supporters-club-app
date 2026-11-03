@@ -786,7 +786,7 @@ function loadProducts(){
   let data=[
     ...allProducts
   ];
-
+currentPage = 1;
 
   /* 大カテゴリー */
   if(currentMain){
@@ -868,6 +868,11 @@ return modelB.localeCompare(
   {numeric:true}
 );
 });
+  /* ページ表示 */
+const totalPages = Math.max(1, Math.ceil(data.length / PAGE_SIZE));
+
+if(currentPage > totalPages){
+  currentPage = totalPages;
 
   /* 商品なし */
   document.getElementById("status")
