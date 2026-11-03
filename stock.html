@@ -607,7 +607,34 @@ if(
   });
 
 }
+async function toggleStockNew(id){
 
+  const product = allProducts.find(
+    p => String(p.id) === String(id)
+  );
+
+  if(!product){
+    alert("商品が見つかりません");
+    return;
+  }
+
+  const newValue = !product.is_new;
+
+  const { error } = await db
+    .from("products")
+    .update({ is_new: newValue })
+    .eq("id", id);
+
+  if(error){
+    console.error("NEW更新エラー:", error);
+    alert("NEWの更新に失敗しました");
+    return;
+  }
+
+  product.is_new = newValue;
+
+  filterStock();
+}
 async function deleteStockProduct(id){
   const product = allProducts.find(
     p => String(p.id) === String(id)
