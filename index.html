@@ -868,11 +868,26 @@ return modelB.localeCompare(
   {numeric:true}
 );
 });
-  /* ページ表示 */
+/* ページ表示 */
 const totalPages = Math.max(1, Math.ceil(data.length / PAGE_SIZE));
 
 if(currentPage > totalPages){
   currentPage = totalPages;
+}
+
+document.getElementById("pageInfo").textContent =
+  `${currentPage} / ${totalPages}`;
+
+document.querySelector("#pagination button:first-child").disabled =
+  currentPage === 1;
+
+document.querySelector("#pagination button:last-child").disabled =
+  currentPage === totalPages;
+
+data = data.slice(
+  (currentPage - 1) * PAGE_SIZE,
+  currentPage * PAGE_SIZE
+);
 
   /* 商品なし */
   document.getElementById("status")
