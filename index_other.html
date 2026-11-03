@@ -334,7 +334,16 @@ width:100%;
   </div>
 
   <div id="grid" class="grid"></div>
-
+<div id="pagination"
+     style="
+       display:flex;
+       justify-content:center;
+       align-items:center;
+       gap:8px;
+       margin:24px 0;
+       flex-wrap:wrap;
+     ">
+</div>
 </div>
 
   <div style="position:fixed;bottom:20px;left:20px;right:20px;text-align:center;z-index:9999;">
@@ -401,6 +410,10 @@ let currentSub="";
 let currentTeam="";
 
 let currentOtherCategory="";
+
+  let currentPage = 1;
+const PAGE_SIZE = 20;
+let filteredProducts = [];
 
 /* =========================
    商品を取得
@@ -880,7 +893,10 @@ return modelB.localeCompare(
   document.getElementById("grid")
     .innerHTML=
 
-    data.map(p=>`
+    data.slice(
+  (currentPage - 1) * PAGE_SIZE,
+  currentPage * PAGE_SIZE
+).map(p=>`
 
       <article class="card">
 ${getCartOrder(p.id) ? `<span class="cartOrderBadge">${circledNumber(getCartOrder(p.id))}</span>` : ''}
