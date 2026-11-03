@@ -419,7 +419,7 @@ async function init(){
 
   const {data,error,count}=await sb
   .from("products")
-  .select("*", { count: "exact" })
+  .select("*")
   .eq("category","soccerwe")
   .order("id",{ascending:false})
  
@@ -436,7 +436,7 @@ async function init(){
   }
 
 allProducts = data || [];
-totalProducts = count || 0;
+
   
 
   loadProducts();
