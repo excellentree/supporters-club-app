@@ -781,6 +781,12 @@ function buildTeamFilters(){
    商品を表示
 ========================= */
 
+  function changePage(delta){
+  currentPage += delta;
+  loadProducts();
+  window.scrollTo({top: 0, behavior: "smooth"});
+}
+
 function loadProducts(){
 
   let data=[
