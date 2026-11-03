@@ -422,7 +422,7 @@ async function init(){
   .select("*", { count: "exact" })
   .eq("category","soccerwe")
   .order("id",{ascending:false})
- .range((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE - 1);
+ 
 
   if(error){
 
