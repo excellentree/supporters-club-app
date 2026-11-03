@@ -781,7 +781,45 @@ function selectOtherCategory(category){
   loadProducts();
 
 }
+function renderPagination(total){
 
+  const pagination =
+    document.getElementById("pagination");
+
+  const totalPages =
+    Math.ceil(total / PAGE_SIZE);
+
+  pagination.innerHTML = "";
+
+  if(totalPages <= 1) return;
+
+  for(let i = 1; i <= totalPages; i++){
+
+    const button = document.createElement("button");
+
+    button.textContent = i;
+
+    button.style.cssText = `
+      padding:10px 16px;
+      border:1px solid #111;
+      border-radius:8px;
+      background:${i === currentPage ? "#111" : "#fff"};
+      color:${i === currentPage ? "#fff" : "#111"};
+      font-weight:bold;
+    `;
+
+    button.onclick = () => {
+      currentPage = i;
+      loadProducts();
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
+      });
+    };
+
+    pagination.appendChild(button);
+  }
+}
 /* =========================
    商品を表示
 ========================= */
