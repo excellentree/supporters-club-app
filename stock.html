@@ -492,7 +492,19 @@ data.forEach(product => {
 
         <button onclick="editStockProduct(${product.id})">修正</button>
 
-        <button onclick="toggleStockNew(${product.id})">NEW</button>
+     <button
+  onclick="toggleStockNew(${product.id})"
+  style="
+    background:${product.is_new ? '#e52323' : '#eee'};
+    color:${product.is_new ? '#fff' : '#111'};
+    border:0;
+    border-radius:20px;
+    padding:5px 14px;
+    font-weight:bold;
+  "
+>
+  NEW
+</button>
 
         <button onclick="deleteStockProduct(${product.id})">削除</button>
 
