@@ -325,20 +325,21 @@ flex-direction:column;
   <div id="status">
     商品を読み込み中…
   </div>
-
+<div id="grid" class="grid"></div>
   <div id="pagination" style="
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:16px;
-  margin:24px 0;
+  gap:8px;
+  row-gap:10px;
+  margin:24px auto;
+  flex-wrap:wrap;
+  width:100%;
+  max-width:500px;
 ">
-  <button onclick="changePage(-1)">← 前へ</button>
-  <span id="pageInfo">1 / 1</span>
-  <button onclick="changePage(1)">次へ →</button>
 </div>
 
-  <div id="grid" class="grid"></div>
+
 
 </div>
 
