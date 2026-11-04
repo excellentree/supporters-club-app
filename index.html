@@ -913,21 +913,6 @@ return modelB.localeCompare(
   {numeric:true}
 );
 });
-/* ページ分割 */
-const totalPages = Math.max(1, Math.ceil(data.length / PAGE_SIZE));
-
-if(currentPage > totalPages){
-  currentPage = totalPages;
-}
-
-document.getElementById("pageInfo").textContent =
-  `${currentPage} / ${totalPages}`;
-
-document.querySelector("#pagination button:first-child").disabled =
-  currentPage === 1;
-
-document.querySelector("#pagination button:last-child").disabled =
-  currentPage === totalPages;
 
 /* ページ分割 */
 const totalPages = Math.max(
