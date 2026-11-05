@@ -6,6 +6,16 @@
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#111111">
 <title>SUPPORTERS CULB ログイン</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+const SUPABASE_URL = "admin.htmlと同じURL";
+const SUPABASE_KEY = "admin.htmlと同じpublishable key";
+
+const sb = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+</script>
 <style>
 * {
   box-sizing: border-box;
@@ -29,7 +39,7 @@ body {
   width: 100%;
   max-width: 380px;
   text-align: center;
-}
+
 .logo {
   font-size: 25px;
   font-weight: 900;
