@@ -316,7 +316,29 @@ onclick="location.href='purchase.html'">
 const SUPABASE_URL = "https://juzrxqrabrvhlwvnvton.supabase.co";
 const SUPABASE_KEY = "sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-const today = new Date();
+// 管理者ログイン確認
+async function requireAdmin(){
+
+  const { data: { session }, error } =
+    await db.auth.getSession();
+
+  if(error || !session){
+    location.replace("login.html");
+    return false;
+  }
+
+  const { data, error: adminError } =
+    await db.rpc("is_admin");
+
+  if(adminError || data !== true){
+    await db.auth.signOut();
+    location.replace("login.html");
+    return false;
+  }
+
+  return true;
+}
+  const today = new Date();
 const yyyy = today.getFullYear();
 const mm = String(today.getMonth() + 1).padStart(2,"0");
 const dd = String(today.getDate()).padStart(2,"0");
@@ -545,8 +567,8 @@ document.getElementById("costTotal").textContent =
     document.getElementById("shippingTotal").textContent =
   "¥" + totalShipping.toLocaleString();
   }
-loadMonthlySales();
 
+loadMonthlySales(); 
 document.getElementById("salesMonth").addEventListener("change", loadMonthlySales);
 
 document.getElementById("dailyBtn").addEventListener("click", () => {
