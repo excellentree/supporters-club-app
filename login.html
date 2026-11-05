@@ -1,24 +1,23 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#111111">
 <title>SUPPORTERS CULB ログイン</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-const SUPABASE_URL =
-  "https://juzrxqrabrvhlwvnvton.supabase.co";
 
-const SUPABASE_KEY =
-  "sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://juzrxqrabrvhlwvnvton.supabase.co";
+const SUPABASE_KEY = "sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
 
 const sb = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
 </script>
+
 <style>
 * {
   box-sizing: border-box;
@@ -32,18 +31,15 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont,
-               "Helvetica Neue", Arial, sans-serif;
-  background:
-    radial-gradient(ellipse at top, #292317 0%, #111111 48%);
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  background: radial-gradient(ellipse at top, #292317 0%, #111111 48%);
   color: #ffffff;
 }
 .container {
   width: 100%;
   max-width: 380px;
   text-align: center;
-      }
-
+}
 .logo {
   font-size: 25px;
   font-weight: 900;
@@ -87,56 +83,28 @@ h1 {
   font-size: 13px;
   line-height: 1.8;
 }
-.pin-display {
-  display: flex;
-  justify-content: center;
-  gap: 18px;
-  margin: 24px 0 28px;
+.login-input {
+  width: 100%;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #5a4924;
+  background: #252525;
+  color: white;
+  font-size: 16px;
 }
-.pin-dot {
-  width: 13px;
-  height: 13px;
-  border: 1px solid #9b854b;
-  border-radius: 50%;
-  background: #333333;
-  transition: background 0.15s, transform 0.15s;
-}
-.pin-dot.filled {
-  background: #d7b65c;
-  border-color: #f0d98b;
-  transform: scale(1.1);
-}
-.keypad {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-.key {
-  min-height: 62px;
-  border: 1px solid #45403a;
+.login-button {
+  width: 100%;
+  min-height: 56px;
+  border: 1px solid #c6a64b;
   border-radius: 14px;
-  background: linear-gradient(145deg, #303030, #222222);
-  color: #ffffff;
-  font-size: 23px;
-  font-weight: 600;
-  cursor: pointer;
-  touch-action: manipulation;
-}
-.key:active {
   background: #514526;
-  border-color: #c6a64b;
-  transform: scale(0.97);
-}
-.key.utility {
-  color: #d7b65c;
-  font-size: 14px;
+  color: white;
+  font-size: 17px;
   font-weight: 700;
+  cursor: pointer;
 }
-.key.zero {
-  grid-column: 2;
-}
-.key:disabled {
-  opacity: 0.35;
+.login-button:disabled {
+  opacity: 0.5;
   cursor: default;
 }
 .warning {
@@ -157,56 +125,49 @@ h1 {
   .card {
     padding: 26px 18px;
   }
-  .key {
-    min-height: 56px;
-  }
 }
 </style>
 </head>
+
 <body>
 <div class="container">
   <div class="logo">SUPPORTERS CULB</div>
   <div class="subtitle">SALES MANAGEMENT</div>
-  
-<main class="card" id="loginCard">
-  <div class="lock-icon">♙</div>
-  <h1>管理者ログイン</h1>
-  <div class="message" id="message" aria-live="polite">
-    メールアドレスとパスワードを入力してください。
-  </div>
 
-  <div style="display:grid; gap:14px; margin-top:24px;">
-    <input
-      id="emailInput"
-      type="email"
-      placeholder="メールアドレス"
-      autocomplete="username"
-      style="width:100%; padding:15px; border-radius:12px;
-      border:1px solid #5a4924; background:#252525;
-      color:white; font-size:16px;"
-    >
+  <main class="card" id="loginCard">
+    <div class="lock-icon">♙</div>
+    <h1>管理者ログイン</h1>
 
-    <input
-      id="passwordInput"
-      type="password"
-      placeholder="パスワード"
-      autocomplete="current-password"
-      style="width:100%; padding:15px; border-radius:12px;
-      border:1px solid #5a4924; background:#252525;
-      color:white; font-size:16px;"
-    >
+    <div class="message" id="message" aria-live="polite">
+      メールアドレスとパスワードを入力してください。
+    </div>
 
-    <button id="loginButton" class="key"
-      style="background:#514526; border-color:#c6a64b;">
-      ログイン
-    </button>
-  </div>
+    <div style="display:grid; gap:14px; margin-top:24px;">
+      <input
+        id="emailInput"
+        class="login-input"
+        type="email"
+        placeholder="メールアドレス"
+        autocomplete="username"
+      >
 
-  <div class="warning">
-    ※ 管理者専用ログイン画面です。
-  </div>
-</main>
+      <input
+        id="passwordInput"
+        class="login-input"
+        type="password"
+        placeholder="パスワード"
+        autocomplete="current-password"
+      >
 
+      <button id="loginButton" class="login-button">
+        ログイン
+      </button>
+    </div>
+
+    <div class="warning">
+      ※ 管理者専用ログイン画面です。
+    </div>
+  </main>
 </div>
 
 <script>
@@ -237,8 +198,7 @@ async function checkAdmin() {
 
   if (error || !session) return false;
 
-  const { data, error: adminError } =
-    await sb.rpc("is_admin");
+  const { data, error: adminError } = await sb.rpc("is_admin");
 
   if (adminError || data !== true) {
     await sb.auth.signOut();
@@ -319,8 +279,5 @@ async function initializeLogin() {
 
 initializeLogin();
 </script>
-</body>
-</html>
-
 </body>
 </html>
