@@ -196,11 +196,22 @@ function setLoading(loading) {
 async function checkAdmin() {
   const { data: { session }, error } = await sb.auth.getSession();
 
-  if (error || !session) return false;
+  if (error || !session) {
+    console.log("セッションなし:", error);
+    return false;
+  }
 
   const { data, error: adminError } = await sb.rpc("is_admin");
 
+  console.log("ログインユーザー:", session.user.id);
+  console.log("管理者判定:", data);
+  console.log("管理者判定エラー:", adminError);
+
   if (adminError || data !== true) {
+    setMessage(
+      "管理者判定に失敗しました: " +
+      (adminError?.message || "権限なし")
+    );
     await sb.auth.signOut();
     return false;
   }
