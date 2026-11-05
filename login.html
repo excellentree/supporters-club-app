@@ -1,4 +1,4 @@
-ら<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -153,37 +153,46 @@ h1 {
 <div class="container">
   <div class="logo">SUPPORTERS CULB</div>
   <div class="subtitle">SALES MANAGEMENT</div>
-  <main class="card" id="loginCard">
-    <div class="lock-icon">♙</div>
-    <h1>暗証番号を入力</h1>
-    <div class="message" id="message" aria-live="polite">
-      4桁の暗証番号を入力してください。
-    </div>
-    <div class="pin-display" aria-label="入力した桁数">
-      <span class="pin-dot"></span>
-      <span class="pin-dot"></span>
-      <span class="pin-dot"></span>
-      <span class="pin-dot"></span>
-    </div>
-    <div class="keypad" id="keypad">
-      <button class="key" data-number="1">1</button>
-      <button class="key" data-number="2">2</button>
-      <button class="key" data-number="3">3</button>
-      <button class="key" data-number="4">4</button>
-      <button class="key" data-number="5">5</button>
-      <button class="key" data-number="6">6</button>
-      <button class="key" data-number="7">7</button>
-      <button class="key" data-number="8">8</button>
-      <button class="key" data-number="9">9</button>
-      <button class="key utility" id="clearButton">クリア</button>
-      <button class="key zero" data-number="0">0</button>
-      <button class="key utility" id="deleteButton">1字戻す</button>
-    </div>
-    <div class="warning">
-      ※ 暗証番号の入力画面です。<br>
-      売上データの保護には、別途サーバー側の認証設定が必要です。
-    </div>
-  </main>
+  
+<main class="card" id="loginCard">
+  <div class="lock-icon">♙</div>
+  <h1>管理者ログイン</h1>
+  <div class="message" id="message" aria-live="polite">
+    メールアドレスとパスワードを入力してください。
+  </div>
+
+  <div style="display:grid; gap:14px; margin-top:24px;">
+    <input
+      id="emailInput"
+      type="email"
+      placeholder="メールアドレス"
+      autocomplete="username"
+      style="width:100%; padding:15px; border-radius:12px;
+      border:1px solid #5a4924; background:#252525;
+      color:white; font-size:16px;"
+    >
+
+    <input
+      id="passwordInput"
+      type="password"
+      placeholder="パスワード"
+      autocomplete="current-password"
+      style="width:100%; padding:15px; border-radius:12px;
+      border:1px solid #5a4924; background:#252525;
+      color:white; font-size:16px;"
+    >
+
+    <button id="loginButton" class="key"
+      style="background:#514526; border-color:#c6a64b;">
+      ログイン
+    </button>
+  </div>
+
+  <div class="warning">
+    ※ 管理者専用ログイン画面です。
+  </div>
+</main>
+
 </div>
 <script>
 /*
