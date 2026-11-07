@@ -552,10 +552,16 @@ loadOtherProducts().then(() => {
     .eq("id", id);
 
   if(error){
-    console.error(error);
-    alert("商品の削除に失敗しました");
-    return;
+  console.error("商品削除エラー:", error);
+
+  if(error.code === "42501"){
+    alert("管理者ログインが必要です");
+  }else{
+    alert("商品の削除に失敗しました\n" + error.message);
   }
+
+  return;
+}
 
   alert("商品を削除しました！");
 
