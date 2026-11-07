@@ -336,8 +336,14 @@ if(editingProductId){
 }
 
   if(error){
-  console.error(error);
-  alert("商品の登録に失敗しました");
+  console.error("商品保存エラー:", error);
+
+  if(error.code === "42501"){
+    alert("管理者ログインが必要です");
+  }else{
+    alert("商品の登録・更新に失敗しました\n" + error.message);
+  }
+
   return;
 }
 
