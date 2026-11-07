@@ -910,8 +910,14 @@ country_or_club:selectedCategory==="クラブ"
     }]);
 
 if(error){
-  alert("商品登録失敗\n\n" + error.message);
-  console.error(error);
+  console.error("商品登録エラー:", error);
+
+  if(error.code === "42501"){
+    alert("管理者ログインが必要です");
+  }else{
+    alert("商品登録失敗\n" + error.message);
+  }
+
   return;
 }
 
