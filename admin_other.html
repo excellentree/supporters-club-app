@@ -550,6 +550,7 @@ loadOtherProducts().then(() => {
     .from("products")
     .delete()
     .eq("id", id);
+      .select()
 
   if(error){
   console.error("商品削除エラー:", error);
