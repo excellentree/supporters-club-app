@@ -637,17 +637,23 @@ async function toggleStockNew(id){
 
   const newValue = !product.is_new;
 
-  const { error } = await db
-    .from("products")
-    .update({ is_new: newValue })
-    .eq("id", id);
+  const { data: updatedRows, error } = await db
+  .from("products")
+  .update({ is_new: newValue })
+  .eq("id", id)
+  .select();
 
-  if(error){
-    console.error("NEW更新エラー:", error);
+if(error || !updatedRows || updatedRows.length === 0){
+  console.error("NEW更新エラー:", error);
+
+  if(error?.code === "42501" || !updatedRows || updatedRows.length === 0){
+    alert("管理者ログインが必要です");
+  }else{
     alert("NEWの更新に失敗しました");
-    return;
   }
 
+  return;
+}
   product.is_new = newValue;
 
   filterStock();
