@@ -563,7 +563,10 @@ loadOtherProducts().then(() => {
 
   return;
 }
-
+if(!product || product.length === 0){
+  alert("管理者ログインが必要です");
+  return;
+}
   alert("商品を削除しました！");
 
 loadOtherProducts().then(() => {
