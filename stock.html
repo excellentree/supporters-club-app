@@ -381,12 +381,13 @@ async function changeStock(productId, amount){
   }
 
   // そのあとSupabaseを更新
-  const { error: updateError } = await db
-    .from("products")
-    .update({ stock: newStock })
-    .eq("id", productId);
+  const { data: updatedRows, error: updateError } = await db
+  .from("products")
+  .update({ stock: newStock })
+  .eq("id", productId)
+  .select();
 
-  if(updateError){
+  if(updateError || !updatedRows || updatedRows.length === 0){
     console.error("在庫更新エラー:", updateError);
 
     // 更新失敗したら元に戻す
@@ -400,7 +401,11 @@ async function changeStock(productId, amount){
       }
     }
 
-    alert("在庫の更新に失敗しました");
+if(updateError?.code === "42501" || !updatedRows || updatedRows.length === 0){
+  alert("管理者ログインが必要です");
+}else{
+  alert("在庫の更新に失敗しました");
+}
   }
 
 }
