@@ -675,16 +675,23 @@ async function deleteStockProduct(id){
     return;
   }
 
-  const { error } = await db
-    .from("products")
-    .delete()
-    .eq("id", id);
+  const { data: deletedRows, error } = await db
+  .from("products")
+  .delete()
+  .eq("id", id)
+  .select();
 
-  if(error){
-    console.error("商品削除エラー:", error);
+  if(error || !deletedRows || deletedRows.length === 0){
+  console.error("商品削除エラー:", error);
+
+  if(error?.code === "42501" || !deletedRows || deletedRows.length === 0){
+    alert("管理者ログインが必要です");
+  }else{
     alert("商品の削除に失敗しました");
-    return;
   }
+
+  return;
+}
 
   allProducts = allProducts.filter(
     p => String(p.id) !== String(id)
