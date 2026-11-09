@@ -549,8 +549,8 @@ loadOtherProducts().then(() => {
   const { data: product, error } = await sb
     .from("products")
     .delete()
-    .eq("id", id);
-      .select()
+    .eq("id", id)
+      .select();
 
   if(error){
   console.error("商品削除エラー:", error);
