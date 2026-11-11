@@ -560,6 +560,28 @@ const db = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
+  // 管理者ログイン確認
+async function requireAdmin(){
+
+  const { data: { session }, error } =
+    await db.auth.getSession();
+
+  if(error || !session){
+    location.replace("login.html");
+    return false;
+  }
+
+  const { data, error: adminError } =
+    await db.rpc("is_admin");
+
+  if(adminError || data !== true){
+    await db.auth.signOut();
+    location.replace("login.html");
+    return false;
+  }
+
+  return true;
+}
 const salesDate = document.getElementById("salesDate");
 
 const today = new Date();
@@ -594,7 +616,7 @@ async function loadProducts(){
 　window.products = data;
  document.getElementById("productName").dispatchEvent(new Event("input"));
 }
-  loadProducts();
+
   document.getElementById("productName").addEventListener("input", () => {
 
   const name =
