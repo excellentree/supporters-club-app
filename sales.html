@@ -355,7 +355,7 @@ async function loadProducts(){
   }
 
 }
-  loadProducts();
+  
 document.getElementById("salesMonth").value =
 `${yyyy}-${mm}`;
   async function loadMonthlySales(){
@@ -568,7 +568,16 @@ document.getElementById("costTotal").textContent =
   "¥" + totalShipping.toLocaleString();
   }
 
-loadMonthlySales(); 
+// 管理者確認後に売上データを読み込む
+(async function(){
+  const isAdmin = await requireAdmin();
+
+  if(!isAdmin) return;
+
+  loadProducts();
+  loadMonthlySales();
+})();
+
 document.getElementById("salesMonth").addEventListener("change", loadMonthlySales);
 
 document.getElementById("dailyBtn").addEventListener("click", () => {
