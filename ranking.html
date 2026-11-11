@@ -211,6 +211,28 @@ button.active {
   <a href="index.html" class="back">トップページへ戻る</a>
 </main>
 <script>
+  // 管理者ログイン確認
+async function requireAdmin(){
+
+  const { data: { session }, error } =
+    await db.auth.getSession();
+
+  if(error || !session){
+    location.replace("login.html");
+    return false;
+  }
+
+  const { data, error: adminError } =
+    await db.rpc("is_admin");
+
+  if(adminError || data !== true){
+    await db.auth.signOut();
+    location.replace("login.html");
+    return false;
+  }
+
+  return true;
+}
 function setupButtons(containerId, onSelect) {
   const container = document.getElementById(containerId);
   container.querySelectorAll("button").forEach(button => {
