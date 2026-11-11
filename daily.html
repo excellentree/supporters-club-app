@@ -1960,7 +1960,17 @@ function goToday(){
   document.getElementById("dateDisplay").textContent =
   document.getElementById("salesDate").value.replaceAll("-", "/");
 }
+// 管理者確認後に初期データを読み込む
+(async function(){
 
+  const isAdmin = await requireAdmin();
+
+  if(!isAdmin) return;
+
+  await loadProducts();
+  await loadSalesFromSupabase();
+
+})();
 </script>
 
 </body>
