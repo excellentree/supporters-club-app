@@ -251,7 +251,28 @@ const db =
     SUPABASE_URL,
     SUPABASE_KEY
   );
+// 管理者ログイン確認
+async function requireAdmin(){
 
+  const { data: { session }, error } =
+    await db.auth.getSession();
+
+  if(error || !session){
+    location.replace("login.html");
+    return false;
+  }
+
+  const { data, error: adminError } =
+    await db.rpc("is_admin");
+
+  if(adminError || data !== true){
+    await db.auth.signOut();
+    location.replace("login.html");
+    return false;
+  }
+
+  return true;
+}
 const today = new Date();
 
 const yyyy =
@@ -438,8 +459,16 @@ async function loadMonthlySales(){
 }
 
 
-loadMonthlySales();
+// 管理者確認後に月間売上を読み込む
+(async function(){
 
+  const isAdmin = await requireAdmin();
+
+  if(!isAdmin) return;
+
+  loadMonthlySales();
+
+})();
 
 document
   .getElementById("salesMonth")
