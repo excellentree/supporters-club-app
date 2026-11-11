@@ -418,7 +418,16 @@ window.rankingCounts = Object.values(counts)
     }
   }
 }
-loadRankingSales();
+// 管理者確認後にランキングを読み込む
+(async function(){
+
+  const isAdmin = await requireAdmin();
+
+  if(!isAdmin) return;
+
+  loadRankingSales();
+
+})();
 </script>
 </body>
 </html>
