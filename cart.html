@@ -176,7 +176,22 @@ h1{
 
   <div id="cartItems"></div>
 
-  <div class="total" id="total"></div>
+<div class="priceSummary">
+  <div class="priceRow">
+    <span>商品合計</span>
+    <strong id="subtotal"></strong>
+  </div>
+
+  <div class="priceRow">
+    <span>セット割引</span>
+    <strong id="discount" class="discount"></strong>
+  </div>
+
+  <div class="priceFinal">
+    <span>お支払い合計</span>
+    <strong id="total"></strong>
+  </div>
+</div>
 
   <button
     class="clear"
