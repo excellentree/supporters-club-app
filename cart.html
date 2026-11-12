@@ -119,11 +119,37 @@ h1{
   font-size:13px
 }
 
-.total{
-  text-align:right;
-  font-size:24px;
+.priceSummary{
+  background:#fff;
+  padding:18px;
+  margin:20px 0;
+  border-radius:8px;
+}
+
+.priceRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:15px;
+  margin-bottom:12px;
+}
+
+.discount{
+  color:#e52323;
+}
+
+.priceFinal{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-top:1px solid #ddd;
+  padding-top:14px;
+  font-size:17px;
   font-weight:900;
-  margin:20px 0
+}
+
+.priceFinal strong{
+  font-size:26px;
 }
 
 .clear{
@@ -440,7 +466,14 @@ function render(){
 const totalQty = items.reduce((sum,item)=>sum+item.qty,0);
 const discount = Math.max(0,totalQty-1)*100;
 const discountedTotal = total-discount;
+document.getElementById("subtotal")
+  .textContent = "¥"+total.toLocaleString();
 
+document.getElementById("discount")
+  .textContent = "-¥"+discount.toLocaleString();
+
+document.getElementById("total")
+  .textContent = "¥"+discountedTotal.toLocaleString();
 const text=
 
   "【SUPPORTERS CULB 注文】\n\n"+
