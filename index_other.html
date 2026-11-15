@@ -1083,7 +1083,19 @@ function changeQty(id,delta){
       allProducts.find(x=>
         String(x.id)===String(id)
       );
+    if(!p || Number(p.stock) <= 0){
+      alert("こちらの商品はSOLD OUTです");
+      return;
+    }
 
+    const currentQty = cart.filter(x =>
+      String(x.id) === String(id)
+    ).length;
+
+    if(currentQty >= Number(p.stock)){
+      alert("在庫数を超えて追加することはできません");
+      return;
+    }
     if(p){
       cart.push(p);
     }
