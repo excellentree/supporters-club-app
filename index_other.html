@@ -1029,7 +1029,10 @@ function esc(x){
 ========================= */
 
 function add(p, btn){
-
+  if(Number(p.stock) <= 0){
+    alert("こちらの商品はSOLD OUTです");
+    return;
+  }
   cart.push(p);
   p.added = true;
 
