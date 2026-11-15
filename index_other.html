@@ -982,8 +982,8 @@ ${getCartOrder(p.id) ? `<span class="cartOrderBadge">${circledNumber(getCartOrde
           </div>
 
         </div>
-　　　　　　${p.sold_out ? `
-<div style="color:#e00000;font-weight:bold;font-size:18px;margin:10px 0;">
+　　　　　　${Number(p.stock) <= 0 ? `
+<div style="color:#e00000;font-weight:bold;font-size:18px;margin:10px 0;text-align:center;">
 🔴 SOLD OUT
 </div>
 ` : ""}
