@@ -326,14 +326,13 @@ function getLocalDate(){
     .slice(0, 10);
 }
 
-$("purchaseDate").value = getLocalDate();
-
 let products = [];
 let calculatedResult = null;
 let busy = false;
 let loading = false;
+  
 const $ = id => document.getElementById(id);
-function yen(value){
+$("purchaseDate").value = getLocalDate();function yen(value){
   return "¥" + Number(value).toLocaleString("ja-JP");
 }
 function count(value){
