@@ -203,6 +203,14 @@ footer{
         <span class="info-value" id="productCount">---</span>
       </div>
     </div>
+    
+<label for="purchaseDate">
+  仕入日
+</label>
+<input
+  type="date"
+  id="purchaseDate">
+
     <label for="purchaseQuantity">
       今回の仕入れ数量（個）
     </label>
@@ -309,6 +317,17 @@ const db = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
+  
+function getLocalDate(){
+  const now = new Date();
+  const offset = now.getTimezoneOffset();
+  return new Date(now.getTime() - offset * 60000)
+    .toISOString()
+    .slice(0, 10);
+}
+
+$("purchaseDate").value = getLocalDate();
+
 let products = [];
 let calculatedResult = null;
 let busy = false;
