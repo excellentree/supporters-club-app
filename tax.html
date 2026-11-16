@@ -1,1 +1,149 @@
 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SUPPORTERS CULB 確定申告</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  background:#f5f5f5;
+  color:#111;
+}
+
+header{
+  background:#111;
+  color:#fff;
+  padding:24px 18px;
+}
+
+.header-inner{
+  max-width:1100px;
+  margin:auto;
+}
+
+.logo{
+  font-size:24px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+
+.subtitle{
+  margin-top:5px;
+  font-size:13px;
+  color:#aaa;
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:20px 15px 50px;
+}
+
+.section{
+  background:#fff;
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:18px;
+  box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+
+.section-title{
+  font-size:18px;
+  font-weight:800;
+  margin-bottom:15px;
+}
+
+.year-select{
+  padding:10px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  font-size:16px;
+  background:#fff;
+}
+
+.table-wrap{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  min-width:850px;
+  border-collapse:collapse;
+  font-size:13px;
+}
+
+th,td{
+  padding:10px 6px;
+  border-bottom:1px solid #eee;
+  text-align:center;
+  white-space:nowrap;
+}
+
+th{
+  background:#f5f5f5;
+}
+
+input[type="number"]{
+  width:95px;
+  padding:9px 5px;
+  border:1px solid #ddd;
+  border-radius:7px;
+  font-size:14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">SUPPORTERS CULB</div>
+    <div class="subtitle">TAX MANAGEMENT</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="section">
+    <div class="section-title">確定申告用 年間利益計算</div>
+    <select id="taxYear" class="year-select">
+      <option value="2026">2026年</option>
+    </select>
+  </div>
+
+  <div class="section">
+    <div class="section-title">月別入力</div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>月</th>
+            <th>売上</th>
+            <th>A 仕入高</th>
+            <th>B 販売原価</th>
+            <th>手数料</th>
+            <th>送料</th>
+            <th>経費</th>
+          </tr>
+        </thead>
+
+        <tbody id="taxMonthlyTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
+
