@@ -164,7 +164,21 @@ th{background:#f5f5f5}
  </div>
 </main>
 
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+const SUPABASE_URL =
+  "https://juzrxqrabrvhlwvnvton.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
 const fields = [
   "sales","purchase","cost",
   "fee","shipping","expense"
@@ -175,36 +189,30 @@ const yearSelect = document.getElementById("taxYear");
 
 let currentMonth = 1;
 let monthlyData = {};
+let cloudReady = false;
+let loadingData = false;
+let cloudSaveTimer = null;
+
+const cloudStatus = document.createElement("p");
+cloudStatus.className = "note";
+cloudStatus.textContent = "Supabase接続確認中...";
+document.getElementById("saveMonth").after(cloudStatus);
 
 function storageKey(){
   return "supporters_tax_" + yearSelect.value;
 }
 
-function loadData(){
+function getLocalStock(){
   try{
-    monthlyData = JSON.parse(
-      localStorage.getItem(storageKey()) || "{}"
+    return JSON.parse(
+      localStorage.getItem(storageKey()+"_stock") || "{}"
     );
   }catch(e){
-    monthlyData = {};
+    return {};
   }
-
-  const stock = JSON.parse(
-    localStorage.getItem(storageKey()+"_stock") || "{}"
-  );
-
-  document.getElementById("openingStock").value =
-    stock.opening ?? "";
-
-  document.getElementById("closingStock").value =
-    stock.closing ?? "";
-
-  renderMonths();
-  selectMonth(currentMonth);
-  calculate();
 }
 
-function saveData(){
+function saveLocalData(){
   localStorage.setItem(
     storageKey(),
     JSON.stringify(monthlyData)
@@ -219,6 +227,151 @@ function saveData(){
   );
 }
 
+async function saveToCloud(){
+  if(!cloudReady || loadingData) return;
+
+  const payload = {
+    tax_year: Number(yearSelect.value),
+    monthly_data: monthlyData,
+    opening_stock:
+      Number(document.getElementById("openingStock").value) || 0,
+    closing_stock:
+      Number(document.getElementById("closingStock").value) || 0,
+    updated_at: new Date().toISOString()
+  };
+
+  cloudStatus.textContent = "Supabaseに保存中...";
+
+  const { error } = await db
+    .from("tax_reports")
+    .upsert(payload, {
+      onConflict: "tax_year"
+    });
+
+  if(error){
+    console.error("保存エラー:",error);
+    cloudStatus.textContent =
+      "クラウド保存エラー：" + error.message;
+    return;
+  }
+
+  cloudStatus.textContent = "クラウド保存済み ✓";
+}
+
+function saveData(){
+  saveLocalData();
+
+  if(!cloudReady || loadingData) return;
+
+  clearTimeout(cloudSaveTimer);
+
+  cloudSaveTimer = setTimeout(()=>{
+    saveToCloud();
+  },800);
+}
+
+async function requireAdmin(){
+  const { data: { session }, error } =
+    await db.auth.getSession();
+
+  if(error || !session){
+    location.replace("login.html");
+    return false;
+  }
+
+  const { data, error: adminError } =
+    await db.rpc("is_admin");
+
+  if(adminError || data !== true){
+    cloudStatus.textContent =
+      "管理者ログインを確認できません。ログイン画面へ移動します。";
+    await db.auth.signOut();
+    location.replace("login.html");
+    return false;
+  }
+
+  return true;
+}
+
+async function loadData(){
+  loadingData = true;
+  cloudReady = false;
+
+  const localMonthly = (() => {
+    try{
+      return JSON.parse(
+        localStorage.getItem(storageKey()) || "{}"
+      );
+    }catch(e){
+      return {};
+    }
+  })();
+
+  const localStock = getLocalStock();
+
+  const { data, error } = await db
+    .from("tax_reports")
+    .select("*")
+    .eq("tax_year", Number(yearSelect.value))
+    .maybeSingle();
+
+  if(error){
+    loadingData = false;
+    cloudStatus.textContent =
+      "読み込みエラー：" + error.message;
+    return;
+  }
+
+  if(data){
+    monthlyData = data.monthly_data || {};
+
+    document.getElementById("openingStock").value =
+      data.opening_stock ?? "";
+
+    document.getElementById("closingStock").value =
+      data.closing_stock ?? "";
+
+    localStorage.setItem(
+      storageKey(),
+      JSON.stringify(monthlyData)
+    );
+
+    localStorage.setItem(
+      storageKey()+"_stock",
+      JSON.stringify({
+        opening: data.opening_stock ?? "",
+        closing: data.closing_stock ?? ""
+      })
+    );
+
+    cloudStatus.textContent = "クラウドデータ読み込み済み ✓";
+
+  }else{
+    monthlyData = localMonthly;
+
+    document.getElementById("openingStock").value =
+      localStock.opening ?? "";
+
+    document.getElementById("closingStock").value =
+      localStock.closing ?? "";
+
+    cloudStatus.textContent =
+      "端末内のデータをクラウドへ移行中...";
+
+  }
+
+  renderMonths();
+  selectMonth(currentMonth);
+  calculate();
+
+  loadingData = false;
+  cloudReady = true;
+
+  if(!data){
+    await saveToCloud();
+  }
+}
+
 function renderMonths(){
   months.innerHTML = "";
 
@@ -227,8 +380,13 @@ function renderMonths(){
     button.className = "month";
     button.textContent = i+"月";
 
-    if(i===currentMonth) button.classList.add("active");
-    if(monthlyData[i]) button.classList.add("saved");
+    if(i===currentMonth){
+      button.classList.add("active");
+    }
+
+    if(monthlyData[i]){
+      button.classList.add("saved");
+    }
 
     button.addEventListener("click",()=>{
       saveCurrentMonth();
@@ -262,6 +420,7 @@ function saveCurrentMonth(){
   });
 
   monthlyData[currentMonth] = values;
+
   saveData();
   renderMonths();
   calculate();
@@ -333,6 +492,7 @@ function calculate(){
 
 document.getElementById("saveMonth").addEventListener("click",()=>{
   saveCurrentMonth();
+  saveToCloud();
   alert(currentMonth+"月のデータを保存しました");
 });
 
@@ -340,6 +500,7 @@ document.getElementById("clearMonth").addEventListener("click",()=>{
   if(!confirm(currentMonth+"月の入力を削除しますか？")) return;
 
   delete monthlyData[currentMonth];
+
   saveData();
   renderMonths();
   selectMonth(currentMonth);
@@ -364,7 +525,14 @@ yearSelect.addEventListener("change",()=>{
   loadData();
 });
 
-loadData();
+(async function(){
+  const isAdmin = await requireAdmin();
+
+  if(!isAdmin) return;
+
+  await loadData();
+})();
 </script>
+
 </body>
 </html>
