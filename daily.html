@@ -946,12 +946,25 @@ document.getElementById("versionSelect").addEventListener("change", () => {
     return;
   }
 
-  selectedProduct =
-    window.products.find(product =>
-      String(product.name).trim().includes(name) &&
-      String(product.model || "").trim() === model &&
-      String(product.version || "").trim() === version
-    );
+  const activeCategory =
+  document.querySelector("#categoryButtons button.active")?.value;
+
+const selectedProductCategory =
+  document.getElementById("productCategory").value;
+
+selectedProduct =
+  window.products.find(product =>
+    String(product.name).trim().includes(name) &&
+    String(product.model || "").trim() === model &&
+    String(product.version || "").trim() === version &&
+    (
+      activeCategory === "soccerwe"
+        ? product.category === "soccerwe"
+        : activeCategory === "その他"
+          ? product.category === selectedProductCategory
+          : false
+    )
+  );
 
   if (selectedProduct) {
 
