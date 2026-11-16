@@ -647,10 +647,20 @@ async function loadProducts(){
 return;
   }
 
-  const products =
-    window.products.filter(product =>
-      String(product.name).trim().includes(name)
-    );
+  const activeCategory =
+  document.querySelector("#categoryButtons button.active")?.value;
+
+const products =
+  window.products.filter(product =>
+    String(product.name).trim().includes(name) &&
+    (
+      activeCategory === "soccerwe"
+        ? product.category === "soccerwe"
+        : activeCategory === "その他"
+          ? product.category === document.getElementById("productCategory").value
+          : false
+    )
+  );
 
   const models = [
     ...new Set(
