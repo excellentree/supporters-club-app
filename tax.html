@@ -163,5 +163,208 @@ th{background:#f5f5f5}
   </div>
  </div>
 </main>
+
+<script>
+const fields = [
+  "sales","purchase","cost",
+  "fee","shipping","expense"
+];
+
+const months = document.getElementById("monthButtons");
+const yearSelect = document.getElementById("taxYear");
+
+let currentMonth = 1;
+let monthlyData = {};
+
+function storageKey(){
+  return "supporters_tax_" + yearSelect.value;
+}
+
+function loadData(){
+  try{
+    monthlyData = JSON.parse(
+      localStorage.getItem(storageKey()) || "{}"
+    );
+  }catch(e){
+    monthlyData = {};
+  }
+
+  const stock = JSON.parse(
+    localStorage.getItem(storageKey()+"_stock") || "{}"
+  );
+
+  document.getElementById("openingStock").value =
+    stock.opening ?? "";
+
+  document.getElementById("closingStock").value =
+    stock.closing ?? "";
+
+  renderMonths();
+  selectMonth(currentMonth);
+  calculate();
+}
+
+function saveData(){
+  localStorage.setItem(
+    storageKey(),
+    JSON.stringify(monthlyData)
+  );
+
+  localStorage.setItem(
+    storageKey()+"_stock",
+    JSON.stringify({
+      opening: document.getElementById("openingStock").value,
+      closing: document.getElementById("closingStock").value
+    })
+  );
+}
+
+function renderMonths(){
+  months.innerHTML = "";
+
+  for(let i=1;i<=12;i++){
+    const button = document.createElement("button");
+    button.className = "month";
+    button.textContent = i+"月";
+
+    if(i===currentMonth) button.classList.add("active");
+    if(monthlyData[i]) button.classList.add("saved");
+
+    button.addEventListener("click",()=>{
+      saveCurrentMonth();
+      currentMonth = i;
+      renderMonths();
+      selectMonth(i);
+    });
+
+    months.appendChild(button);
+  }
+}
+
+function selectMonth(month){
+  currentMonth = month;
+
+  document.getElementById("inputTitle").textContent =
+    month+"月の入力";
+
+  fields.forEach(field=>{
+    document.getElementById(field).value =
+      monthlyData[month]?.[field] ?? "";
+  });
+}
+
+function saveCurrentMonth(){
+  const values = {};
+
+  fields.forEach(field=>{
+    values[field] =
+      Math.max(0,Number(document.getElementById(field).value)||0);
+  });
+
+  monthlyData[currentMonth] = values;
+  saveData();
+  renderMonths();
+  calculate();
+}
+
+function calculate(){
+  const totals = {
+    sales:0,
+    purchase:0,
+    cost:0,
+    fee:0,
+    shipping:0,
+    expense:0
+  };
+
+  Object.values(monthlyData).forEach(row=>{
+    fields.forEach(field=>{
+      totals[field] += Number(row[field]||0);
+    });
+  });
+
+  const opening =
+    Math.max(0,Number(document.getElementById("openingStock").value)||0);
+
+  const closing =
+    Math.max(0,Number(document.getElementById("closingStock").value)||0);
+
+  const costOfSales =
+    opening + totals.purchase - closing;
+
+  const grossProfit =
+    totals.sales - costOfSales;
+
+  const finalProfit =
+    grossProfit - totals.fee - totals.shipping - totals.expense;
+
+  const yen = n => "¥"+Math.round(n).toLocaleString("ja-JP");
+
+  document.getElementById("totalSales").textContent = yen(totals.sales);
+  document.getElementById("totalPurchase").textContent = yen(totals.purchase);
+  document.getElementById("totalCostB").textContent = yen(totals.cost);
+  document.getElementById("totalFee").textContent = yen(totals.fee);
+  document.getElementById("totalShipping").textContent = yen(totals.shipping);
+  document.getElementById("totalExpense").textContent = yen(totals.expense);
+  document.getElementById("costOfSales").textContent = yen(costOfSales);
+  document.getElementById("grossProfit").textContent = yen(grossProfit);
+  document.getElementById("finalProfit").textContent = yen(finalProfit);
+
+  const table = document.getElementById("annualTable");
+  table.innerHTML = "";
+
+  for(let i=1;i<=12;i++){
+    const row = monthlyData[i] || {};
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${i}月</td>
+      <td>${yen(row.sales||0)}</td>
+      <td>${yen(row.purchase||0)}</td>
+      <td>${yen(row.cost||0)}</td>
+      <td>${yen(row.fee||0)}</td>
+      <td>${yen(row.shipping||0)}</td>
+      <td>${yen(row.expense||0)}</td>
+    `;
+
+    table.appendChild(tr);
+  }
+}
+
+document.getElementById("saveMonth").addEventListener("click",()=>{
+  saveCurrentMonth();
+  alert(currentMonth+"月のデータを保存しました");
+});
+
+document.getElementById("clearMonth").addEventListener("click",()=>{
+  if(!confirm(currentMonth+"月の入力を削除しますか？")) return;
+
+  delete monthlyData[currentMonth];
+  saveData();
+  renderMonths();
+  selectMonth(currentMonth);
+  calculate();
+});
+
+fields.forEach(field=>{
+  document.getElementById(field).addEventListener("input",()=>{
+    saveCurrentMonth();
+  });
+});
+
+["openingStock","closingStock"].forEach(id=>{
+  document.getElementById(id).addEventListener("input",()=>{
+    saveData();
+    calculate();
+  });
+});
+
+yearSelect.addEventListener("change",()=>{
+  currentMonth = 1;
+  loadData();
+});
+
+loadData();
+</script>
 </body>
 </html>
