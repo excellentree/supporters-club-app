@@ -5,167 +5,163 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SUPPORTERS CULB 確定申告</title>
-
 <style>
-*{
-  box-sizing:border-box;
-}
-
+*{box-sizing:border-box}
 body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
-  background:#f5f5f5;
-  color:#111;
+ margin:0;background:#f5f5f5;color:#111;
+ font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
 }
-
-header{
-  background:#111;
-  color:#fff;
-  padding:24px 18px;
-}
-
-.header-inner{
-  max-width:1100px;
-  margin:auto;
-}
-
-.logo{
-  font-size:24px;
-  font-weight:800;
-  letter-spacing:1px;
-}
-
-.subtitle{
-  margin-top:5px;
-  font-size:13px;
-  color:#aaa;
-}
-
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:20px 15px 50px;
-}
-
+header{background:#111;color:white;padding:22px 18px}
+.header-inner{max-width:900px;margin:auto}
+.logo{font-size:23px;font-weight:800;letter-spacing:1px}
+.subtitle{font-size:12px;color:#aaa;margin-top:5px}
+main{max-width:900px;margin:auto;padding:18px 14px 50px}
 .section{
-  background:#fff;
-  border-radius:14px;
-  padding:18px;
-  margin-bottom:18px;
-  box-shadow:0 2px 8px rgba(0,0,0,.05);
+ background:white;border-radius:14px;padding:18px;
+ margin-bottom:16px;box-shadow:0 2px 8px #00000008;
 }
-
-.section-title{
-  font-size:18px;
-  font-weight:800;
-  margin-bottom:15px;
+.section-title{font-size:18px;font-weight:800;margin-bottom:16px}
+.note{font-size:12px;color:#777;line-height:1.7}
+.months{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.month{
+ padding:13px 5px;border:1px solid #ddd;background:white;
+ border-radius:9px;font-weight:700;font-size:14px;
 }
-
-.year-select{
-  padding:10px;
-  border:1px solid #ddd;
-  border-radius:10px;
-  font-size:16px;
-  background:#fff;
+.month.active{background:#111;color:white;border-color:#111}
+.month.saved{border-color:#c5a04a}
+.field{margin-bottom:15px}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+.field input{
+ width:100%;padding:13px;border:1px solid #ddd;
+ border-radius:9px;font-size:16px;
 }
-
-.table-wrap{
-  overflow-x:auto;
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat{background:#f5f5f5;border-radius:10px;padding:13px}
+.stat small{display:block;color:#777;font-size:12px;margin-bottom:8px}
+.stat strong{font-size:19px;overflow-wrap:anywhere}
+.result{background:#111;color:white;border-radius:12px;padding:20px}
+.result small{color:#bbb}
+.result strong{display:block;font-size:28px;margin-top:8px}
+.btn{
+ width:100%;padding:15px;border:0;border-radius:10px;
+ background:#111;color:white;font-size:15px;font-weight:800;
+ margin-top:8px;
 }
-
-table{
-  width:100%;
-  min-width:850px;
-  border-collapse:collapse;
-  font-size:13px;
+.btn.secondary{background:#eee;color:#111}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:11px 9px;border-bottom:1px solid #eee;white-space:nowrap;text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{background:#f5f5f5}
+@media(max-width:420px){
+ .grid{grid-template-columns:1fr 1fr}
+ .stat strong{font-size:17px}
 }
-
-th,td{
-  padding:10px 6px;
-  border-bottom:1px solid #eee;
-  text-align:center;
-  white-space:nowrap;
-}
-
-th{
-  background:#f5f5f5;
-}
-
-input[type="number"]{
-  width:95px;
-  padding:9px 5px;
-  border:1px solid #ddd;
-  border-radius:7px;
-  font-size:14px;
-}
-
 </style>
 </head>
-
 <body>
-
 <header>
-  <div class="header-inner">
-    <div class="logo">SUPPORTERS CULB</div>
-    <div class="subtitle">TAX MANAGEMENT</div>
-  </div>
+ <div class="header-inner">
+  <div class="logo">SUPPORTERS CULB</div>
+  <div class="subtitle">TAX MANAGEMENT</div>
+ </div>
 </header>
-
-<div class="container">
-
-  <div class="section">
-    <div class="section-title">確定申告用 年間利益計算</div>
-    <select id="taxYear" class="year-select">
-      <option value="2026">2026年</option>
-    </select>
+<main>
+ <div class="section">
+  <div class="section-title">確定申告用 年間利益計算</div>
+  <div class="field">
+   <label>対象年度</label>
+   <select id="taxYear">
+    <option value="2026">2026年</option>
+   </select>
   </div>
+ </div>
 
-  <div class="section">
-    <div class="section-title">月別入力</div>
+ <div class="section">
+  <div class="section-title">① 月別入力</div>
+  <div class="months" id="monthButtons"></div>
+  <p class="note">入力する月を選択してください。保存済みの月には印が付きます。</p>
+ </div>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>月</th>
-            <th>売上</th>
-            <th>A 仕入高</th>
-            <th>B 販売原価</th>
-            <th>手数料</th>
-            <th>送料</th>
-            <th>経費</th>
-          </tr>
-        </thead>
-
-        <tbody id="taxMonthlyTable"></tbody>
-      </table>
-    </div>
+ <div class="section">
+  <div class="section-title" id="inputTitle">1月の入力</div>
+  <div class="field">
+   <label>売上</label>
+   <input type="number" id="sales" min="0" placeholder="0">
   </div>
+  <div class="field">
+   <label>A：仕入高（その月に仕入れた金額）</label>
+   <input type="number" id="purchase" min="0" placeholder="0">
+  </div>
+  <div class="field">
+   <label>B：販売原価（売れた商品の仕入原価）</label>
+   <input type="number" id="cost" min="0" placeholder="0">
+  </div>
+  <div class="field">
+   <label>手数料</label>
+   <input type="number" id="fee" min="0" placeholder="0">
+  </div>
+  <div class="field">
+   <label>送料</label>
+   <input type="number" id="shipping" min="0" placeholder="0">
+  </div>
+  <div class="field">
+   <label>その他経費</label>
+   <input type="number" id="expense" min="0" placeholder="0">
+  </div>
+  <button class="btn" id="saveMonth">この月を保存</button>
+  <button class="btn secondary" id="clearMonth">この月の入力をクリア</button>
+  <p class="note">この段階では端末内に仮保存します。Supabaseへの保存は後で接続します。</p>
+ </div>
 
-</div>
+ <div class="section">
+  <div class="section-title">② 在庫高</div>
+  <div class="field">
+   <label>期首在庫高</label>
+   <input type="number" id="openingStock" min="0" placeholder="0">
+  </div>
+  <div class="field">
+   <label>期末在庫高</label>
+   <input type="number" id="closingStock" min="0" placeholder="0">
+  </div>
+ </div>
 
-<script>
-const taxMonthlyTable =
-  document.getElementById("taxMonthlyTable");
+ <div class="section">
+  <div class="section-title">③ 年間集計</div>
+  <div class="grid">
+   <div class="stat"><small>年間売上</small><strong id="totalSales">¥0</strong></div>
+   <div class="stat"><small>年間仕入高 A</small><strong id="totalPurchase">¥0</strong></div>
+   <div class="stat"><small>販売原価 B（参考）</small><strong id="totalCostB">¥0</strong></div>
+   <div class="stat"><small>手数料合計</small><strong id="totalFee">¥0</strong></div>
+   <div class="stat"><small>送料合計</small><strong id="totalShipping">¥0</strong></div>
+   <div class="stat"><small>その他経費</small><strong id="totalExpense">¥0</strong></div>
+  </div>
+ </div>
 
-for(let month = 1; month <= 12; month++){
+ <div class="section">
+  <div class="section-title">④ 利益計算</div>
+  <div class="grid">
+   <div class="stat"><small>売上原価</small><strong id="costOfSales">¥0</strong></div>
+   <div class="stat"><small>粗利益</small><strong id="grossProfit">¥0</strong></div>
+  </div>
+  <div class="result" style="margin-top:12px">
+   <small>年間利益（概算）</small>
+   <strong id="finalProfit">¥0</strong>
+  </div>
+  <p class="note">売上原価＝期首在庫＋年間仕入高－期末在庫。年間利益＝粗利益－手数料－送料－その他経費。Bは照合用の参考値で、二重計上しません。</p>
+ </div>
 
-  const tr = document.createElement("tr");
-
-  tr.innerHTML = `
-    <td>${month}月</td>
-    <td><input type="number" min="0" data-month="${month}" data-field="sales" placeholder="0"></td>
-    <td><input type="number" min="0" data-month="${month}" data-field="purchase" placeholder="0"></td>
-    <td><input type="number" min="0" data-month="${month}" data-field="cost" placeholder="0"></td>
-    <td><input type="number" min="0" data-month="${month}" data-field="fee" placeholder="0"></td>
-    <td><input type="number" min="0" data-month="${month}" data-field="shipping" placeholder="0"></td>
-    <td><input type="number" min="0" data-month="${month}" data-field="expense" placeholder="0"></td>
-  `;
-
-  taxMonthlyTable.appendChild(tr);
-}
-</script>
-
+ <div class="section">
+  <div class="section-title">⑤ 月別一覧</div>
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr><th>月</th><th>売上</th><th>仕入高</th><th>販売原価</th><th>手数料</th><th>送料</th><th>経費</th></tr>
+    </thead>
+    <tbody id="annualTable"></tbody>
+   </table>
+  </div>
+ </div>
+</main>
 </body>
 </html>
-
