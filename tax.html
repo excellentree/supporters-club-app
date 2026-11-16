@@ -144,6 +144,28 @@ input[type="number"]{
 
 </div>
 
+<script>
+const taxMonthlyTable =
+  document.getElementById("taxMonthlyTable");
+
+for(let month = 1; month <= 12; month++){
+
+  const tr = document.createElement("tr");
+
+  tr.innerHTML = `
+    <td>${month}月</td>
+    <td><input type="number" min="0" data-month="${month}" data-field="sales" placeholder="0"></td>
+    <td><input type="number" min="0" data-month="${month}" data-field="purchase" placeholder="0"></td>
+    <td><input type="number" min="0" data-month="${month}" data-field="cost" placeholder="0"></td>
+    <td><input type="number" min="0" data-month="${month}" data-field="fee" placeholder="0"></td>
+    <td><input type="number" min="0" data-month="${month}" data-field="shipping" placeholder="0"></td>
+    <td><input type="number" min="0" data-month="${month}" data-field="expense" placeholder="0"></td>
+  `;
+
+  taxMonthlyTable.appendChild(tr);
+}
+</script>
+
 </body>
 </html>
 
