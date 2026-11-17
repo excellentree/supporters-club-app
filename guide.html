@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ご利用ガイド｜SUPPORTERS CULB</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #080808;
+  color: #fff;
+  font-family: sans-serif;
+}
+
+header {
+  text-align: center;
+  padding: 22px 12px;
+  border-bottom: 2px solid #f5d000;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 23px;
+  letter-spacing: 1px;
+}
+
+header p {
+  margin: 6px 0 0;
+  color: #ccc;
+  font-size: 12px;
+}
+
+.container {
+  max-width: 850px;
+  margin: auto;
+  padding: 18px 12px 30px;
+}
+
+.guide-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.back-button {
+  display: block;
+  padding: 16px;
+  margin-top: 25px;
+  background: #f5d000;
+  color: #111;
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+#imageModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,.95);
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+}
+
+#imageModal img {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+#imageModal span {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 35px;
+  color: white;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>SUPPORTERS CULB</h1>
+  <p>FOOTBALL GOODS</p>
+  <h2>ご利用ガイド</h2>
+</header>
+
+<main class="container">
+
+  <img class="guide-image"
+    src="https://pub-9670fc544cbc402f9fee8b8005156ba4.r2.dev/index.line.PNG"
+    alt="注文方法 全体ガイド">
+
+  <img class="guide-image"
+    src="https://pub-9670fc544cbc402f9fee8b8005156ba4.r2.dev/index.line1.PNG"
+    alt="STEP 1 商品を探す">
+
+  <img class="guide-image"
+    src="https://pub-9670fc544cbc402f9fee8b8005156ba4.r2.dev/index.line2.PNG"
+    alt="STEP 2 カートに入れる">
+
+  <img class="guide-image"
+    src="https://pub-9670fc544cbc402f9fee8b8005156ba4.r2.dev/index.line3.PNG"
+    alt="STEP 3 カートの中身を確認する">
+
+  <img class="guide-image"
+    src="https://pub-9670fc544cbc402f9fee8b8005156ba4.r2.dev/index.line4.PNG"
+    alt="STEP 4 LINEで注文する">
+
+  <img class="guide-image"
+    src="https://pub-9670fc544cbc402f9fee8b8005156ba4.r2.dev/index.line5.PNG"
+    alt="STEP 5 注文完了と確認事項">
+
+  <a href="index.html" class="back-button">
+    商品一覧に戻る
+  </a>
+
+</main>
+
+<div id="imageModal">
+  <span onclick="closeImage()">×</span>
+  <img id="modalImage" src="" alt="拡大画像">
+</div>
+
+<script>
+document.querySelectorAll(".guide-image").forEach(img => {
+  img.addEventListener("click", () => {
+    document.getElementById("modalImage").src = img.src;
+    document.getElementById("imageModal").style.display = "flex";
+  });
+});
+
+function closeImage() {
+  document.getElementById("imageModal").style.display = "none";
+}
+
+document.getElementById("imageModal").addEventListener("click", e => {
+  if (e.target.id === "imageModal") closeImage();
+});
+</script>
+
+</body>
+</html>
