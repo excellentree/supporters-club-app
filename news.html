@@ -4,128 +4,581 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>移籍ニュース管理｜SUPPORTERS CULB</title>
+<meta name="theme-color" content="#111111">
+<title>TRANSFER MARKET｜SUPPORTERS CULB</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
 body{
   margin:0;
+  min-height:100vh;
   padding:20px;
-  background:#f4f4f4;
-  color:#111;
-  font-family:sans-serif;
+  color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,
+  "Hiragino Kaku Gothic ProN",Arial,sans-serif;
+  background:
+    radial-gradient(ellipse at 50% 0%,#34302a 0%,#171717 48%,#080808 100%);
 }
+
 .container{
+  width:100%;
   max-width:600px;
   margin:auto;
-  background:#fff;
-  padding:22px;
-  border-radius:14px;
 }
-h1{font-size:23px;margin-top:0}
+
+header{
+  text-align:center;
+  padding:28px 10px 30px;
+}
+
+.logo{
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:3px;
+  color:#c9aa55;
+}
+
+h1{
+  margin:15px 0 5px;
+  font-size:34px;
+  font-weight:1000;
+  letter-spacing:1px;
+}
+
+.subtitle{
+  color:#aaa;
+  font-size:11px;
+  letter-spacing:4px;
+}
+
+.card{
+  padding:24px 20px;
+  background:linear-gradient(145deg,#252525,#151515);
+  border:1px solid #514324;
+  border-radius:18px;
+  box-shadow:0 15px 40px #0008;
+}
+
 label{
   display:block;
-  margin:22px 0 9px;
-  font-weight:bold;
+  margin:24px 0 10px;
+  font-size:14px;
+  font-weight:800;
+  color:#d4b75e;
 }
+
 input,textarea{
+  display:block;
   width:100%;
-  padding:14px;
+  padding:15px;
+  color:#fff;
+  background:#101010;
+  border:1px solid #514324;
+  border-radius:10px;
   font-size:16px;
-  border:1px solid #ccc;
-  border-radius:9px;
+  outline:none;
 }
-textarea{min-height:100px;resize:vertical}
+
+input:focus,textarea:focus{
+  border-color:#d6b65c;
+}
+
+textarea{
+  min-height:120px;
+  resize:vertical;
+  line-height:1.7;
+}
+
 .categories{
   display:grid;
   grid-template-columns:1fr;
   gap:9px;
 }
+
 .category{
-  padding:14px;
-  border:1px solid #ccc;
-  background:#fff;
-  border-radius:9px;
-  font-size:16px;
-  font-weight:bold;
-  text-align:left;
-}
-.category.active{
-  background:#111;
-  color:#fff;
-  border-color:#111;
-}
-button.save{
   width:100%;
-  margin-top:25px;
-  padding:16px;
-  border:0;
+  padding:15px;
+  color:#ddd;
+  background:#191919;
+  border:1px solid #444;
   border-radius:10px;
-  background:#f5d000;
+  text-align:left;
+  font-size:15px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.category.active{
+  color:#fff;
+  background:#514526;
+  border-color:#d6b65c;
+  box-shadow:inset 0 0 0 1px #d6b65c;
+}
+
+.category small{
+  display:block;
+  margin-top:4px;
+  color:#aaa;
+  font-size:11px;
+  font-weight:500;
+}
+
+.category.active small{
+  color:#eee;
+}
+
+.save{
+  display:block;
+  width:100%;
+  margin-top:30px;
+  padding:18px;
+  color:#111;
+  background:linear-gradient(135deg,#f4d77a,#c49b35);
+  border:0;
+  border-radius:12px;
   font-size:17px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.save:disabled{
+  opacity:.5;
+}
+
+.status{
+  min-height:25px;
+  margin:18px 0 0;
+  text-align:center;
+  font-size:13px;
+  line-height:1.7;
+}
+
+.preview{
+  margin-top:25px;
+  padding:15px;
+  background:#101010;
+  border:1px solid #444;
+  border-radius:10px;
+}
+
+.previewTitle{
+  color:#c9aa55;
+  font-size:11px;
   font-weight:bold;
+  letter-spacing:2px;
+  margin-bottom:12px;
+}
+
+.previewLine{
+  font-size:14px;
+  line-height:1.8;
+  overflow-wrap:anywhere;
+}
+
+.footer{
+  margin-top:22px;
+  text-align:center;
+  color:#777;
+  font-size:11px;
+}
+
+.loginLink{
+  display:inline-block;
+  margin-top:15px;
+  color:#d6b65c;
+}
+
+[hidden]{
+  display:none !important;
+}
+
+@media(max-width:380px){
+  h1{font-size:29px}
+  .card{padding:20px 15px}
 }
 </style>
 </head>
 
 <body>
+
 <div class="container">
-  <h1>⚽ 移籍ニュース管理</h1>
 
-  <label for="newsDate">📅 日付</label>
-  <input type="text" id="newsDate" placeholder="例：11/22">
+<header>
+  <div class="logo">SUPPORTERS CULB</div>
+  <h1>TRANSFER MARKET</h1>
+  <div class="subtitle">LATEST FOOTBALL NEWS</div>
+</header>
 
-  <label>ニュースカテゴリー</label>
-  <div class="categories">
-    <button type="button" class="category active" data-value="new">
-      🚨 NEW SIGNING!!
-    </button>
-    <button type="button" class="category" data-value="transfer">
-      📝 Transfer News
-    </button>
-    <button type="button" class="category" data-value="deal">
-      🤝 DEAL DONE!!
-    </button>
+<main class="card" id="adminArea" hidden>
+
+  <div style="text-align:center;font-size:12px;color:#aaa;">
+    ADMINISTRATOR CONTROL PANEL
   </div>
 
-  <label for="newsMessage">ニュース本文</label>
-  <textarea id="newsMessage"
+  <label for="newsDate">📅 DATE</label>
+  <input
+    type="text"
+    id="newsDate"
+    placeholder="例：11/22"
+    maxlength="20">
+
+  <label>⚽ NEWS CATEGORY</label>
+
+  <div class="categories">
+
+    <button type="button" class="category active"
+      data-value="new">
+      🚨 NEW SIGNING!!
+      <small>新入荷</small>
+    </button>
+
+    <button type="button" class="category"
+      data-value="transfer">
+      📝 TRANSFER NEWS
+      <small>交渉中</small>
+    </button>
+
+    <button type="button" class="category"
+      data-value="here">
+      ✍️ HERE WE GO!!
+      <small>入荷予定</small>
+    </button>
+
+    <button type="button" class="category"
+      data-value="return">
+      🔙 RETURNING PLAYER!!
+      <small>再入荷</small>
+    </button>
+
+    <button type="button" class="category"
+      data-value="completed">
+      🏁 TRANSFER COMPLETED!!
+      <small>完売</small>
+    </button>
+
+  </div>
+
+  <label for="newsMessage">📰 NEWS MESSAGE</label>
+
+  <textarea
+    id="newsMessage"
     placeholder="例：新たな選手がチームに加入しました！🔥"></textarea>
 
+  <div class="preview">
+    <div class="previewTitle">LIVE PREVIEW</div>
+    <div class="previewLine" id="previewLine">
+      🚨 11/22 NEW SIGNING!! ⚽ 新たな選手がチームに加入しました！🔥
+    </div>
+  </div>
+
   <button type="button" class="save" id="saveButton">
-    ニュースを保存する
+    ⚽ NEWSを公開する
   </button>
 
-  <p id="status" style="text-align:center"></p>
+  <p class="status" id="status"></p>
+
+</main>
+
+<div id="loginRequired" class="card" hidden
+  style="text-align:center;">
+  <h2>🔒 管理者ログインが必要です</h2>
+  <p style="color:#aaa;font-size:14px;line-height:1.8;">
+    ニュース管理画面を利用するには、管理者ログインをしてください。
+  </p>
+  <a class="loginLink" href="login.html">
+    管理者ログインはこちら
+  </a>
+  <p style="color:#888;font-size:12px;line-height:1.7;">
+    ログイン後、もう一度このニュース管理ページを開いてください。
+  </p>
+</div>
+
+<div class="footer">
+  SUPPORTERS CULB © TRANSFER MARKET
+</div>
+
 </div>
 
 <script>
+
+/* =========================
+   Supabase
+========================= */
+
+const SUPABASE_URL =
+  "https://juzrxqrabrvhlwvnvton.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
+
+const sb = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+/* =========================
+   カテゴリー
+========================= */
+
+const categories = {
+  new: {
+    emoji:"🚨",
+    title:"NEW SIGNING!!"
+  },
+  transfer: {
+    emoji:"📝",
+    title:"TRANSFER NEWS"
+  },
+  here: {
+    emoji:"✍️",
+    title:"HERE WE GO!!"
+  },
+  return: {
+    emoji:"🔙",
+    title:"RETURNING PLAYER!!"
+  },
+  completed: {
+    emoji:"🏁",
+    title:"TRANSFER COMPLETED!!"
+  }
+};
+
 let selectedCategory = "new";
 
-document.querySelectorAll(".category").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".category").forEach(item => {
+/* =========================
+   要素
+========================= */
+
+const adminArea =
+  document.getElementById("adminArea");
+
+const loginRequired =
+  document.getElementById("loginRequired");
+
+const newsDate =
+  document.getElementById("newsDate");
+
+const newsMessage =
+  document.getElementById("newsMessage");
+
+const saveButton =
+  document.getElementById("saveButton");
+
+const status =
+  document.getElementById("status");
+
+const previewLine =
+  document.getElementById("previewLine");
+
+/* =========================
+   管理者確認
+========================= */
+
+async function checkAdmin(){
+
+  adminArea.hidden = true;
+  loginRequired.hidden = true;
+
+  const {data:{session},error} =
+    await sb.auth.getSession();
+
+  if(error || !session){
+    loginRequired.hidden = false;
+    return false;
+  }
+
+  const {data,error:adminError} =
+    await sb.rpc("is_admin");
+
+  if(adminError || data !== true){
+
+    console.error("管理者確認エラー:",adminError);
+
+    await sb.auth.signOut();
+
+    loginRequired.hidden = false;
+    return false;
+  }
+
+  adminArea.hidden = false;
+
+  await loadNews();
+
+  return true;
+}
+
+/* =========================
+   カテゴリー選択
+========================= */
+
+document.querySelectorAll(".category")
+.forEach(button=>{
+
+  button.addEventListener("click",()=>{
+
+    document.querySelectorAll(".category")
+    .forEach(item=>{
       item.classList.remove("active");
     });
 
     button.classList.add("active");
+
     selectedCategory = button.dataset.value;
+
+    updatePreview();
+
   });
+
 });
 
-document.getElementById("saveButton").addEventListener("click", () => {
-  const date = document.getElementById("newsDate").value.trim();
-  const message = document.getElementById("newsMessage").value.trim();
+/* =========================
+   プレビュー
+========================= */
 
-  if (!date || !message) {
-    document.getElementById("status").textContent =
-      "日付とニュース本文を入力してください";
+function updatePreview(){
+
+  const category = categories[selectedCategory];
+
+  const date = newsDate.value.trim() || "11/22";
+
+  const message =
+    newsMessage.value.trim() ||
+    "ニュース本文がここに表示されます";
+
+  previewLine.textContent =
+    `${category.emoji} ${date} ${category.title} ⚽ ${message}`;
+
+}
+
+newsDate.addEventListener("input",updatePreview);
+newsMessage.addEventListener("input",updatePreview);
+
+/* =========================
+   最新ニュース取得
+========================= */
+
+async function loadNews(){
+
+  const {data,error} = await sb
+    .from("transfer_news")
+    .select("*")
+    .eq("id",1)
+    .maybeSingle();
+
+  if(error){
+    console.error("ニュース取得エラー:",error);
+    status.textContent =
+      "既存ニュースを読み込めませんでした。";
     return;
   }
 
-  document.getElementById("status").textContent =
-    "入力内容を確認しました。次に保存機能を接続します。";
+  if(!data) return;
+
+  newsDate.value = data.news_date || "";
+  newsMessage.value = data.message || "";
+
+  if(categories[data.category]){
+
+    selectedCategory = data.category;
+
+    document.querySelectorAll(".category")
+    .forEach(button=>{
+      button.classList.toggle(
+        "active",
+        button.dataset.value === selectedCategory
+      );
+    });
+
+  }
+
+  updatePreview();
+
+}
+
+/* =========================
+   ニュース保存
+========================= */
+
+saveButton.addEventListener("click",async()=>{
+
+  const date = newsDate.value.trim();
+  const message = newsMessage.value.trim();
+
+  if(!date || !message){
+    status.textContent =
+      "日付とニュース本文を入力してください。";
+    return;
+  }
+
+  const {data:{session},error:sessionError} =
+    await sb.auth.getSession();
+
+  if(sessionError || !session){
+    status.textContent =
+      "ログイン状態を確認できません。";
+    return;
+  }
+
+  saveButton.disabled = true;
+  saveButton.textContent = "公開中...";
+  status.textContent = "";
+
+  try{
+
+    const {data:admin,error:adminError} =
+      await sb.rpc("is_admin");
+
+    if(adminError || admin !== true){
+      throw new Error("管理者権限が確認できません。");
+    }
+
+    const {error} = await sb
+      .from("transfer_news")
+      .upsert({
+        id:1,
+        news_date:date,
+        category:selectedCategory,
+        message:message,
+        updated_at:new Date().toISOString()
+      },{
+        onConflict:"id"
+      });
+
+    if(error) throw error;
+
+    status.textContent =
+      "✅ ニュースを公開しました！";
+
+  }catch(error){
+
+    console.error("ニュース保存エラー:",error);
+
+    status.textContent =
+      "保存できませんでした：" + error.message;
+
+  }finally{
+
+    saveButton.disabled = false;
+    saveButton.textContent = "⚽ NEWSを公開する";
+
+  }
+
 });
+
+/* =========================
+   スタート
+========================= */
+
+updatePreview();
+checkAdmin();
+
 </script>
+
 </body>
 </html>
