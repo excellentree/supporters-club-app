@@ -271,6 +271,7 @@ flex-direction:column;
   font-weight:700;
   line-height:1.7;
   animation:newsBlink 3s ease-in-out infinite;
+　white-space:pre-line;
 }
 
 @keyframes newsBlink{
@@ -468,7 +469,7 @@ async function loadTransferNews(){
   const label=labels[data.category] || "TRANSFER NEWS";
 
   document.getElementById("transferNewsText").textContent=
-    `${icon} ${data.news_date} ${label} ⚽ ${data.message}`;
+  `${icon} ${data.news_date} ${label} ⚽\n${data.message}`;
 
   document.getElementById("transferNews").style.display="block";
 }
