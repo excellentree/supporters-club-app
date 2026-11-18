@@ -1,1 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>移籍ニュース管理｜SUPPORTERS CULB</title>
 
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:20px;
+  background:#f4f4f4;
+  color:#111;
+  font-family:sans-serif;
+}
+.container{
+  max-width:600px;
+  margin:auto;
+  background:#fff;
+  padding:22px;
+  border-radius:14px;
+}
+h1{font-size:23px;margin-top:0}
+label{
+  display:block;
+  margin:22px 0 9px;
+  font-weight:bold;
+}
+input,textarea{
+  width:100%;
+  padding:14px;
+  font-size:16px;
+  border:1px solid #ccc;
+  border-radius:9px;
+}
+textarea{min-height:100px;resize:vertical}
+.categories{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:9px;
+}
+.category{
+  padding:14px;
+  border:1px solid #ccc;
+  background:#fff;
+  border-radius:9px;
+  font-size:16px;
+  font-weight:bold;
+  text-align:left;
+}
+.category.active{
+  background:#111;
+  color:#fff;
+  border-color:#111;
+}
+button.save{
+  width:100%;
+  margin-top:25px;
+  padding:16px;
+  border:0;
+  border-radius:10px;
+  background:#f5d000;
+  font-size:17px;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h1>⚽ 移籍ニュース管理</h1>
+
+  <label for="newsDate">📅 日付</label>
+  <input type="text" id="newsDate" placeholder="例：11/22">
+
+  <label>ニュースカテゴリー</label>
+  <div class="categories">
+    <button type="button" class="category active" data-value="new">
+      🚨 NEW SIGNING!!
+    </button>
+    <button type="button" class="category" data-value="transfer">
+      📝 Transfer News
+    </button>
+    <button type="button" class="category" data-value="deal">
+      🤝 DEAL DONE!!
+    </button>
+  </div>
+
+  <label for="newsMessage">ニュース本文</label>
+  <textarea id="newsMessage"
+    placeholder="例：新たな選手がチームに加入しました！🔥"></textarea>
+
+  <button type="button" class="save" id="saveButton">
+    ニュースを保存する
+  </button>
+
+  <p id="status" style="text-align:center"></p>
+</div>
+
+<script>
+let selectedCategory = "new";
+
+document.querySelectorAll(".category").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".category").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    selectedCategory = button.dataset.value;
+  });
+});
+
+document.getElementById("saveButton").addEventListener("click", () => {
+  const date = document.getElementById("newsDate").value.trim();
+  const message = document.getElementById("newsMessage").value.trim();
+
+  if (!date || !message) {
+    document.getElementById("status").textContent =
+      "日付とニュース本文を入力してください";
+    return;
+  }
+
+  document.getElementById("status").textContent =
+    "入力内容を確認しました。次に保存機能を接続します。";
+});
+</script>
+</body>
+</html>
