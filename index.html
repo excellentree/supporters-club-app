@@ -426,7 +426,50 @@ const sb=
     SUPABASE_URL,
     SUPABASE_KEY
   );
+/* =========================
+   最新移籍ニュースを取得
+========================= */
 
+async function loadTransferNews(){
+
+  const {data,error}=await sb
+    .from("transfer_news")
+    .select("*")
+    .order("updated_at",{ascending:false})
+    .limit(1)
+    .maybeSingle();
+
+  if(error){
+    console.error("ニュース取得エラー:",error);
+    return;
+  }
+
+  if(!data) return;
+
+  const icons={
+    new:"🚨",
+    transfer:"📝",
+    herewego:"✍️",
+    returning:"🔙",
+    completed:"🏁"
+  };
+
+  const labels={
+    new:"NEW SIGNING!!",
+    transfer:"TRANSFER NEWS",
+    herewego:"HERE WE GO!!",
+    returning:"RETURNING PLAYER!!",
+    completed:"TRANSFER COMPLETED!!"
+  };
+
+  const icon=icons[data.category] || "⚽";
+  const label=labels[data.category] || "TRANSFER NEWS";
+
+  document.getElementById("transferNewsText").textContent=
+    `${icon} ${data.news_date} ${label} ⚽ ${data.message}`;
+
+  document.getElementById("transferNews").style.display="block";
+}
 
 /* =========================
    状態
@@ -1475,7 +1518,7 @@ discountedTotal.toLocaleString()+
 ========================= */
 
 init();
-
+loadTransferNews();
 window.addEventListener("pageshow",()=>{
   cart=JSON.parse(localStorage.getItem("supportersCart")||"[]");
   loadProducts();
