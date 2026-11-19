@@ -325,16 +325,16 @@ flex-direction:column;
 }
   /* 移籍ニュース */
 #transferNews{
-  padding:24px 16px 16px;
+  padding:20px 12px;
   text-align:center;
 }
 
 #transferNewsText{
   width:100%;
-  font-size:14px;
+  font-size:13px;
   font-weight:700;
-  line-height:1.8;
-  white-space:pre-line;
+  line-height:1.6;
+  white-space:normal;
   text-align:center;
   animation:newsBlink 3s ease-in-out infinite;
 }
@@ -533,8 +533,8 @@ async function loadTransferNews(){
   const label=labels[data.category] || "TRANSFER NEWS";
 
   document.getElementById("transferNewsText").textContent=
-  `${icon} ${data.news_date} ${label} ⚽\n${data.message}`;
-
+  `${icon} ${data.news_date} ${label} ⚽　${data.message}`;
+  
   document.getElementById("transferNews").style.display="block";
 }
 
