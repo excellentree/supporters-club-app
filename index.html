@@ -169,35 +169,109 @@ flex-direction:column;
   padding:16px
 }
 
-/* カテゴリー */
+
+/* =========================
+   カテゴリー共通
+========================= */
+
 .filters{
   display:flex;
   gap:8px;
-  margin-bottom:10px;
-  padding-bottom:4px;
+  margin-bottom:12px;
+  padding-bottom:5px;
   width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
+  flex-wrap:nowrap;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+
+.filters::-webkit-scrollbar{
+  display:none;
+}
+
+/* =========================
+   大カテゴリー
+========================= */
+
+#mainFilters{
+  gap:8px;
+  margin-bottom:16px;
 }
 
 #mainFilters button{
-  flex:1;
+  flex:1 0 0;
   min-width:0;
-  padding:12px 4px;
-  text-align:center;
-}
-
-.filters button{
-  background:#fff;
-  border:1px solid #ddd;
-  border-radius:999px;
-  padding:9px 18px;
-  white-space:nowrap;
-  font-size:14px
-}
-
-.filters button.active{
-  background:#111;
+  padding:13px 4px;
+  background:#292929;
   color:#fff;
-  border-color:#111
+  border:1px solid #292929;
+  border-radius:10px;
+  font-size:14px;
+  font-weight:800;
+  text-align:center;
+  white-space:nowrap;
+}
+
+#mainFilters button.active{
+  background:#f5d000;
+  color:#111;
+  border-color:#f5d000;
+}
+
+/* =========================
+   小カテゴリー
+========================= */
+
+#subFilters{
+  gap:8px;
+  margin-bottom:12px;
+}
+
+#subFilters button{
+  flex:0 0 auto;
+  padding:10px 16px;
+  background:#fff;
+  color:#333;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:13px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+#subFilters button.active{
+  background:#f5d000;
+  color:#111;
+  border-color:#f5d000;
+}
+
+/* =========================
+   チームカテゴリー
+========================= */
+
+#teamFilters{
+  gap:8px;
+  margin-bottom:16px;
+}
+
+#teamFilters button{
+  flex:0 0 auto;
+  padding:9px 15px;
+  background:#fff;
+  color:#444;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+#teamFilters button.active{
+  background:#292929;
+  color:#f5d000;
+  border-color:#292929;
 }
 
 /* 商品 */
