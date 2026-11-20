@@ -343,32 +343,92 @@ flex-direction:column;
   }
 }
   
+
 /* 移籍ニュース */
 #transferNews{
+  display:none;
   margin:16px;
-  padding:0;
-  background:linear-gradient(110deg,#080808,#202020);
-  border:1px solid #b99b00;
-  border-left:4px solid #f5d000;
-  border-radius:8px;
+  padding:12px 14px;
+  background:#111;
+  border:none;
+  border-radius:18px;
   overflow:hidden;
 }
 
 #transferNewsText{
+  display:flex;
+  align-items:center;
+  gap:14px;
   width:100%;
-  padding:15px 12px;
-  font-size:14px;
-  font-weight:700;
-  line-height:1.6;
-  text-align:center;
   color:#fff;
+}
+
+/* 日付 */
+.newsDate{
+  flex-shrink:0;
+  width:76px;
+  height:68px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#f5d000;
+  color:#111;
+  border-radius:10px;
+  font-size:22px;
+  font-weight:900;
+}
+
+/* ニュース本文 */
+.newsContent{
+  flex:1;
+  min-width:0;
+}
+
+.newsLabel{
+  color:#f5d000;
+  font-size:14px;
+  font-weight:900;
+  margin-bottom:5px;
+}
+
+.newsMessage{
+  color:#fff;
+  font-size:15px;
+  font-weight:800;
+  line-height:1.4;
   overflow-wrap:anywhere;
 }
 
+/* 右側の矢印 */
+.newsArrow{
+  flex-shrink:0;
+  color:#f5d000;
+  font-size:30px;
+  font-weight:300;
+  padding:0 2px;
+}
+
 @media(max-width:380px){
+  #transferNews{
+    padding:10px;
+  }
+
   #transferNewsText{
+    gap:9px;
+  }
+
+  .newsDate{
+    width:65px;
+    height:62px;
+    font-size:19px;
+  }
+
+  .newsLabel{
     font-size:12px;
-    padding:13px 8px;
+  }
+
+  .newsMessage{
+    font-size:13px;
   }
 }
 
