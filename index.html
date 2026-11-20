@@ -649,10 +649,30 @@ async function loadTransferNews(){
   const icon=icons[data.category] || "⚽";
   const label=labels[data.category] || "TRANSFER NEWS";
 
-  document.getElementById("transferNewsText").textContent=
-  `${icon} ${data.news_date} ${label} ⚽　${data.message}`;
   
-  document.getElementById("transferNews").style.display="block";
+const newsDate = esc(data.news_date || "");
+const newsMessage = esc(data.message || "");
+
+document.getElementById("transferNewsText").innerHTML = `
+  <div class="newsDate">
+    ${newsDate}
+  </div>
+
+  <div class="newsContent">
+    <div class="newsLabel">
+      ${icon} ${label}
+    </div>
+
+    <div class="newsMessage">
+      ${newsMessage}
+    </div>
+  </div>
+
+  <div class="newsArrow">›</div>
+`;
+
+document.getElementById("transferNews").style.display = "block";
+
 }
 
 /* =========================
