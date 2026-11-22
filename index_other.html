@@ -500,34 +500,47 @@ width:100%;
 </div>
 
 <!-- カテゴリー -->
-  <div style="margin-bottom:16px;">
+  <div style="
+  position:relative;
+  margin-bottom:16px;
+">
+  <select
+    id="otherCategory"
+    onchange="selectOtherCategory(this.value)"
+    style="
+      appearance:none;
+      -webkit-appearance:none;
+      width:100%;
+      padding:14px 45px 14px 14px;
+      border:1px solid #333;
+      border-radius:10px;
+      font-size:16px;
+      font-weight:700;
+      background:#222;
+      color:#f5d000;
+    "
+  >
+    <option value="">カテゴリー</option>
+    <option value="ピンバッジ">ピンバッジ</option>
+    <option value="ペナント">ペナント</option>
+    <option value="トロフィー">トロフィー</option>
+    <option value="LEGO">LEGO</option>
+    <option value="アパレル">アパレル</option>
+    <option value="キーホルダー">キーホルダー</option>
+    <option value="ステッカー">ステッカー</option>
+    <option value="フィギュア">フィギュア</option>
+    <option value="その他">その他</option>
+  </select>
 
-<select
-  id="otherCategory"
-  onchange="selectOtherCategory(this.value)"
-  style="
-    width:100%;
-    padding:14px;
-    border:1px solid #333;
-    border-radius:10px;
-    font-size:16px;
-    font-weight:700;
-    background:#222;
-    color:#fff;
-    accent-color:#f5d000;
-  "
->
-  <option value="">カテゴリー</option>
-  <option value="ピンバッジ">ピンバッジ</option>
-  <option value="ペナント">ペナント</option>
-  <option value="トロフィー">トロフィー</option>
-  <option value="LEGO">LEGO</option>
-  <option value="アパレル">アパレル</option>
-  <option value="キーホルダー">キーホルダー</option>
-  <option value="ステッカー">ステッカー</option>
-  <option value="フィギュア">フィギュア</option>
-  <option value="その他">その他</option>
-</select>
+  <span style="
+    position:absolute;
+    right:18px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#f5d000;
+    font-size:27px;
+    pointer-events:none;
+  ">›</span>
 
 </div>
 
