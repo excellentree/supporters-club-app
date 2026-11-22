@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ja">
 <head>
@@ -13,16 +14,17 @@
 
 body{
   margin:0;
-  background:#f5f5f5;
-  color:#111;
+  background:#080808;
+  color:#fff;
   font-family:-apple-system,BlinkMacSystemFont,
   "Hiragino Kaku Gothic ProN",Arial,sans-serif
 }
 
 header{
-  background:#111;
+  background:#080808;
   color:#fff;
-  padding:20px
+  padding:20px;
+  border-bottom:2px solid #f5d000;
 }
 
 .logo{
@@ -33,34 +35,36 @@ header{
 
 .sub{
   font-size:10px;
-  opacity:.65;
-  margin-top:4px
+  color:#aaa;
+  margin-top:4px;
+  letter-spacing:2px;
 }
 
 .content{
-  padding:20px 16px 40px
+  padding:20px 16px 40px;
 }
 
 .back{
   display:inline-block;
   margin-bottom:20px;
-  color:#111;
+  color:#f5d000;
   text-decoration:none;
   font-weight:700
 }
 
 h1{
   margin:0 0 20px;
-  font-size:28px
+  font-size:28px;
+  color:#fff;
 }
 
 .cartItem{
   display:flex;
   align-items:center;
   gap:12px;
-  background:#fff;
+  background:#171717;
   padding:16px;
-  border-bottom:1px solid #eee
+  border-bottom:1px solid #333;
 }
 
 .cartImage{
@@ -81,7 +85,8 @@ h1{
   justify-content:space-between;
   gap:10px;
   font-weight:700;
-  font-size:15px
+  font-size:15px;
+  color:#fff;
 }
 
 .qtyRow{
@@ -100,30 +105,33 @@ h1{
 .qty button{
   width:38px;
   height:38px;
-  border:1px solid #ddd;
+  border:1px solid #555;
   border-radius:50%;
-  background:#fff;
-  font-size:22px
+  background:#292929;
+  color:#f5d000;
+  font-size:22px;
 }
 
 .qty strong{
   min-width:20px;
   text-align:center;
-  font-size:17px
+  font-size:17px;
+  color:#fff;
 }
 
 .delete{
   border:0;
   background:none;
-  color:#888;
+  color:#999;
   font-size:13px
 }
 
 .priceSummary{
-  background:#fff;
-  padding:18px;
+  background:#171717;
+  padding:20px;
   margin:20px 0;
-  border-radius:8px;
+  border-radius:10px;
+  border:1px solid #292929;
 }
 
 .priceRow{
@@ -131,25 +139,28 @@ h1{
   justify-content:space-between;
   align-items:center;
   font-size:15px;
-  margin-bottom:12px;
+  margin-bottom:14px;
+  color:#ddd;
 }
 
 .discount{
-  color:#e52323;
+  color:#ef3030;
 }
 
 .priceFinal{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  border-top:1px solid #ddd;
-  padding-top:14px;
+  border-top:1px solid #444;
+  padding-top:16px;
   font-size:17px;
   font-weight:900;
+  color:#fff;
 }
 
 .priceFinal strong{
-  font-size:26px;
+  font-size:28px;
+  color:#fff;
 }
 
 .clear{
@@ -158,7 +169,7 @@ h1{
   padding:12px;
   border:0;
   background:none;
-  color:#888;
+  color:#999;
   font-size:13px;
   margin-bottom:12px
 }
@@ -173,14 +184,16 @@ h1{
   padding:16px;
   border-radius:10px;
   font-weight:900;
-  font-size:17px
+  font-size:17px;
 }
 
 .empty{
-  background:#fff;
+  background:#171717;
   padding:40px 20px;
   text-align:center;
-  color:#888
+  color:#aaa;
+  border-radius:10px;
+  border:1px solid #292929;
 }
 </style>
 </head>
@@ -202,25 +215,28 @@ h1{
 
   <div id="cartItems"></div>
 
-<div class="priceSummary">
-  <div class="priceRow">
-    <span>商品合計</span>
-    <strong id="subtotal"></strong>
-  </div>
+  <div class="priceSummary" id="priceSummary">
 
-  <div class="priceRow">
-    <span>セット割引</span>
-    <strong id="discount" class="discount"></strong>
-  </div>
+    <div class="priceRow">
+      <span>商品合計</span>
+      <strong id="subtotal"></strong>
+    </div>
 
-  <div class="priceFinal">
-    <span>お支払い合計</span>
-    <strong id="total"></strong>
+    <div class="priceRow">
+      <span>セット割引</span>
+      <strong id="discount" class="discount"></strong>
+    </div>
+
+    <div class="priceFinal">
+      <span>お支払い合計</span>
+      <strong id="total"></strong>
+    </div>
+
   </div>
-</div>
 
   <button
     class="clear"
+    id="clearButton"
     onclick="clearCart()">
     カートを空にする
   </button>
@@ -279,7 +295,6 @@ function changeQty(id,delta){
   }
 
   saveCart();
-
   render();
 
 }
@@ -293,7 +308,6 @@ function removeProduct(id){
     );
 
   saveCart();
-
   render();
 
 }
@@ -302,9 +316,7 @@ function removeProduct(id){
 function clearCart(){
 
   cart=[];
-
   saveCart();
-
   render();
 
 }
@@ -331,7 +343,6 @@ function esc(x){
 function render(){
 
   const groups={};
-
 
   cart.forEach(p=>{
 
@@ -364,8 +375,11 @@ function render(){
         </div>
       `;
 
-    document.getElementById("total")
-      .textContent="";
+    document.getElementById("priceSummary")
+      .style.display="none";
+
+    document.getElementById("clearButton")
+      .style.display="none";
 
     document.getElementById("line")
       .style.display="none";
@@ -374,6 +388,14 @@ function render(){
 
   }
 
+  document.getElementById("priceSummary")
+    .style.display="block";
+
+  document.getElementById("clearButton")
+    .style.display="block";
+
+
+  /* 商品表示 */
 
   document.getElementById("cartItems")
     .innerHTML=
@@ -389,62 +411,65 @@ function render(){
 
       return `
 
-  <div class="cartItem">
+        <div class="cartItem">
 
-    <img
-      class="cartImage"
-      src="${esc(p.image_url || '')}"
-      alt="${esc(p.name)}">
+          <img
+            class="cartImage"
+            src="${esc(p.image_url || '')}"
+            alt="${esc(p.name)}">
 
-    <div class="cartInfo">
+          <div class="cartInfo">
 
-      <div class="nameRow">
+            <div class="nameRow">
 
-        <span>
-          ${esc(p.name)}
-        </span>
+              <span>
+                ${esc(p.name)}
+              </span>
 
-        <span>
-          ¥${subtotal.toLocaleString()}
-        </span>
+              <span>
+                ¥${subtotal.toLocaleString()}
+              </span>
 
-      </div>
+            </div>
 
-      <div class="qtyRow">
+            <div class="qtyRow">
 
-        <div class="qty">
+              <div class="qty">
 
-          <button
-            onclick='changeQty(${JSON.stringify(id)},-1)'>
-            −
-          </button>
+                <button
+                  onclick='changeQty(${JSON.stringify(id)},-1)'>
+                  −
+                </button>
 
-          <strong>
-            ${qty}
-          </strong>
+                <strong>
+                  ${qty}
+                </strong>
 
-          <button
-            onclick='changeQty(${JSON.stringify(id)},1)'>
-            ＋
-          </button>
+                <button
+                  onclick='changeQty(${JSON.stringify(id)},1)'>
+                  ＋
+                </button>
+
+              </div>
+
+              <button
+                class="delete"
+                onclick='removeProduct(${JSON.stringify(id)})'>
+                削除
+              </button>
+
+            </div>
+
+          </div>
 
         </div>
 
-        <button
-          class="delete"
-          onclick='removeProduct(${JSON.stringify(id)})'>
-          削除
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-`;
+      `;
 
     }).join("");
 
+
+  /* 合計金額 */
 
   const total=
     cart.reduce(
@@ -453,76 +478,84 @@ function render(){
       0
     );
 
+  const totalQty=
+    items.reduce(
+      (sum,item)=>sum+item.qty,
+      0
+    );
+
+  const discount=
+    Math.max(0,totalQty-1)*100;
+
+  const discountedTotal=
+    total-discount;
+
+
+  document.getElementById("subtotal")
+    .textContent=
+      "¥"+total.toLocaleString();
+
+  document.getElementById("discount")
+    .textContent=
+      "-¥"+discount.toLocaleString();
 
   document.getElementById("total")
     .textContent=
-      "合計 ¥"+
-      total.toLocaleString();
+      "¥"+discountedTotal.toLocaleString();
 
 
-  document.getElementById("line")
-    .style.display="block";
+  /* LINE注文 */
 
-const totalQty = items.reduce((sum,item)=>sum+item.qty,0);
-const discount = Math.max(0,totalQty-1)*100;
-const discountedTotal = total-discount;
-document.getElementById("subtotal")
-  .textContent = "¥"+total.toLocaleString();
+  const text=
 
-document.getElementById("discount")
-  .textContent = "-¥"+discount.toLocaleString();
+    "【SUPPORTERS CULB 注文】\n\n"+
 
-document.getElementById("total")
-  .textContent = "¥"+discountedTotal.toLocaleString();
-const text=
+    items.map((item,i)=>{
 
-  "【SUPPORTERS CULB 注文】\n\n"+
+      const p=item.product;
 
-  items.map((item,i)=>{
+      return (
 
-    const p=item.product;
+        `${i+1}. ${p.name} × ${item.qty} / `+
+        `${p.version||""} / `+
+        `${p.model||""} / `+
+        `¥${(Number(p.price)*item.qty).toLocaleString()}`
 
-    return (
+      );
 
-      `${i+1}. ${p.name} × ${item.qty} / `+
-      `${p.version||""} / `+
-      `${p.model||""} / `+
-      `¥${(Number(p.price)*item.qty).toLocaleString()}`
+    }).join("\n")+
 
-    );
+    "\n\n商品合計 ¥"+
+    total.toLocaleString()+
 
-  }).join("\n")+
+    "\nセット割引 -¥"+
+    discount.toLocaleString()+
 
-  "\n\n商品合計 ¥"+
-  total.toLocaleString()+
+    "\nお支払い合計 ¥"+
+    discountedTotal.toLocaleString()+
 
-  "\nセット割引 -¥"+
-  discount.toLocaleString()+
-
-  "\nお支払い合計 ¥"+
-  discountedTotal.toLocaleString()+
-
-  "\n\n──────────────"+
-  "\n【セット割引について】"+
-  "\n\n複数点ご購入いただいた場合、"+
-  "\n2点目以降、1点につき100円OFFとなります。"+
-  "\n\n2点 → 100円OFF"+
-  "\n3点 → 200円OFF"+
-  "\n4点 → 300円OFF"+
-  "\n5点 → 400円OFF"+
-  "\n…"+
-  "\n※ご注文点数に応じて自動計算されます。"+
-  "\n──────────────"+
-  "\n\n【商品について】"+
-  "\n\n新品・未使用品ですが、"+
-  "\n海外製品のため、製造・輸送過程による"+
-  "\n細かな傷や個体差がある場合がございます。"+
-  "\n\nあらかじめご了承のうえ、"+
-  "\nご購入をお願いいたします。"+
-  "\n\n※海外製品につき、返品・交換は"+
-  "\nお受けしておりません。";
+    "\n\n──────────────"+
+    "\n【セット割引について】"+
+    "\n\n複数点ご購入いただいた場合、"+
+    "\n2点目以降、1点につき100円OFFとなります。"+
+    "\n\n2点 → 100円OFF"+
+    "\n3点 → 200円OFF"+
+    "\n4点 → 300円OFF"+
+    "\n5点 → 400円OFF"+
+    "\n…"+
+    "\n※ご注文点数に応じて自動計算されます。"+
+    "\n──────────────"+
+    "\n\n【商品について】"+
+    "\n\n新品・未使用品ですが、"+
+    "\n海外製品のため、製造・輸送過程による"+
+    "\n細かな傷や個体差がある場合がございます。"+
+    "\n\nあらかじめご了承のうえ、"+
+    "\nご購入をお願いいたします。"+
+    "\n\n※海外製品につき、返品・交換は"+
+    "\nお受けしておりません。";
 
 
+  document.getElementById("line").style.display="block";
 
   document.getElementById("line").href=
 
