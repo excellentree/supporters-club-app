@@ -318,19 +318,21 @@ width:100%;
   }
 }
 
-  #transferNews{
+
+/* 移籍ニュース */
+#transferNews{
   display:none;
-  margin:16px 0 0;
+  margin:16px 16px 0;
   padding:9px 12px;
   background:#111;
+  border:none;
   border-radius:12px;
   overflow:hidden;
 }
 
 #transferNewsText{
-  display:flex !important;
-  flex-direction:row !important;
-  align-items:center !important;
+  display:flex;
+  align-items:center;
   gap:14px;
   width:100%;
   color:#fff;
@@ -338,6 +340,16 @@ width:100%;
 
 .newsDate{
   flex-shrink:0;
+  width:68px;
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#f5d000;
+  color:#111;
+  border-radius:10px;
+  font-size:19px;
+  font-weight:900;
 }
 
 .newsContent{
@@ -345,9 +357,29 @@ width:100%;
   min-width:0;
 }
 
+.newsLabel{
+  color:#f5d000;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:5px;
+}
+
+.newsMessage{
+  color:#fff;
+  font-size:14px;
+  font-weight:600;
+  line-height:1.4;
+  overflow-wrap:anywhere;
+}
+
 .newsArrow{
   flex-shrink:0;
+  color:#f5d000;
+  font-size:25px;
+  font-weight:300;
+  padding:0 2px;
 }
+
 </style>
 </head>
 
@@ -420,23 +452,53 @@ width:100%;
 
 <div class="content">
   <!-- SOCCERWE -->
-<div style="margin-bottom:16px;">
+
+<!-- SOCCERWE -->
+<div style="margin:0 0 10px;">
   <a
     href="index.html"
     style="
-      display:block;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
       width:100%;
-      padding:13px;
+      padding:11px 16px;
       background:#111;
-      color:#fff;
-      border-radius:12px;
-      text-align:center;
+      color:#f5d000;
+      border:1px solid #111;
+      border-radius:9px;
+      text-align:left;
       text-decoration:none;
-      font-weight:700;
     ">
-    ⚽ SOCCERWE
+
+    <div>
+      <div style="
+        font-size:17px;
+        font-weight:900;
+        letter-spacing:1px;
+      ">
+        ⚽ SOCCERWE
+      </div>
+
+      <div style="
+        margin-top:3px;
+        color:#ccc;
+        font-size:9px;
+        letter-spacing:1.5px;
+      ">
+        FOOTBALL GOODS
+      </div>
+    </div>
+
+    <span style="
+      font-size:24px;
+      font-weight:300;
+      color:#f5d000;
+    ">›</span>
+
   </a>
 </div>
+
 <!-- カテゴリー -->
   <div style="margin-bottom:16px;">
 
@@ -1658,7 +1720,7 @@ discountedTotal.toLocaleString()+
   line.href=
     "https://line.me/R/oaMessage/%40163shzbn/?"+
     encodeURIComponent(text);
-
+updateHeaderCartBadge();
 }
 
 /* =========================
