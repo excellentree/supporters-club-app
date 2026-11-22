@@ -1539,7 +1539,19 @@ function clearCart(){
   renderCart();
 
 }
+function updateHeaderCartBadge(){
 
+  const headerCart =
+    document.getElementById("headerCart");
+
+  if(!headerCart) return;
+
+  headerCart.classList.toggle(
+    "has-items",
+    cart.length > 0
+  );
+
+}
 
 function renderCart(){
 
@@ -1827,7 +1839,7 @@ discountedTotal.toLocaleString()+
   line.href=
     "https://line.me/R/oaMessage/%40163shzbn/?"+
     encodeURIComponent(text);
-
+updateHeaderCartBadge();
 }
 
 /* =========================
