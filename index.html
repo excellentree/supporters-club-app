@@ -1844,6 +1844,7 @@ init();
 loadTransferNews();
 window.addEventListener("pageshow",()=>{
   cart=JSON.parse(localStorage.getItem("supportersCart")||"[]");
+  updateHeaderCartBadge();
   loadProducts();
 });
 
