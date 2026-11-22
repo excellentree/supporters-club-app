@@ -508,6 +508,71 @@ const sb=
     SUPABASE_KEY
   );
 
+/* =========================
+   最新移籍ニュースを取得
+========================= */
+
+async function loadTransferNews(){
+
+  const {data,error}=await sb
+    .from("transfer_news")
+    .select("*")
+    .order("updated_at",{ascending:false})
+    .limit(1)
+    .maybeSingle();
+
+  if(error){
+    console.error("ニュース取得エラー:",error);
+    return;
+  }
+
+  if(!data) return;
+
+  const icons={
+    new:"🚨",
+    transfer:"📝",
+    herewego:"✍️",
+    returning:"🔙",
+    completed:"🏁"
+  };
+
+  const labels={
+    new:"NEW SIGNING!!",
+    transfer:"TRANSFER NEWS",
+    herewego:"HERE WE GO!!",
+    returning:"RETURNING PLAYER!!",
+    completed:"TRANSFER COMPLETED!!"
+  };
+
+  const icon=icons[data.category] || "⚽";
+  const label=labels[data.category] || "TRANSFER NEWS";
+
+  const newsDate=esc(data.news_date || "");
+  const newsMessage=esc(data.message || "");
+
+  document.getElementById("transferNewsText").innerHTML=`
+
+    <div class="newsDate">
+      ${newsDate}
+    </div>
+
+    <div class="newsContent">
+      <div class="newsLabel">
+        ${icon} ${label}
+      </div>
+
+      <div class="newsMessage">
+        ${newsMessage}
+      </div>
+    </div>
+
+    <div class="newsArrow">›</div>
+
+  `;
+
+  document.getElementById("transferNews").style.display="block";
+}
+
 
 /* =========================
    状態
