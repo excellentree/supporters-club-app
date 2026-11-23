@@ -2118,6 +2118,74 @@ updateHeaderCartBadge();
 
 init();
 loadTransferNews();
+  /* =========================
+   スライドメニュー
+========================= */
+
+const menuOpen = document.getElementById("menuOpen");
+const menuClose = document.getElementById("menuClose");
+const menuOverlay = document.getElementById("menuOverlay");
+const slideMenu = document.getElementById("slideMenu");
+
+const comingOverlay = document.getElementById("comingOverlay");
+const comingClose = document.getElementById("comingClose");
+
+function openMenu(){
+  slideMenu.classList.add("active");
+  menuOverlay.classList.add("active");
+  document.body.classList.add("menu-open");
+}
+
+function closeMenu(){
+  slideMenu.classList.remove("active");
+  menuOverlay.classList.remove("active");
+  document.body.classList.remove("menu-open");
+}
+
+menuOpen.addEventListener("click", openMenu);
+menuClose.addEventListener("click", closeMenu);
+menuOverlay.addEventListener("click", closeMenu);
+
+/* 工事中ページ */
+
+document.querySelectorAll("[data-coming]").forEach(link=>{
+  link.addEventListener("click",e=>{
+    e.preventDefault();
+    closeMenu();
+    comingOverlay.classList.add("active");
+    document.body.classList.add("menu-open");
+  });
+});
+
+function closeComing(){
+  comingOverlay.classList.remove("active");
+  document.body.classList.remove("menu-open");
+}
+
+comingClose.addEventListener("click", closeComing);
+
+comingOverlay.addEventListener("click",e=>{
+  if(e.target === comingOverlay){
+    closeComing();
+  }
+});
+
+/* ESCキーで閉じる */
+
+document.addEventListener("keydown",e=>{
+  if(e.key === "Escape"){
+    closeMenu();
+    closeComing();
+  }
+});
+
+/* メニュー内リンクを押したら閉じる */
+
+document.querySelectorAll(".menu-link:not([data-coming])").forEach(link=>{
+  link.addEventListener("click",()=>{
+    closeMenu();
+  });
+});
 window.addEventListener("pageshow",()=>{
   cart=JSON.parse(localStorage.getItem("supportersCart")||"[]");
   updateHeaderCartBadge();
