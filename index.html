@@ -516,6 +516,186 @@ flex-direction:column;
   }
 }
 
+/* =========================
+   スライドメニュー
+========================= */
+
+.menu-btn{
+  border:0;
+  background:none;
+  padding:0;
+  cursor:pointer;
+}
+
+.menu-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  z-index:2000;
+  opacity:0;
+  visibility:hidden;
+  transition:.3s;
+}
+
+.menu-overlay.active{
+  opacity:1;
+  visibility:visible;
+}
+
+.slide-menu{
+  position:fixed;
+  top:0;
+  left:0;
+  width:85%;
+  max-width:360px;
+  height:100vh;
+  height:100dvh;
+  background:#111;
+  color:#fff;
+  z-index:2001;
+  transform:translateX(-100%);
+  transition:transform .3s ease;
+  padding:25px 22px;
+  overflow-y:auto;
+}
+
+.slide-menu.active{
+  transform:translateX(0);
+}
+
+.menu-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-bottom:22px;
+  border-bottom:1px solid #444;
+}
+
+.menu-brand{
+  font-size:19px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.menu-brand span{
+  display:block;
+  color:#aaa;
+  font-size:9px;
+  letter-spacing:2px;
+  margin-top:4px;
+}
+
+.menu-close{
+  border:0;
+  background:none;
+  color:#fff;
+  font-size:30px;
+  cursor:pointer;
+}
+
+.menu-list{
+  margin-top:22px;
+}
+
+.menu-link{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:17px 4px;
+  border-bottom:1px solid #333;
+  color:#fff;
+  text-decoration:none;
+}
+
+.menu-number{
+  color:#f5d000;
+  font-size:13px;
+  font-weight:900;
+  width:24px;
+}
+
+.menu-link strong{
+  display:block;
+  font-size:16px;
+  letter-spacing:1px;
+}
+
+.menu-link small{
+  display:block;
+  color:#999;
+  font-size:11px;
+  margin-top:4px;
+}
+
+/* 工事中画面 */
+
+.coming-overlay{
+  position:fixed;
+  inset:0;
+  z-index:3000;
+  background:rgba(0,0,0,.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+.coming-overlay.active{
+  display:flex;
+}
+
+.coming-box{
+  width:100%;
+  max-width:380px;
+  background:#111;
+  color:#fff;
+  border:1px solid #444;
+  border-top:4px solid #f5d000;
+  border-radius:14px;
+  padding:30px 20px;
+  text-align:center;
+}
+
+.coming-label{
+  display:inline-block;
+  color:#111;
+  background:#f5d000;
+  padding:5px 12px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.coming-title{
+  color:#f5d000;
+  font-size:25px;
+  font-weight:900;
+  margin:22px 0 8px;
+}
+
+.coming-message{
+  color:#ccc;
+  font-size:13px;
+  line-height:1.7;
+}
+
+.coming-close{
+  width:100%;
+  margin-top:24px;
+  padding:12px;
+  border:0;
+  border-radius:8px;
+  background:#f5d000;
+  color:#111;
+  font-weight:900;
+  cursor:pointer;
+}
+
+body.menu-open{
+  overflow:hidden;
+}
+
 </style>
 </head>
 
