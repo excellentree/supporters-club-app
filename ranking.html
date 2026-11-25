@@ -428,7 +428,7 @@ window.rankingCounts = Object.values(counts)
       list.innerHTML = "<p>集計できる販売データがありません。</p>";
     } else {
       list.innerHTML = window.rankingCounts.map((item, index) => `
-        <div class="ranking-row">
+        <div class="ranking-row rank-${index + 1}">
           <div class="rank-number">
             ${index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1}
           </div>
