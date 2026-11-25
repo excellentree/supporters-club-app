@@ -1585,6 +1585,20 @@ function loadProducts(){
     );
 
   }
+  /* 商品名検索 */
+const searchWord = document
+  .getElementById("productSearch")
+  .value
+  .trim()
+  .toLowerCase();
+
+if(searchWord){
+  data = data.filter(p =>
+    String(p.name || "")
+      .toLowerCase()
+      .includes(searchWord)
+  );
+}
 /* MODEL順に並べる */
 data.sort((a,b)=>{
   const isAll = currentMain === "";
