@@ -2153,6 +2153,12 @@ updateHeaderCartBadge();
 ========================= */
 
 init();
+  document
+  .getElementById("productSearch")
+  .addEventListener("input", function(){
+    currentPage = 1;
+    loadProducts();
+  });
 loadTransferNews();
   /* =========================
    スライドメニュー
