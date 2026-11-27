@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111111">
+<title>NEWS DETAIL｜SUPPORTERS CULB</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  padding:20px;
+  color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,
+  "Hiragino Kaku Gothic ProN",Arial,sans-serif;
+  background:
+    radial-gradient(ellipse at 50% 0%,#34302a 0%,#171717 48%,#080808 100%);
+}
+
+.container{
+  width:100%;
+  max-width:600px;
+  margin:auto;
+}
+
+header{
+  text-align:center;
+  padding:28px 10px 30px;
+}
+
+.logo{
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:3px;
+  color:#c9aa55;
+}
+
+h1{
+  margin:15px 0 5px;
+  font-size:32px;
+  font-weight:1000;
+  letter-spacing:1px;
+}
+
+.subtitle{
+  color:#aaa;
+  font-size:11px;
+  letter-spacing:4px;
+}
+
+.card{
+  padding:24px 20px;
+  background:linear-gradient(145deg,#252525,#151515);
+  border:1px solid #514324;
+  border-radius:18px;
+  box-shadow:0 15px 40px #0008;
+}
+
+.newsDate{
+  color:#aaa;
+  font-size:13px;
+  margin-bottom:18px;
+}
+
+.category{
+  color:#d6b65c;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:1px;
+  margin-bottom:14px;
+}
+
+.newsMessage{
+  font-size:21px;
+  font-weight:900;
+  line-height:1.7;
+  overflow-wrap:anywhere;
+}
+
+.divider{
+  height:1px;
+  background:#514324;
+  margin:24px 0;
+}
+
+.newsDetail{
+  font-size:15px;
+  line-height:2;
+  color:#ddd;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.back{
+  display:block;
+  margin-top:25px;
+  padding:16px;
+  text-align:center;
+  color:#d6b65c;
+  background:#191919;
+  border:1px solid #514324;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:800;
+  text-decoration:none;
+}
+
+.status{
+  text-align:center;
+  color:#aaa;
+  font-size:14px;
+  line-height:1.8;
+  padding:20px 0;
+}
+
+.footer{
+  margin-top:22px;
+  text-align:center;
+  color:#777;
+  font-size:11px;
+}
+
+[hidden]{
+  display:none !important;
+}
+
+@media(max-width:380px){
+  h1{font-size:28px}
+  .card{padding:20px 15px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+  <div class="logo">SUPPORTERS CULB</div>
+  <h1>NEWS DETAIL</h1>
+  <div class="subtitle">LATEST FOOTBALL NEWS</div>
+</header>
+
+<main class="card">
+
+  <div id="loading" class="status">
+    NEWSを読み込んでいます...
+  </div>
+
+  <div id="newsContent" hidden>
+
+    <div class="newsDate" id="newsDate"></div>
+
+    <div class="category" id="newsCategory"></div>
+
+    <div class="newsMessage" id="newsMessage"></div>
+
+    <div class="divider"></div>
+
+    <div class="newsDetail" id="newsDetail"></div>
+
+  </div>
+
+  <div id="errorMessage" class="status" hidden>
+    NEWSを読み込めませんでした。
+  </div>
+
+</main>
+
+<a href="index.html" class="back">
+  ‹ BACK TO HOME
+</a>
+
+<div class="footer">
+  SUPPORTERS CULB © TRANSFER MARKET
+</div>
+
+</div>
+
+<script>
+
+/* =========================
+   Supabase
+========================= */
+
+const SUPABASE_URL =
+  "https://juzrxqrabrvhlwvnvton.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_sI16Q-TYswPw6Qyx6Jx0Xg_kPsaBnvv";
+
+const sb = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+/* =========================
+   カテゴリー
+========================= */
+
+const categories = {
+  new:{
+    emoji:"🚨",
+    title:"NEW SIGNING!!"
+  },
+  transfer:{
+    emoji:"📝",
+    title:"TRANSFER NEWS"
+  },
+  here:{
+    emoji:"✍️",
+    title:"HERE WE GO!!"
+  },
+  return:{
+    emoji:"🔙",
+    title:"RETURNING PLAYER!!"
+  },
+  completed:{
+    emoji:"🏁",
+    title:"TRANSFER COMPLETED!!"
+  }
+};
+
+/* =========================
+   NEWS取得
+========================= */
+
+async function loadNews(){
+
+  const loading =
+    document.getElementById("loading");
+
+  const newsContent =
+    document.getElementById("newsContent");
+
+  const errorMessage =
+    document.getElementById("errorMessage");
+
+  try{
+
+    const {data,error} = await sb
+      .from("transfer_news")
+      .select("news_date,category,message,detail")
+      .eq("id",1)
+      .maybeSingle();
+
+    if(error) throw error;
+
+    if(!data){
+      loading.textContent =
+        "現在、公開されているNEWSはありません。";
+      return;
+    }
+
+    const category =
+      categories[data.category] || {
+        emoji:"📰",
+        title:"TRANSFER NEWS"
+      };
+
+    document.getElementById("newsDate")
+      .textContent = data.news_date || "";
+
+    document.getElementById("newsCategory")
+      .textContent =
+        `${category.emoji} ${category.title}`;
+
+    document.getElementById("newsMessage")
+      .textContent = data.message || "";
+
+    document.getElementById("newsDetail")
+      .textContent =
+        data.detail || "詳細情報はありません。";
+
+    loading.hidden = true;
+    newsContent.hidden = false;
+
+  }catch(error){
+
+    console.error("NEWS取得エラー:",error);
+
+    loading.hidden = true;
+    errorMessage.hidden = false;
+
+  }
+
+}
+
+loadNews();
+
+</script>
+
+</body>
+</html>
