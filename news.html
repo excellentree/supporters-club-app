@@ -546,17 +546,22 @@ saveButton.addEventListener("click",async()=>{
       throw new Error("管理者権限が確認できません。");
     }
 
-    const {error} = await sb
-      .from("transfer_news")
-      .upsert({
-        id:1,
-        news_date:date,
-        category:selectedCategory,
-        message:message,
-        updated_at:new Date().toISOString()
-      },{
-        onConflict:"id"
-      });
+    
+const detail = newsDetail.value.trim();
+
+const {error} = await sb
+  .from("transfer_news")
+  .upsert({
+    id:1,
+    news_date:date,
+    category:selectedCategory,
+    message:message,
+    detail:detail,
+    updated_at:new Date().toISOString()
+  },{
+    onConflict:"id"
+  });
+
 
     if(error) throw error;
 
