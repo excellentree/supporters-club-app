@@ -319,149 +319,141 @@ function escapeRankingHtml(value) {
   div.textContent = value ?? "";
   return div.innerHTML;
 }
+/* ===== 公開ランキング読み込み ===== */
 async function loadRankingSales() {
+  const list = document.getElementById("rankingList");
+
+  if (!list) return;
+
+  list.innerHTML = '<p id="rankingStatus">ランキングを読み込み中...</p>';
+
   const status = document.getElementById("rankingStatus");
 
-  if (status) {
-    status.textContent = "売上データを読み込み中...";
-  }
-
   try {
-    const { data, error } = await db
-      .from("sales")
-      .select(
-        "sale_date, product_id, product_name, category, item_type, region, country_or_club, quantity, is_set, set_items"
+    // 選択中の商品タイプ
+    const productType =
+      document.querySelector("#productType button.active")
+        ?.dataset.value || "all";
+
+    // 選択中のカテゴリー
+    const teamType =
+      document.querySelector("#teamType button.active")
+        ?.dataset.value || "クラブ";
+
+    // 選択中の期間
+    const period =
+      document.querySelector("#periodType button.active")
+        ?.dataset.value || "month";
+
+    // 今日の日付をローカル時間で取得
+    const now = new Date();
+
+    function formatDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+
+      return `${year}-${month}-${day}`;
+    }
+
+    let startDate;
+    let endDate = formatDate(now);
+
+    // 集計期間を決める
+    if (period === "week") {
+      const weekStart = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
       );
 
-    if (error) throw error;
+      // 月曜日始まり
+      weekStart.setDate(
+        weekStart.getDate() - ((weekStart.getDay() + 6) % 7)
+      );
 
-    const counts = {};
+      startDate = formatDate(weekStart);
 
-    function addItem(item, date, quantity = 1) {
-      const productId = item.productId || item.product_id || "";
-      const name = item.productName || item.product_name || "";
-      const category = item.category || "";
-const selectedProductType =
-  document.querySelector('#productType button.active')?.dataset.value || "all";
+    } else if (period === "month") {
+      const monthStart = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        1
+      );
 
-if (selectedProductType === "soccerwe" && category !== "soccerwe") return;
+      startDate = formatDate(monthStart);
 
-const itemType = item.itemType || item.item_type || "";
-const region = item.region || "";
-const country = item.countryOrClub || item.country_or_club || "";
+    } else if (period === "year") {
+      const yearStart = new Date(
+        now.getFullYear(),
+        0,
+        1
+      );
 
-      if (!name || (!productId && !country)) return;
+      startDate = formatDate(yearStart);
 
-      const key = `${itemType}|${country}`;
+    } else if (period === "total") {
+      // 全期間
+      startDate = "1900-01-01";
 
-if (!counts[key]) {
-  counts[key] = {
-    name: country,
-    productId: "",
-    category,
-    itemType,
-    region,
-    country,
-    count: 0
-  };
-}
+    } else if (period === "custom") {
+      startDate = document.getElementById("startDate").value;
+      endDate = document.getElementById("endDate").value;
 
-      counts[key].count += Math.max(1, Number(quantity) || 1);
-    }
-
-    const period = document.querySelector('#periodType button.active')?.dataset.value || "month";
-const now = new Date();
-const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-
-const filteredSales = data.filter(sale => {
-  if (period === "total") return true;
-  if (!sale.sale_date) return false;
-
-  const date = new Date(sale.sale_date);
-
-  if (period === "day") return date >= start && date < end;
-
-  if (period === "week") {
-    const weekStart = new Date(start);
-    weekStart.setDate(weekStart.getDate() - ((weekStart.getDay() + 6) % 7));
-    return date >= weekStart && date < end;
-  }
-
-  if (period === "month") {
-    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    return date >= monthStart && date < end;
-  }
-
-  if (period === "year") {
-    const yearStart = new Date(now.getFullYear(), 0, 1);
-    return date >= yearStart && date < end;
-  }
-
-  if (period === "custom") {
-    const startDate = document.getElementById("startDate").value;
-    const endDate = document.getElementById("endDate").value;
-    if (!startDate || !endDate || startDate > endDate) return false;
-    return sale.sale_date >= startDate && sale.sale_date < endDate + "T23:59:59.999";
-  }
-
-  return true;
-});
-
-filteredSales.forEach(sale => {
-      if (sale.is_set && Array.isArray(sale.set_items)) {
-        sale.set_items.forEach(item => {
-          addItem(item, sale.sale_date, item.quantity || 1);
-        });
-      } else {
-        addItem({
-          productId: sale.product_id,
-          productName: sale.product_name,
-          category: sale.category,
-          itemType: sale.item_type,
-          region: sale.region,
-          countryOrClub: sale.country_or_club
-        }, sale.sale_date, sale.quantity);
+      if (!startDate || !endDate || startDate > endDate) {
+        list.innerHTML = "<p>開始日と終了日を正しく指定してください。</p>";
+        return;
       }
-    });
-
-    const selectedTeamType = document.querySelector(
-  '#teamType button.active'
-)?.dataset.value || "クラブ";
-
-window.rankingCounts = Object.values(counts)
-  .filter(item => item.itemType === selectedTeamType)
-  .sort((a, b) => b.count - a.count);
-
-    if (status) {
-      status.textContent =
-        `売上データ読み込み完了：${data.length}件`;
     }
 
-    console.log("販売個数ランキング:", window.rankingCounts);
+    // Supabaseの公開集計関数からランキングを取得
+    const { data, error } = await db.rpc(
+      "get_public_team_ranking",
+      {
+        p_start: startDate,
+        p_end: endDate,
+        p_product_type: productType,
+        p_team_type: teamType
+      }
+    );
 
-    const list = document.getElementById("rankingList");
+    if (error) {
+      throw error;
+    }
 
-    if (window.rankingCounts.length === 0) {
+    const ranking = data || [];
+
+    if (ranking.length === 0) {
       list.innerHTML = "<p>集計できる販売データがありません。</p>";
-    } else {
-      list.innerHTML = window.rankingCounts.map((item, index) => `
-        <div class="ranking-row rank-${index + 1}">
-          <div class="rank-number">
-            ${index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1}
-          </div>
-          <div class="team-name">${escapeRankingHtml(item.name)}</div>
-          <div class="sales-count">${item.count}pt</div>
-        </div>
-      `).join("");
+      return;
     }
+
+    // ランキング表示
+    list.innerHTML = ranking.map((item, index) => `
+      <div class="ranking-row rank-${index + 1}">
+        <div class="rank-number">
+          ${
+            index === 0
+              ? "🥇"
+              : index === 1
+              ? "🥈"
+              : index === 2
+              ? "🥉"
+              : index + 1
+          }
+        </div>
+
+        <div class="team-name">
+          ${escapeRankingHtml(item.team_name)}
+        </div>
+      </div>
+    `).join("");
 
   } catch (error) {
-    console.error("ランキング読み込みエラー:", error);
+    console.error("公開ランキング読み込みエラー:", error);
 
-    if (status) {
-      status.textContent = "売上データを読み込めませんでした";
-    }
+    list.innerHTML =
+      "<p>ランキングを読み込めませんでした。</p>";
   }
 }
 // 公開ランキングを読み込む
