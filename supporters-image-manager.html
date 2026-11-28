@@ -1,123 +1,619 @@
-<!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SUPPORTERS CULB 画像管理</title>
-<style>
-body{margin:0;padding:16px;background:#111;color:#eee;font-family:Arial,sans-serif}main{max-width:850px;margin:auto}section{background:#1d1d1d;border:1px solid #444;border-radius:12px;padding:16px;margin:14px 0}h1{font-size:23px}h2{font-size:17px}label{display:block;margin:12px 0 6px;color:#aaa}input,select,button{font:inherit;padding:11px;border-radius:8px}input,select{width:100%;box-sizing:border-box;background:#111;color:#eee;border:1px solid #555}button{background:#c9a96e;border:0;font-weight:bold;cursor:pointer;margin-top:10px}button:disabled{opacity:.5}.note,.status{font-size:13px;color:#aaa;white-space:pre-wrap;line-height:1.6;margin-top:10px}.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}.card{border:1px solid #444;border-radius:8px;overflow:hidden}.card img{width:100%;aspect-ratio:1;object-fit:cover}.card div{padding:8px;font-size:12px;overflow-wrap:anywhere}.card a{color:#c9a96e;display:block;margin:6px 0}.card button{width:100%;padding:7px}
-</style></head><body><main>
-<h1>SUPPORTERS CULB</h1><p class="note">画像管理 / Cloudflare R2</p>
-<section><h2>① 接続</h2><label>画像アップロードキー（UPLOAD_SECRET）</label><input id="secret" type="password" autocomplete="off" placeholder="Workerのアップロードキー">
-<p class="note">キーはページに保存されません。</p><button id="connect">接続してフォルダを読み込む</button><div id="connectStatus" class="status"></div></section>
-<section><h2>② フォルダ</h2><label>保存先</label><select id="folders" disabled><option>接続してください</option></select>
-<label>新しいフォルダ名</label><input id="newFolder" placeholder="例：goalkeeper"><button id="makeFolder" disabled>フォルダ作成</button><div class="note">英数字・ハイフン・アンダースコアのみ使用できます。</div><div id="folderStatus" class="status"></div></section>
-<section><h2>③ 画像アップロード（複数選択可）</h2><input id="files" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple disabled><div id="selected" class="note"></div><button id="upload" disabled>選択した画像をアップロード</button><div id="uploadStatus" class="status"></div></section>
-<section><h2>④ 保存済み画像 <button id="refresh" disabled>更新</button></h2><div id="listStatus" class="status"></div><div id="gallery" class="gallery"></div></section>
-</main>
-<script>
-const API="https://supporters-image-api.excellentree-55.workers.dev";
-const $=id=>document.getElementById(id);
-let connected=false;
- let uploadedImages = [];
-function headers(extra={}){return {"X-Upload-Key":$("secret").value.trim(),...extra};}
-function status(id,msg){$(id).textContent=msg;}
-async function json(res){let t=await res.text(),d;try{d=JSON.parse(t)}catch{throw Error(t||"応答エラー")}if(!res.ok)throw Error(d.error||d.message||t);return d;}
-function prefix(){return $("folders").value||"";}
-function safeName(name){return name.replace(/\.[^.]+$/,"").normalize("NFKD").replace(/[^A-Za-z0-9_-]+/g,"-").replace(/^-+|-+$/g,"").slice(0,45)||"image";}
-function ext(file){return {"image/jpeg":"jpg","image/png":"png","image/webp":"webp","image/gif":"gif"}[file.type]||"";}
-async function loadFolders(){
- const d=await json(await fetch(API+"/list",{headers:headers()}));
- $("folders").innerHTML="";
- const root=document.createElement("option");root.value="";root.textContent="ルート（既存画像）";$("folders").append(root);
- (d.folders||[]).forEach(p=>{let o=document.createElement("option");o.value=p;o.textContent=p.replace(/\/$/,"");$("folders").append(o)});
- ["folders","makeFolder","files","upload","refresh"].forEach(id=>$(id).disabled=false);
- connected = true;
-$("gallery").innerHTML = "";
-status("listStatus", "アップロードした画像だけ表示します");
-}
-$("connect").onclick=async()=>{if(!$("secret").value.trim()){status("connectStatus","キーを入力してください");return}try{status("connectStatus","接続中...");await loadFolders();status("connectStatus","接続成功！")}catch(e){status("connectStatus","接続失敗："+e.message)}};
-$("makeFolder").onclick=async()=>{let name=$("newFolder").value.trim();if(!/^[A-Za-z0-9_-]+$/.test(name)){status("folderStatus","英数字・ハイフン・アンダースコアで入力してください");return}try{let d=await json(await fetch(API+"/folder",{method:"POST",headers:headers({"Content-Type":"application/json"}),body:JSON.stringify({name})}));$("newFolder")
-$("folders").value=d.folder;await loadImages();status("folderStatus","作成しました："+d.folder)}catch(e){status("folderStatus","失敗："+e.message)}};
-$("folders").onchange = () => {
-  $("gallery").innerHTML = "";
-  uploadedImages = [];
-  status("listStatus", "選択したフォルダに切り替えました");
-};
- $("refresh").onclick = renderUploadedImages;
-$("files").onchange=()=>{let fs=[...$("files").files];status("selected",fs.length?`${fs.length}枚選択`:"")};
-$("upload").onclick=async()=>{let fs=[...$("files").files];if(!fs.length){status("uploadStatus","画像を選択してください");return}let ok=0,errors=[];$("upload").disabled=true;
- for(let i=0;i<fs.length;i++){let f=fs[i],e=ext(f);if(!e||!f.size||f.size>10*1024*1024){errors.push(f.name+"：形式またはサイズが不適切");continue}
- status("uploadStatus",`アップロード中 ${i+1}/${fs.length}：${f.name}`);
- let key=prefix()+Date.now()+"-"+crypto.randomUUID()+"-"+safeName(f.name)+"."+e;
- try{
-  const result = await json(await fetch(API+"/upload",{
-    method:"POST",
-    headers:headers({
-      "Content-Type":f.type,
-      "X-Image-Key":key
-    }),
-    body:f
-  }));
 
-  uploadedImages.push({
-    key: result.key,
-    url: result.url
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>SUPPORTERS CULB 画像管理</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 16px;
+  background: #111;
+  color: #eee;
+  font-family: Arial, sans-serif;
+}
+
+main {
+  max-width: 850px;
+  margin: auto;
+}
+
+section {
+  background: #1d1d1d;
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 14px 0;
+}
+
+h1 {
+  font-size: 23px;
+}
+
+h2 {
+  font-size: 17px;
+}
+
+label {
+  display: block;
+  margin: 12px 0 6px;
+  color: #aaa;
+}
+
+input,
+select,
+button {
+  font: inherit;
+  padding: 11px;
+  border-radius: 8px;
+}
+
+input,
+select {
+  width: 100%;
+  background: #111;
+  color: #eee;
+  border: 1px solid #555;
+}
+
+button {
+  background: #c9a96e;
+  color: #1685ff;
+  border: 0;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.note,
+.status {
+  font-size: 13px;
+  color: #aaa;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+}
+
+.card {
+  border: 1px solid #444;
+  border-radius: 8px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.card img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+.card div {
+  padding: 8px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.card a {
+  color: #c9a96e;
+  display: block;
+  margin: 6px 0;
+}
+
+.card button {
+  width: 100%;
+  padding: 7px;
+}
+</style>
+</head>
+
+<body>
+<main>
+
+<h1>SUPPORTERS CULB</h1>
+<p class="note">画像管理 / Cloudflare R2</p>
+
+<!-- ① 接続 -->
+<section>
+  <h2>① 接続</h2>
+
+  <label>画像アップロードキー（UPLOAD_SECRET）</label>
+
+  <input
+    id="secret"
+    type="password"
+    autocomplete="off"
+    placeholder="Workerのアップロードキー"
+  >
+
+  <p class="note">
+    キーはページに保存されません。
+  </p>
+
+  <button id="connect">
+    接続してフォルダを読み込む
+  </button>
+
+  <div id="connectStatus" class="status"></div>
+</section>
+
+<!-- ② フォルダ -->
+<section>
+  <h2>② フォルダ</h2>
+
+  <label>保存先</label>
+
+  <select id="folders" disabled>
+    <option value="">接続してください</option>
+  </select>
+
+  <label>新しいフォルダ名</label>
+
+  <input
+    id="newFolder"
+    placeholder="例：goalkeeper"
+  >
+
+  <button id="makeFolder" disabled>
+    フォルダ作成
+  </button>
+
+  <div class="note">
+    英数字・ハイフン・アンダースコアのみ使用できます。
+  </div>
+
+  <div id="folderStatus" class="status"></div>
+</section>
+
+<!-- ③ アップロード -->
+<section>
+  <h2>③ 画像アップロード（複数選択可）</h2>
+
+  <input
+    id="files"
+    type="file"
+    accept="image/jpeg,image/png,image/webp,image/gif"
+    multiple
+    disabled
+  >
+
+  <div id="selected" class="note"></div>
+
+  <button id="upload" disabled>
+    選択した画像をアップロード
+  </button>
+
+  <div id="uploadStatus" class="status"></div>
+</section>
+
+<!-- ④ 今回アップロードした画像 -->
+<section>
+  <h2>
+    ④ 今回アップロードした画像
+    <button id="refresh" disabled>更新</button>
+  </h2>
+
+  <div id="listStatus" class="status">
+    接続すると、アップロードした画像だけ表示されます。
+  </div>
+
+  <div id="gallery" class="gallery"></div>
+</section>
+
+</main>
+
+<script>
+const API =
+  "https://supporters-image-api.excellentree-55.workers.dev";
+
+const $ = id => document.getElementById(id);
+
+let connected = false;
+
+// 今回アップロードした画像だけを保存する
+let uploadedImages = [];
+
+// APIリクエスト用ヘッダー
+function headers(extra = {}) {
+  return {
+    "X-Upload-Key": $("secret").value.trim(),
+    ...extra
+  };
+}
+
+// ステータス表示
+function status(id, message) {
+  $(id).textContent = message;
+}
+
+// JSONレスポンス処理
+async function json(res) {
+  const text = await res.text();
+
+  let data;
+
+  try {
+    data = JSON.parse(text);
+  } catch {
+    throw new Error(text || "応答エラー");
+  }
+
+  if (!res.ok) {
+    throw new Error(
+      data.error || data.message || text
+    );
+  }
+
+  return data;
+}
+
+// 選択中のフォルダ
+function prefix() {
+  return $("folders").value || "";
+}
+
+// ファイル名を安全な文字にする
+function safeName(name) {
+  return name
+    .replace(/\.[^.]+$/, "")
+    .normalize("NFKD")
+    .replace(/[^A-Za-z0-9_-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 45) || "image";
+}
+
+// 拡張子
+function ext(file) {
+  return {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/webp": "webp",
+    "image/gif": "gif"
+  }[file.type] || "";
+}
+
+// フォルダ一覧を読み込む
+async function loadFolders(selectFolder = null) {
+  const data = await json(
+    await fetch(API + "/list", {
+      headers: headers()
+    })
+  );
+
+  const folders = $("folders");
+
+  folders.innerHTML = "";
+
+  // ルート
+  const root = document.createElement("option");
+
+  root.value = "";
+  root.textContent = "ルート（既存画像）";
+
+  folders.append(root);
+
+  // 既存フォルダ
+  (data.folders || []).forEach(folder => {
+    const option = document.createElement("option");
+
+    option.value = folder;
+    option.textContent = folder.replace(/\/$/, "");
+
+    folders.append(option);
   });
 
-  ok++;
+  // フォルダ選択
+  if (selectFolder !== null) {
+    folders.value = selectFolder;
+  }
 
-}catch(err){
-  errors.push(f.name+"："+err.message);
+  // 操作を有効にする
+  [
+    "folders",
+    "makeFolder",
+    "files",
+    "upload",
+    "refresh"
+  ].forEach(id => {
+    $(id).disabled = false;
+  });
+
+  connected = true;
+
+  // 過去の画像は読み込まない
+  uploadedImages = [];
+  $("gallery").innerHTML = "";
+
+  status(
+    "listStatus",
+    "アップロードした画像だけ表示します"
+  );
 }
-} // ← forループを閉じる
- $("files").value = "";
-status("selected", "");
 
-renderUploadedImages();
+// 接続ボタン
+$("connect").onclick = async () => {
+  if (!$("secret").value.trim()) {
+    status(
+      "connectStatus",
+      "キーを入力してください"
+    );
+    return;
+  }
 
-status(
-  "uploadStatus",
-  `${ok}/${fs.length}枚アップロード成功` +
-  (errors.length ? "\n" + errors.join("\n") : "")
-);
+  $("connect").disabled = true;
 
-$("upload").disabled = false;
+  try {
+    status("connectStatus", "接続中...");
+
+    await loadFolders();
+
+    status("connectStatus", "接続成功！");
+  } catch (error) {
+    status(
+      "connectStatus",
+      "接続失敗：" + error.message
+    );
+  } finally {
+    $("connect").disabled = false;
+  }
 };
 
-function renderUploadedImages(){
+// フォルダ作成
+$("makeFolder").onclick = async () => {
+  const name = $("newFolder").value.trim();
+
+  if (!/^[A-Za-z0-9_-]+$/.test(name)) {
+    status(
+      "folderStatus",
+      "英数字・ハイフン・アンダースコアで入力してください"
+    );
+    return;
+  }
+
+  $("makeFolder").disabled = true;
+
+  try {
+    const data = await json(
+      await fetch(API + "/folder", {
+        method: "POST",
+        headers: headers({
+          "Content-Type": "application/json"
+        }),
+        body: JSON.stringify({
+          name: name
+        })
+      })
+    );
+
+    $("newFolder").value = "";
+
+    // 作成したフォルダを選択して読み込み
+    await loadFolders(data.folder);
+
+    status(
+      "folderStatus",
+      "作成しました：" + data.folder
+    );
+  } catch (error) {
+    status(
+      "folderStatus",
+      "失敗：" + error.message
+    );
+  } finally {
+    $("makeFolder").disabled = !connected;
+  }
+};
+
+// フォルダ切り替え
+$("folders").onchange = () => {
+  uploadedImages = [];
+
+  $("gallery").innerHTML = "";
+
+  status(
+    "listStatus",
+    "選択したフォルダに切り替えました"
+  );
+};
+
+// 更新ボタン
+// Cloudflareから過去画像を取得せず、今回の画像だけ再表示
+$("refresh").onclick = renderUploadedImages;
+
+// 選択したファイル数
+$("files").onchange = () => {
+  const files = [...$("files").files];
+
+  status(
+    "selected",
+    files.length
+      ? `${files.length}枚選択`
+      : ""
+  );
+};
+
+// 画像アップロード
+$("upload").onclick = async () => {
+  const files = [...$("files").files];
+
+  if (!files.length) {
+    status(
+      "uploadStatus",
+      "画像を選択してください"
+    );
+    return;
+  }
+
+  let success = 0;
+  const errors = [];
+
+  $("upload").disabled = true;
+  $("files").disabled = true;
+  $("folders").disabled = true;
+
+  try {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const extension = ext(file);
+
+      // ファイルチェック
+      if (
+        !extension ||
+        !file.size ||
+        file.size > 10 * 1024 * 1024
+      ) {
+        errors.push(
+          file.name + "：形式またはサイズが不適切"
+        );
+        continue;
+      }
+
+      status(
+        "uploadStatus",
+        `アップロード中 ${i + 1}/${files.length}：${file.name}`
+      );
+
+      // 保存するファイル名
+      const key =
+        prefix() +
+        Date.now() +
+        "-" +
+        crypto.randomUUID() +
+        "-" +
+        safeName(file.name) +
+        "." +
+        extension;
+
+      try {
+        const result = await json(
+          await fetch(API + "/upload", {
+            method: "POST",
+            headers: headers({
+              "Content-Type": file.type,
+              "X-Image-Key": key
+            }),
+            body: file
+          })
+        );
+
+        if (!result.url) {
+          throw new Error(
+            "Workerから画像URLが返されませんでした"
+          );
+        }
+
+        // 今回アップロードした画像だけ保存
+        uploadedImages.push({
+          key: result.key || key,
+          url: result.url
+        });
+
+        success++;
+      } catch (error) {
+        errors.push(
+          file.name + "：" + error.message
+        );
+      }
+    }
+
+    // ファイル選択をリセット
+    $("files").value = "";
+
+    status("selected", "");
+
+    // 今回アップロードした画像だけ表示
+    renderUploadedImages();
+
+    status(
+      "uploadStatus",
+      `${success}/${files.length}枚アップロード成功` +
+      (
+        errors.length
+          ? "\n" + errors.join("\n")
+          : ""
+      )
+    );
+  } finally {
+    $("upload").disabled = false;
+    $("files").disabled = false;
+    $("folders").disabled = false;
+  }
+};
+
+// 今回アップロードした画像だけ表示
+function renderUploadedImages() {
   const gallery = $("gallery");
+
   gallery.innerHTML = "";
 
-  uploadedImages.forEach(o => {
+  uploadedImages.forEach(image => {
     const card = document.createElement("article");
+
     card.className = "card";
 
+    // サムネイル
     const img = document.createElement("img");
-    img.src = o.url;
-    img.alt = o.key;
+
+    img.src = image.url;
+    img.alt = image.key;
     img.loading = "lazy";
 
+    // ファイル名
     const box = document.createElement("div");
-    box.textContent = o.key.split("/").pop();
 
-    const a = document.createElement("a");
-    a.href = o.url;
-    a.target = "_blank";
-    a.rel = "noopener";
-    a.textContent = "画像を開く";
+    box.textContent =
+      image.key.split("/").pop();
 
-    const b = document.createElement("button");
-    b.textContent = "URLをコピー";
+    // 画像を開くリンク
+    const link = document.createElement("a");
 
-    b.onclick = async () => {
-      try{
-        await navigator.clipboard.writeText(o.url);
-        b.textContent = "コピーしました";
-      }catch{
-        prompt("画像URL", o.url);
+    link.href = image.url;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = "画像を開く";
+
+    // URLコピー
+    const button = document.createElement("button");
+
+    button.textContent = "URLをコピー";
+
+    button.onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(
+          image.url
+        );
+
+        button.textContent = "コピーしました";
+      } catch {
+        prompt(
+          "画像URL",
+          image.url
+        );
       }
     };
 
-    box.append(a, b);
+    box.append(link, button);
+
     card.append(img, box);
+
     gallery.append(card);
   });
 
@@ -126,5 +622,7 @@ function renderUploadedImages(){
     `${uploadedImages.length}枚（今回アップロードした画像）`
   );
 }
+</script>
 
-</script></body></html>
+</body>
+</html>
