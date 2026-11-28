@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SUPPORTERS CULB 画像管理</title>
+<style>
+body{margin:0;padding:16px;background:#111;color:#eee;font-family:Arial,sans-serif}main{max-width:850px;margin:auto}section{background:#1d1d1d;border:1px solid #444;border-radius:12px;padding:16px;margin:14px 0}h1{font-size:23px}h2{font-size:17px}label{display:block;margin:12px 0 6px;color:#aaa}input,select,button{font:inherit;padding:11px;border-radius:8px}input,select{width:100%;box-sizing:border-box;background:#111;color:#eee;border:1px solid #555}button{background:#c9a96e;border:0;font-weight:bold;cursor:pointer;margin-top:10px}button:disabled{opacity:.5}.note,.status{font-size:13px;color:#aaa;white-space:pre-wrap;line-height:1.6;margin-top:10px}.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}.card{border:1px solid #444;border-radius:8px;overflow:hidden}.card img{width:100%;aspect-ratio:1;object-fit:cover}.card div{padding:8px;font-size:12px;overflow-wrap:anywhere}.card a{color:#c9a96e;display:block;margin:6px 0}.card button{width:100%;padding:7px}
+</style></head><body><main>
+<h1>SUPPORTERS CULB</h1><p class="note">画像管理 / Cloudflare R2</p>
+<section><h2>① 接続</h2><label>画像アップロードキー（UPLOAD_SECRET）</label><input id="secret" type="password" autocomplete="off" placeholder="Workerのアップロードキー">
+<p class="note">キーはページに保存されません。</p><button id="connect">接続してフォルダを読み込む</button><div id="connectStatus" class="status"></div></section>
+<section><h2>② フォルダ</h2><label>保存先</label><select id="folders" disabled><option>接続してください</option></select>
+<label>新しいフォルダ名</label><input id="newFolder" placeholder="例：goalkeeper"><button id="makeFolder" disabled>フォルダ作成</button><div class="note">英数字・ハイフン・アンダースコアのみ使用できます。</div><div id="folderStatus" class="status"></div></section>
+<section><h2>③ 画像アップロード（複数選択可）</h2><input id="files" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple disabled><div id="selected" class="note"></div><button id="upload" disabled>選択した画像をアップロード</button><div id="uploadStatus" class="status"></div></section>
+<section><h2>④ 保存済み画像 <button id="refresh" disabled>更新</button></h2><div id="listStatus" class="status"></div><div id="gallery" class="gallery"></div></section>
+</main>
+<script>
+const API="https://supporters-image-api.excellentree-55.workers.dev";
+const $=id=>document.getElementById(id);
+let connected=false;
+function headers(extra={}){return {"X-Upload-Key":$("secret").value.trim(),...extra};}
+function status(id,msg){$(id).textContent=msg;}
+async function json(res){let t=await res.text(),d;try{d=JSON.parse(t)}catch{throw Error(t||"応答エラー")}if(!res.ok)throw Error(d.error||d.message||t);return d;}
+function prefix(){return $("folders").value||"";}
+function safeName(name){return name.replace(/\.[^.]+$/,"").normalize("NFKD").replace(/[^A-Za-z0-9_-]+/g,"-").replace(/^-+|-+$/g,"").slice(0,45)||"image";}
+function ext(file){return {"image/jpeg":"jpg","image/png":"png","image/webp":"webp","image/gif":"gif"}[file.type]||"";}
+async function loadFolders(){
+ const d=await json(await fetch(API+"/list",{headers:headers()}));
+ $("folders").innerHTML="";
+ const root=document.createElement("option");root.value="";root.textContent="ルート（既存画像）";$("folders").append(root);
+ (d.folders||[]).forEach(p=>{let o=document.createElement("option");o.value=p;o.textContent=p.replace(/\/$/,"");$("folders").append(o)});
+ ["folders","makeFolder","files","upload","refresh"].forEach(id=>$(id).disabled=false);
+ connected=true;await loadImages();
+}
+$("connect").onclick=async()=>{if(!$("secret").value.trim()){status("connectStatus","キーを入力してください");return}try{status("connectStatus","接続中...");await loadFolders();status("connectStatus","接続成功！")}catch(e){status("connectStatus","接続失敗："+e.message)}};
+$("makeFolder").onclick=async()=>{let name=$("newFolder").value.trim();if(!/^[A-Za-z0-9_-]+$/.test(name)){status("folderStatus","英数字・ハイフン・アンダースコアで入力してください");return}try{let d=await json(await fetch(API+"/folder",{method:"POST",headers:headers({"Content-Type":"application/json"}),body:JSON.stringify({name})}));$("newFolder").value="";await loadFolders();$("folders").value=d.folder;await loadImages();status("folderStatus","作成しました："+d.folder)}catch(e){status("folderStatus","失敗："+e.message)}};
+$("folders").onchange=loadImages;$("refresh").onclick=loadImages;
+$("files").onchange=()=>{let fs=[...$("files").files];status("selected",fs.length?`${fs.length}枚選択`:"")};
+$("upload").onclick=async()=>{let fs=[...$("files").files];if(!fs.length){status("uploadStatus","画像を選択してください");return}let ok=0,errors=[];$("upload").disabled=true;
+ for(let i=0;i<fs.length;i++){let f=fs[i],e=ext(f);if(!e||!f.size||f.size>10*1024*1024){errors.push(f.name+"：形式またはサイズが不適切");continue}
+ status("uploadStatus",`アップロード中 ${i+1}/${fs.length}：${f.name}`);
+ let key=prefix()+Date.now()+"-"+crypto.randomUUID()+"-"+safeName(f.name)+"."+e;
+ try{await json(await fetch(API+"/upload",{method:"POST",headers:headers({"Content-Type":f.type,"X-Image-Key":key}),body:f}));ok++}catch(err){errors.push(f.name+"："+err.message)}
+ }
+ $("files").value="";status("selected","");await loadImages();status("uploadStatus",`${ok}/${fs.length}枚アップロード成功`+(errors.length?"\n"+errors.join("\n"):""));$("upload").disabled=false;
+};
+async function loadImages(){if(!connected)return;status("listStatus","読み込み中...");$("gallery").innerHTML="";
+ try{let d=await json(await fetch(API+"/list?prefix="+encodeURIComponent(prefix()),{headers:headers()}));
+ (d.objects||[]).forEach(o=>{let card=document.createElement("article");card.className="card";let img=document.createElement("img");img.src=o.url;img.alt=o.key;img.loading="lazy";let box=document.createElement("div");box.textContent=o.key.split("/").pop();let a=document.createElement("a");a.href=o.url;a.target="_blank";a.rel="noopener";a.textContent="画像を開く";let b=document.createElement("button");b.textContent="URLをコピー";b.onclick=async()=>{try{await navigator.clipboard.writeText(o.url);b.textContent="コピーしました"}catch{prompt("画像URL",o.url)}};box.append(a,b);card.append(img,box);$("gallery").append(card)});
+ status("listStatus",`${d.objects.length}枚の画像`+(d.truncated?"（1000件まで表示）":""));
+ }catch(e){status("listStatus","一覧取得失敗："+e.message)}
+}
+</script></body></html>
