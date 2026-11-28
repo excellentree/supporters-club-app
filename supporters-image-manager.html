@@ -28,7 +28,8 @@ async function loadFolders(){
  const root=document.createElement("option");root.value="";root.textContent="ルート（既存画像）";$("folders").append(root);
  (d.folders||[]).forEach(p=>{let o=document.createElement("option");o.value=p;o.textContent=p.replace(/\/$/,"");$("folders").append(o)});
  ["folders","makeFolder","files","upload","refresh"].forEach(id=>$(id).disabled=false);
- connected=true;await loadImages();
+ connected=true;
+renderUploadedImages();
 }
 $("connect").onclick=async()=>{if(!$("secret").value.trim()){status("connectStatus","キーを入力してください");return}try{status("connectStatus","接続中...");await loadFolders();status("connectStatus","接続成功！")}catch(e){status("connectStatus","接続失敗："+e.message)}};
 $("makeFolder").onclick=async()=>{let name=$("newFolder").value.trim();if(!/^[A-Za-z0-9_-]+$/.test(name)){status("folderStatus","英数字・ハイフン・アンダースコアで入力してください");return}try{let d=await json(await fetch(API+"/folder",{method:"POST",headers:headers({"Content-Type":"application/json"}),body:JSON.stringify({name})}));$("newFolder").value="";await loadFolders();$("folders").value=d.folder;await loadImages();status("folderStatus","作成しました："+d.folder)}catch(e){status("folderStatus","失敗："+e.message)}};
