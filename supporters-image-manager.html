@@ -35,7 +35,12 @@ status("listStatus", "アップロードした画像だけ表示します");
 }
 $("connect").onclick=async()=>{if(!$("secret").value.trim()){status("connectStatus","キーを入力してください");return}try{status("connectStatus","接続中...");await loadFolders();status("connectStatus","接続成功！")}catch(e){status("connectStatus","接続失敗："+e.message)}};
 $("makeFolder").onclick=async()=>{let name=$("newFolder").value.trim();if(!/^[A-Za-z0-9_-]+$/.test(name)){status("folderStatus","英数字・ハイフン・アンダースコアで入力してください");return}try{let d=await json(await fetch(API+"/folder",{method:"POST",headers:headers({"Content-Type":"application/json"}),body:JSON.stringify({name})}));$("newFolder").value="";await loadFolders();$("folders").value=d.folder;await loadImages();status("folderStatus","作成しました："+d.folder)}catch(e){status("folderStatus","失敗："+e.message)}};
-$("folders").onchange=loadImages;$("refresh").onclick=loadImages;
+$("folders").onchange = () => {
+  $("gallery").innerHTML = "";
+  uploadedImages = [];
+  status("listStatus", "選択したフォルダに切り替えました");
+};
+ $("refresh").onclick = renderUploadedImages;
 $("files").onchange=()=>{let fs=[...$("files").files];status("selected",fs.length?`${fs.length}枚選択`:"")};
 $("upload").onclick=async()=>{let fs=[...$("files").files];if(!fs.length){status("uploadStatus","画像を選択してください");return}let ok=0,errors=[];$("upload").disabled=true;
  for(let i=0;i<fs.length;i++){let f=fs[i],e=ext(f);if(!e||!f.size||f.size>10*1024*1024){errors.push(f.name+"：形式またはサイズが不適切");continue}
@@ -61,6 +66,7 @@ $("upload").onclick=async()=>{let fs=[...$("files").files];if(!fs.length){status
 }catch(err){
   errors.push(f.name+"："+err.message);
 }
+} // ← forループを閉じる
  $("files").value = "";
 status("selected", "");
 
