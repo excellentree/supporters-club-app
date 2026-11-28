@@ -16,6 +16,7 @@ body{margin:0;padding:16px;background:#111;color:#eee;font-family:Arial,sans-ser
 const API="https://supporters-image-api.excellentree-55.workers.dev";
 const $=id=>document.getElementById(id);
 let connected=false;
+ let uploadedImages = [];
 function headers(extra={}){return {"X-Upload-Key":$("secret").value.trim(),...extra};}
 function status(id,msg){$(id).textContent=msg;}
 async function json(res){let t=await res.text(),d;try{d=JSON.parse(t)}catch{throw Error(t||"応答エラー")}if(!res.ok)throw Error(d.error||d.message||t);return d;}
@@ -28,8 +29,9 @@ async function loadFolders(){
  const root=document.createElement("option");root.value="";root.textContent="ルート（既存画像）";$("folders").append(root);
  (d.folders||[]).forEach(p=>{let o=document.createElement("option");o.value=p;o.textContent=p.replace(/\/$/,"");$("folders").append(o)});
  ["folders","makeFolder","files","upload","refresh"].forEach(id=>$(id).disabled=false);
- connected=true;
-renderUploadedImages();
+ connected = true;
+$("gallery").innerHTML = "";
+status("listStatus", "アップロードした画像だけ表示します");
 }
 $("connect").onclick=async()=>{if(!$("secret").value.trim()){status("connectStatus","キーを入力してください");return}try{status("connectStatus","接続中...");await loadFolders();status("connectStatus","接続成功！")}catch(e){status("connectStatus","接続失敗："+e.message)}};
 $("makeFolder").onclick=async()=>{let name=$("newFolder").value.trim();if(!/^[A-Za-z0-9_-]+$/.test(name)){status("folderStatus","英数字・ハイフン・アンダースコアで入力してください");return}try{let d=await json(await fetch(API+"/folder",{method:"POST",headers:headers({"Content-Type":"application/json"}),body:JSON.stringify({name})}));$("newFolder").value="";await loadFolders();$("folders").value=d.folder;await loadImages();status("folderStatus","作成しました："+d.folder)}catch(e){status("folderStatus","失敗："+e.message)}};
@@ -39,8 +41,26 @@ $("upload").onclick=async()=>{let fs=[...$("files").files];if(!fs.length){status
  for(let i=0;i<fs.length;i++){let f=fs[i],e=ext(f);if(!e||!f.size||f.size>10*1024*1024){errors.push(f.name+"：形式またはサイズが不適切");continue}
  status("uploadStatus",`アップロード中 ${i+1}/${fs.length}：${f.name}`);
  let key=prefix()+Date.now()+"-"+crypto.randomUUID()+"-"+safeName(f.name)+"."+e;
- try{await json(await fetch(API+"/upload",{method:"POST",headers:headers({"Content-Type":f.type,"X-Image-Key":key}),body:f}));ok++}catch(err){errors.push(f.name+"："+err.message)}
- }
+ try{
+  const result = await json(await fetch(API+"/upload",{
+    method:"POST",
+    headers:headers({
+      "Content-Type":f.type,
+      "X-Image-Key":key
+    }),
+    body:f
+  }));
+
+  uploadedImages.push({
+    key: result.key,
+    url: result.url
+  });
+
+  ok++;
+
+}catch(err){
+  errors.push(f.name+"："+err.message);
+}
  $("files").value="";status("selected","");await loadImages();status("uploadStatus",`${ok}/${fs.length}枚アップロード成功`+(errors.length?"\n"+errors.join("\n"):""));$("upload").disabled=false;
 };
 async function loadImages(){if(!connected)return;status("listStatus","読み込み中...");$("gallery").innerHTML="";
