@@ -1,7 +1,8 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SUPPORTERS CULB 画像管理</title>
 
@@ -47,7 +48,8 @@ button.danger{background:#6b2929;color:white}
   border:1px solid #444;border-radius:8px;overflow:hidden;min-width:0
 }
 .card img,.featureItem img{
-  width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#111
+  width:100%;aspect-ratio:1;object-fit:cover;
+  display:block;background:#111
 }
 .cardBody{padding:8px;font-size:12px;overflow-wrap:anywhere}
 .card a{color:#c9a96e;display:block;margin:6px 0}
@@ -104,7 +106,11 @@ hr{border:0;border-top:1px solid #444;margin:22px 0}
   <input id="newFolder" placeholder="例：goalkeeper">
 
   <button id="makeFolder" disabled>フォルダ作成</button>
-  <p class="note">英数字・ハイフン・アンダースコアのみ使用できます。</p>
+
+  <p class="note">
+    英数字・ハイフン・アンダースコアのみ使用できます。
+  </p>
+
   <div id="folderStatus" class="status"></div>
 </section>
 
@@ -138,7 +144,7 @@ hr{border:0;border-top:1px solid #444;margin:22px 0}
   <div id="imageGallery" class="gallery"></div>
 </section>
 
-<!-- ⑤ SUPPORTERS ROOM 特集管理 -->
+<!-- ⑤ 特集管理 -->
 <section>
   <h2>⑤ SUPPORTERS ROOM 特集管理</h2>
 
@@ -148,8 +154,13 @@ hr{border:0;border-top:1px solid #444;margin:22px 0}
   </p>
 
   <div class="row">
-    <button id="newFeature" class="secondary" disabled>＋ 新しい特集</button>
-    <button id="reloadFeatures" class="secondary" disabled>特集を再読み込み</button>
+    <button id="newFeature" class="secondary" disabled>
+      ＋ 新しい特集
+    </button>
+
+    <button id="reloadFeatures" class="secondary" disabled>
+      特集を再読み込み
+    </button>
   </div>
 
   <div id="featureListStatus" class="status"></div>
@@ -164,7 +175,10 @@ hr{border:0;border-top:1px solid #444;margin:22px 0}
 
   <label>特集ID</label>
   <input id="featureSlug" placeholder="例：goalkeeper-special">
-  <p class="note">英小文字・数字・ハイフンで入力してください。</p>
+
+  <p class="note">
+    英小文字・数字・ハイフンで入力してください。
+  </p>
 
   <label>紹介文</label>
   <textarea id="featureDescription" placeholder="特集の紹介文"></textarea>
@@ -264,7 +278,7 @@ function slugify(text) {
     .replace(/^-+|-+$/g, "");
 }
 
-// ---------- 接続・フォルダ ----------
+// ---------- 接続 ----------
 
 $("connect").onclick = async () => {
   if (!$("secret").value.trim()) {
@@ -303,10 +317,16 @@ $("connect").onclick = async () => {
     });
 
     [
-      "folders", "featureFolder", "makeFolder",
-      "files", "upload", "refreshImages",
-      "searchImages", "saveFeature",
-      "newFeature", "reloadFeatures"
+      "folders",
+      "featureFolder",
+      "makeFolder",
+      "files",
+      "upload",
+      "refreshImages",
+      "searchImages",
+      "saveFeature",
+      "newFeature",
+      "reloadFeatures"
     ].forEach(id => {
       $(id).disabled = false;
     });
@@ -323,6 +343,8 @@ $("connect").onclick = async () => {
     $("connect").disabled = false;
   }
 };
+
+// ---------- フォルダ作成 ----------
 
 $("makeFolder").onclick = async () => {
   const name = $("newFolder").value.trim();
@@ -348,18 +370,54 @@ $("makeFolder").onclick = async () => {
 
     $("newFolder").value = "";
 
-    $("connect").click();
+    showStatus(
+      "folderStatus",
+      "フォルダを作成しました：" + (data.folder || name)
+    );
 
-    showStatus("folderStatus", "フォルダを作成しました：" + data.folder);
+    await refreshFolderLists();
   } catch (error) {
     showStatus("folderStatus", "作成失敗：" + error.message);
   }
 };
 
+async function refreshFolderLists() {
+  const data = await readJSON(
+    await fetch(API + "/list", {
+      headers: headers()
+    })
+  );
+
+  const folderList = data.folders || [];
+
+  ["folders", "featureFolder"].forEach(id => {
+    const select = $(id);
+    const previous = select.value;
+
+    select.innerHTML = "";
+
+    const root = document.createElement("option");
+    root.value = "";
+    root.textContent = "ルートフォルダ";
+    select.append(root);
+
+    folderList.forEach(folder => {
+      const option = document.createElement("option");
+      option.value = folder;
+      option.textContent = folder.replace(/\/$/, "");
+      select.append(option);
+    });
+
+    if ([...select.options].some(o => o.value === previous)) {
+      select.value = previous;
+    }
+  });
+}
+
 $("folders").onchange = loadImages;
 $("refreshImages").onclick = loadImages;
 
-// ---------- 画像一覧 ----------
+// ---------- 保存済み画像 ----------
 
 async function loadImages() {
   if (!connected) return;
@@ -422,7 +480,7 @@ async function loadImages() {
   }
 }
 
-// ---------- アップロード ----------
+// ---------- 画像アップロード ----------
 
 $("files").onchange = () => {
   const count = $("files").files.length;
@@ -505,7 +563,7 @@ $("upload").onclick = async () => {
   );
 };
 
-// ---------- 特集読み込み ----------
+// ---------- 特集一覧読み込み ----------
 
 async function loadFeatures() {
   showStatus("featureListStatus", "特集を読み込み中...");
@@ -542,7 +600,9 @@ function renderFeatureList() {
   }
 
   [...features]
-    .sort((a, b) => Number(a.order || 0) - Number(b.order || 0))
+    .sort((a, b) =>
+      Number(a.sortOrder || 0) - Number(b.sortOrder || 0)
+    )
     .forEach(feature => {
       const item = document.createElement("article");
       item.className = "featureItem";
@@ -560,7 +620,7 @@ function renderFeatureList() {
       const state = document.createElement("p");
       state.textContent =
         (feature.published ? "公開中" : "非公開") +
-        " / 表示順 " + (feature.order || 1);
+        " / 表示順 " + (feature.sortOrder || 1);
 
       const edit = document.createElement("button");
       edit.className = "secondary";
@@ -602,14 +662,15 @@ function resetForm() {
 
   foundImages = [];
 
-  showStatus("imageSearchStatus", "特集フォルダを選択してください");
+  showStatus(
+    "imageSearchStatus",
+    "特集フォルダを選択してください"
+  );
+
   showStatus("featureSaveStatus", "");
 }
 
-$("newFeature").onclick = () => {
-  resetForm();
-};
-
+$("newFeature").onclick = resetForm;
 $("cancelEdit").onclick = resetForm;
 $("reloadFeatures").onclick = loadFeatures;
 
@@ -619,14 +680,16 @@ $("featureTitle").oninput = () => {
   }
 };
 
-// ---------- 特集画像を探す ----------
+// ---------- 特集画像検索 ----------
 
-$("searchImages").onclick = loadFeatureImages;
+$("searchImages").onclick = () => loadFeatureImages();
 
 $("featureFolder").onchange = () => {
   foundImages = [];
+
   $("coverSelect").innerHTML =
     '<option value="">画像を読み込んでください</option>';
+
   $("coverSelect").disabled = true;
   $("coverPreview").innerHTML = "";
 };
@@ -634,7 +697,10 @@ $("featureFolder").onchange = () => {
 async function loadFeatureImages(selectedKey = "") {
   const folder = $("featureFolder").value;
 
-  showStatus("imageSearchStatus", "フォルダ内の画像を探しています...");
+  showStatus(
+    "imageSearchStatus",
+    "フォルダ内の画像を探しています..."
+  );
 
   try {
     const data = await readJSON(
@@ -660,6 +726,7 @@ async function loadFeatureImages(selectedKey = "") {
         "imageSearchStatus",
         "画像が見つかりません。③で先に画像をアップロードしてください。"
       );
+
       return;
     }
 
@@ -726,7 +793,7 @@ async function editFeature(slug) {
   $("featureSlug").value = feature.slug || "";
   $("featureDescription").value = feature.description || "";
   $("featureFolder").value = feature.folder || "";
-  $("featureOrder").value = feature.order || 1;
+  $("featureOrder").value = feature.sortOrder || 1;
   $("featurePublished").checked = !!feature.published;
 
   await loadFeatureImages(feature.coverKey);
@@ -745,7 +812,7 @@ $("saveFeature").onclick = async () => {
   const description = $("featureDescription").value.trim();
   const folder = $("featureFolder").value;
   const coverKey = $("coverSelect").value;
-  const order = Number($("featureOrder").value || 1);
+  const sortOrder = Number($("featureOrder").value || 1);
   const published = $("featurePublished").checked;
 
   if (!title) {
@@ -754,25 +821,38 @@ $("saveFeature").onclick = async () => {
   }
 
   if (!/^[a-z0-9-]+$/.test(slug)) {
-    showStatus("featureSaveStatus", "特集IDの形式が正しくありません");
+    showStatus(
+      "featureSaveStatus",
+      "特集IDの形式が正しくありません"
+    );
     return;
   }
 
   if (!folder) {
-    showStatus("featureSaveStatus", "特集フォルダを選択してください");
+    showStatus(
+      "featureSaveStatus",
+      "特集フォルダを選択してください"
+    );
     return;
   }
 
   if (!coverKey) {
-    showStatus("featureSaveStatus", "表紙画像を選択してください");
+    showStatus(
+      "featureSaveStatus",
+      "表紙画像を選択してください"
+    );
     return;
   }
 
   if (features.some(f => f.slug === slug && f.slug !== editingSlug)) {
-    showStatus("featureSaveStatus", "この特集IDはすでに使われています");
+    showStatus(
+      "featureSaveStatus",
+      "この特集IDはすでに使われています"
+    );
     return;
   }
 
+  // Workerに送る特集データ
   const feature = {
     slug,
     title,
@@ -780,11 +860,13 @@ $("saveFeature").onclick = async () => {
     folder,
     coverKey,
     published,
-    order
+    sortOrder
   };
 
   const next = editingSlug
-    ? features.map(f => f.slug === editingSlug ? feature : f)
+    ? features.map(f =>
+        f.slug === editingSlug ? feature : f
+      )
     : [...features, feature];
 
   $("saveFeature").disabled = true;
@@ -807,11 +889,16 @@ $("saveFeature").onclick = async () => {
     showStatus("featureSaveStatus", "特集を保存しました！");
     resetForm();
   } catch (error) {
-    showStatus("featureSaveStatus", "保存失敗：" + error.message);
+    showStatus(
+      "featureSaveStatus",
+      "保存失敗：" + error.message
+    );
   } finally {
     $("saveFeature").disabled = false;
   }
 };
+
+// ---------- 特集削除保存 ----------
 
 async function saveFeatureList() {
   try {
@@ -828,9 +915,16 @@ async function saveFeatureList() {
     features = data.features || features;
     renderFeatureList();
 
-    showStatus("featureListStatus", "特集データを更新しました");
+    showStatus(
+      "featureListStatus",
+      "特集データを更新しました"
+    );
   } catch (error) {
-    showStatus("featureListStatus", "保存失敗：" + error.message);
+    showStatus(
+      "featureListStatus",
+      "保存失敗：" + error.message
+    );
+
     await loadFeatures();
   }
 }
