@@ -4,252 +4,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>SUPPORTERS CULB 画像管理</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  padding: 20px;
-  background: #111;
-  color: #eee;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-    "Noto Sans JP", sans-serif;
-}
-
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-h1 {
-  margin: 0 0 25px;
-  font-size: 24px;
-  letter-spacing: 1px;
-}
-
-h2 {
-  margin: 0 0 18px;
-  font-size: 18px;
-  color: #d6b56d;
-}
-
-h3 {
-  margin: 0 0 12px;
-  font-size: 15px;
-}
-
-section {
-  margin-bottom: 22px;
-  padding: 20px;
-  background: #1b1b1b;
-  border: 1px solid #333;
-  border-radius: 10px;
-}
-
-label {
-  display: block;
-  margin: 12px 0 6px;
-  font-size: 13px;
-  color: #bbb;
-}
-
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 11px;
-  background: #101010;
-  color: #eee;
-  border: 1px solid #444;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-button {
-  padding: 10px 16px;
-  background: #d6b56d;
-  color: #111;
-  border: 0;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: .85;
-}
-
-button:disabled {
-  opacity: .35;
-  cursor: not-allowed;
-}
-
-button.secondary {
-  background: #333;
-  color: #eee;
-  border: 1px solid #555;
-}
-
-button.danger {
-  background: #7c3434;
-  color: #fff;
-}
-
-button.small {
-  padding: 7px 10px;
-  font-size: 12px;
-}
-
-.row {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.row > * {
-  flex: 1;
-}
-
-.row button {
-  flex: 0 0 auto;
-}
-
-.status {
-  margin-top: 12px;
-  color: #aaa;
-  font-size: 13px;
-  white-space: pre-wrap;
-}
-
-.status.success {
-  color: #b8d69a;
-}
-
-.status.error {
-  color: #e18b8b;
-}
-
-.note {
-  margin: 8px 0;
-  color: #999;
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 12px;
-  margin-top: 18px;
-}
-
-.image-card {
-  min-width: 0;
-  padding: 10px;
-  background: #101010;
-  border: 1px solid #333;
-  border-radius: 8px;
-}
-
-.image-card img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: contain;
-  background: #080808;
-  border-radius: 5px;
-}
-
-.image-key {
-  margin: 8px 0;
-  font-size: 11px;
-  color: #aaa;
-  word-break: break-all;
-}
-
-.feature-list {
-  display: grid;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.feature-item {
-  padding: 14px;
-  background: #101010;
-  border: 1px solid #333;
-  border-radius: 8px;
-}
-
-.feature-item strong {
-  display: block;
-  margin-bottom: 6px;
-}
-
-.feature-item p {
-  margin: 5px 0;
-  color: #aaa;
-  font-size: 12px;
-  word-break: break-word;
-}
-
-.feature-item .row {
-  margin-top: 10px;
-}
-
-.cover-preview {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin-top: 12px;
-  padding: 10px;
-  background: #101010;
-  border: 1px solid #333;
-  border-radius: 8px;
-}
-
-.cover-preview img {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  background: #080808;
-}
-
-.cover-preview span {
-  font-size: 12px;
-  color: #aaa;
-  word-break: break-all;
-}
-
-hr {
-  margin: 22px 0;
-  border: 0;
-  border-top: 1px solid #333;
-}
-
-@media (max-width: 600px) {
-  body {
-    padding: 12px;
-  }
-
-  section {
-    padding: 14px;
-  }
-
-  .gallery {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+*{box-sizing:border-box}
+body{margin:0;padding:20px;background:#111;color:#eee;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+.container{max-width:1100px;margin:0 auto}
+h1{margin:0 0 25px;font-size:24px;letter-spacing:1px}
+h2{margin:0 0 18px;font-size:18px;color:#d6b56d}
+h3{margin:0 0 12px;font-size:15px}
+section{margin-bottom:22px;padding:20px;background:#1b1b1b;border:1px solid #333;border-radius:10px}
+label{display:block;margin:12px 0 6px;font-size:13px;color:#bbb}
+input,select,textarea{width:100%;padding:11px;background:#101010;color:#eee;border:1px solid #444;border-radius:6px;font-size:14px}
+textarea{min-height:100px;resize:vertical}
+button{padding:10px 16px;background:#d6b56d;color:#111;border:0;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer}
+button:hover{opacity:.85}
+button:disabled{opacity:.35;cursor:not-allowed}
+button.secondary{background:#333;color:#eee;border:1px solid #555}
+button.danger{background:#7c3434;color:#fff}
+button.small{padding:7px 10px;font-size:12px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row>*{flex:1}
+.row button{flex:0 0 auto}
+.status{margin-top:12px;color:#aaa;font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere}
+.status.success{color:#b8d69a}
+.status.error{color:#e18b8b}
+.note{margin:8px 0;color:#999;font-size:12px;line-height:1.6}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:18px}
+.image-card{min-width:0;padding:10px;background:#101010;border:1px solid #333;border-radius:8px}
+.image-card img{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;background:#080808;border-radius:5px}
+.image-key{margin:8px 0;font-size:11px;color:#aaa;word-break:break-all}
+.feature-list{display:grid;gap:10px;margin-top:18px}
+.feature-item{padding:14px;background:#101010;border:1px solid #333;border-radius:8px}
+.feature-item strong{display:block;margin-bottom:6px}
+.feature-item p{margin:5px 0;color:#aaa;font-size:12px;word-break:break-word}
+.feature-item .row{margin-top:10px}
+.cover-preview{display:flex;gap:12px;align-items:center;margin-top:12px;padding:10px;background:#101010;border:1px solid #333;border-radius:8px}
+.cover-preview img{width:80px;height:80px;object-fit:contain;background:#080808}
+.cover-preview span{font-size:12px;color:#aaa;word-break:break-all}
+hr{margin:22px 0;border:0;border-top:1px solid #333}
+.checkbox-line{display:flex;align-items:center;gap:8px;margin:14px 0}
+.checkbox-line input{width:auto}
+@media(max-width:600px){
+ body{padding:12px}
+ section{padding:14px}
+ .gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 </style>
 </head>
@@ -259,208 +58,128 @@ hr {
 
 <h1>SUPPORTERS CULB 画像管理</h1>
 
-<!-- ① 接続 -->
 <section>
-  <h2>① 接続</h2>
+<h2>① 接続</h2>
+<label for="uploadKey">管理キー</label>
+<input id="uploadKey" type="password" placeholder="UPLOAD_SECRET" autocomplete="off">
 
-  <label for="uploadKey">管理キー</label>
-  <input
-    id="uploadKey"
-    type="password"
-    placeholder="UPLOAD_SECRET"
-    autocomplete="off"
-  >
+<div class="row" style="margin-top:12px">
+<button id="connectButton" onclick="connect()">接続</button>
+<button class="secondary" onclick="disconnect()">切断</button>
+</div>
 
-  <div class="row" style="margin-top:12px">
-    <button id="connectButton" onclick="connect()">接続</button>
-    <button class="secondary" onclick="disconnect()">切断</button>
-  </div>
-
-  <div id="connectionStatus" class="status">
-    未接続
-  </div>
+<div id="connectionStatus" class="status">未接続</div>
 </section>
 
-<!-- ② フォルダ -->
 <section>
-  <h2>② フォルダ管理</h2>
+<h2>② フォルダ管理</h2>
 
-  <label for="folderSelect">画像フォルダ</label>
-  <select id="folderSelect" onchange="changeFolder()">
-    <option value="">先に接続してください</option>
-  </select>
+<label for="folderSelect">画像フォルダ</label>
+<select id="folderSelect" onchange="changeFolder()">
+<option value="">先に接続してください</option>
+</select>
 
-  <label for="newFolderName">新しいフォルダ名</label>
-  <div class="row">
-    <input
-      id="newFolderName"
-      type="text"
-      placeholder="例：goalkeeper"
-    >
-    <button onclick="createFolder()">フォルダ作成</button>
-  </div>
+<label for="newFolderName">新しいフォルダ名</label>
+<div class="row">
+<input id="newFolderName" type="text" placeholder="例：goalkeeper">
+<button onclick="createFolder()">フォルダ作成</button>
+</div>
 
-  <div id="folderStatus" class="status"></div>
+<div id="folderStatus" class="status"></div>
 </section>
 
-<!-- ③ アップロード -->
 <section>
-  <h2>③ 画像アップロード</h2>
+<h2>③ 画像アップロード</h2>
 
-  <label for="uploadFiles">画像ファイル</label>
-  <input
-    id="uploadFiles"
-    type="file"
-    accept="image/jpeg,image/png,image/webp,image/gif"
-    multiple
-  >
+<label for="uploadFiles">画像ファイル</label>
+<input id="uploadFiles" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple>
 
-  <p class="note">
-    JPG / PNG / WEBP / GIF 対応。1ファイル10MB以下。
-    選択中のフォルダにアップロードします。
-  </p>
+<p class="note">
+JPG / PNG / WEBP / GIF 対応。1ファイル10MB以下。
+選択中のフォルダにアップロードします。
+</p>
 
-  <button onclick="uploadImages()">アップロード</button>
-
-  <div id="uploadStatus" class="status"></div>
+<button onclick="uploadImages()">アップロード</button>
+<div id="uploadStatus" class="status"></div>
 </section>
 
-<!-- ④ 画像一覧 -->
 <section>
-  <h2>④ 保存画像一覧</h2>
+<h2>④ 保存画像一覧</h2>
 
-  <p class="note">
-    最初は10枚だけ表示します。「次の10枚」で追加表示できます。
-  </p>
+<p class="note">
+10枚ずつ表示します。「次の10枚」で次のページに切り替わります。
+</p>
 
-  <div class="row">
-    <button onclick="loadImages(true)">画像一覧を読み込む</button>
-    <button
-      id="nextImagesButton"
-      class="secondary"
-      onclick="loadImages(false)"
-      disabled
-    >
-      次の10枚
-    </button>
-  </div>
+<div class="row">
+<button onclick="loadImages(true)">画像一覧を読み込む</button>
+<button id="nextImagesButton" class="secondary" onclick="loadImages(false)" disabled>次の10枚</button>
+</div>
 
-  <div id="imageStatus" class="status"></div>
-
-  <div id="imageGallery" class="gallery"></div>
+<div id="imageStatus" class="status"></div>
+<div id="imageGallery" class="gallery"></div>
 </section>
 
-<!-- ⑤ 特集管理 -->
 <section>
-  <h2>⑤ SUPPORTERS ROOM 特集管理</h2>
+<h2>⑤ SUPPORTERS ROOM 特集管理</h2>
 
-  <p class="note">
-    特集の登録・編集・公開設定を管理します。
-  </p>
+<p class="note">特集の登録・編集・公開設定を管理します。</p>
 
-  <label for="featureSlug">特集ID（slug）</label>
-  <input
-    id="featureSlug"
-    type="text"
-    placeholder="例：goalkeeper"
-  >
+<label for="featureSlug">特集ID（slug）</label>
+<input id="featureSlug" type="text" placeholder="例：goalkeeper">
 
-  <label for="featureTitle">特集タイトル</label>
-  <input
-    id="featureTitle"
-    type="text"
-    maxlength="100"
-    placeholder="例：GOALKEEPER SPECIAL"
-  >
+<label for="featureTitle">特集タイトル</label>
+<input id="featureTitle" type="text" maxlength="100" placeholder="例：GOALKEEPER SPECIAL">
 
-  <label for="featureDescription">特集説明</label>
-  <textarea
-    id="featureDescription"
-    maxlength="2000"
-    placeholder="特集の説明文"
-  ></textarea>
+<label for="featureDescription">特集説明</label>
+<textarea id="featureDescription" maxlength="2000" placeholder="特集の説明文"></textarea>
 
-  <label for="featureFolder">特集フォルダ</label>
-  <select id="featureFolder" onchange="changeFeatureFolder()">
-    <option value="">フォルダを選択</option>
-  </select>
+<label for="featureFolder">特集フォルダ</label>
+<select id="featureFolder" onchange="changeFeatureFolder()">
+<option value="">カバー画像を選択すると自動設定</option>
+</select>
 
-  <label>カバー画像</label>
+<label>カバー画像</label>
+<div class="cover-preview">
+<img id="coverPreviewImage" alt="カバー画像">
+<span id="coverPreviewText">カバー画像未選択</span>
+</div>
 
-  <div class="cover-preview">
-    <img id="coverPreviewImage" alt="カバー画像">
-    <span id="coverPreviewText">カバー画像未選択</span>
-  </div>
+<input id="featureCoverKey" type="hidden">
 
-  <input
-    id="featureCoverKey"
-    type="hidden"
-  >
+<div class="row" style="margin-top:12px">
+<button class="secondary" onclick="loadFeatureImages(true)">カバー画像を探す</button>
+<button id="nextFeatureImagesButton" class="secondary" onclick="loadFeatureImages(false)" disabled>次の10枚を探す</button>
+</div>
 
-  <div class="row" style="margin-top:12px">
-    <button
-      class="secondary"
-      onclick="loadFeatureImages(true)"
-    >
-      カバー画像を探す
-    </button>
+<div id="featureImageStatus" class="status"></div>
+<div id="featureImageGallery" class="gallery"></div>
 
-    <button
-      id="nextFeatureImagesButton"
-      class="secondary"
-      onclick="loadFeatureImages(false)"
-      disabled
-    >
-      次の10枚を探す
-    </button>
-  </div>
+<label for="featureSortOrder">表示順</label>
+<input id="featureSortOrder" type="number" value="0">
 
-  <div id="featureImageStatus" class="status"></div>
+<label class="checkbox-line">
+<input id="featurePublished" type="checkbox">
+公開する
+</label>
 
-  <div id="featureImageGallery" class="gallery"></div>
+<div class="row" style="margin-top:14px">
+<button onclick="saveFeature()">特集を保存</button>
+<button class="secondary" onclick="resetFeatureForm()">新規作成</button>
+</div>
 
-  <label for="featureSortOrder">表示順</label>
-  <input
-    id="featureSortOrder"
-    type="number"
-    value="0"
-  >
+<div id="featureStatus" class="status"></div>
 
-  <label>
-    <input
-      id="featurePublished"
-      type="checkbox"
-      style="width:auto;margin-right:8px"
-    >
-    公開する
-  </label>
+<hr>
 
-  <div class="row" style="margin-top:14px">
-    <button onclick="saveFeature()">特集を保存</button>
-    <button class="secondary" onclick="resetFeatureForm()">新規作成</button>
-  </div>
-
-  <div id="featureStatus" class="status"></div>
-
-  <hr>
-
-  <h3>登録済み特集</h3>
-
-  <button
-    class="secondary"
-    onclick="loadFeatures()"
-  >
-    特集一覧を更新
-  </button>
-
-  <div id="featureList" class="feature-list"></div>
+<h3>登録済み特集</h3>
+<button class="secondary" onclick="loadFeatures()">特集一覧を更新</button>
+<div id="featureList" class="feature-list"></div>
 </section>
 
 </div>
 
 <script>
 const API = "https://supporters-image-api.excellentree-55.workers.dev";
-
 const PAGE_SIZE = 10;
 
 let connected = false;
@@ -474,178 +193,124 @@ let featureImageCursor = null;
 let featureImageHasMore = false;
 let featureImageLoading = false;
 
-let featureImagesLoaded = [];
 let features = [];
-
 let editingFeatureSlug = null;
 
-// ------------------------------
-// 共通
-// ------------------------------
-
-function $(id) {
+function $(id){
   return document.getElementById(id);
 }
 
-function getKey() {
+function getKey(){
   return $("uploadKey").value.trim();
 }
 
-function setStatus(id, message, type = "") {
-  const element = $(id);
-
-  element.textContent = message;
-  element.className = "status" + (type ? " " + type : "");
+function setStatus(id,message,type=""){
+  const el = $(id);
+  el.textContent = message;
+  el.className = "status" + (type ? " " + type : "");
 }
 
-function authHeaders(extra = {}) {
+function authHeaders(extra={}){
   return {
-    "X-Upload-Key": getKey(),
+    "X-Upload-Key":getKey(),
     ...extra
   };
 }
 
-async function apiFetch(path, options = {}) {
-  if (!connected && path !== "/list") {
+async function apiFetch(path,options={}){
+  if(!connected){
     throw new Error("先に接続してください");
   }
 
-  const response = await fetch(API + path, {
+  const response = await fetch(API + path,{
     ...options,
-    headers: {
+    headers:{
       ...authHeaders(),
       ...(options.headers || {})
     }
   });
 
-  if (!response.ok) {
+  if(!response.ok){
     const text = await response.text();
     throw new Error(text || `HTTP ${response.status}`);
   }
 
   const contentType = response.headers.get("Content-Type") || "";
 
-  if (contentType.includes("application/json")) {
+  if(contentType.includes("application/json")){
     return response.json();
   }
 
   return response.text();
 }
 
-function escapeHtml(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[char]);
-}
-
-function currentFolder() {
+function currentFolder(){
   return $("folderSelect").value || "";
 }
 
-function currentFeatureFolder() {
+function currentFeatureFolder(){
   return $("featureFolder").value || "";
 }
 
-function resetGallery() {
-  imageCursor = null;
-  imageHasMore = false;
-  imageLoading = false;
-
-  $("imageGallery").innerHTML = "";
-  $("nextImagesButton").disabled = true;
-  setStatus("imageStatus", "");
-}
-
-function resetFeatureImageGallery() {
-  featureImageCursor = null;
-  featureImageHasMore = false;
-  featureImageLoading = false;
-  featureImagesLoaded = [];
-
-  $("featureImageGallery").innerHTML = "";
-  $("nextFeatureImagesButton").disabled = true;
-  setStatus("featureImageStatus", "");
-}
-
-// ------------------------------
+// --------------------------------
 // 接続
-// ------------------------------
+// --------------------------------
 
-async function connect() {
-  if (!getKey()) {
-    setStatus("connectionStatus", "管理キーを入力してください", "error");
+async function connect(){
+  if(!getKey()){
+    setStatus("connectionStatus","管理キーを入力してください","error");
     return;
   }
 
   $("connectButton").disabled = true;
-  setStatus("connectionStatus", "接続中...");
+  setStatus("connectionStatus","接続中...");
 
-  try {
-    const result = await fetch(
-      API + "/list?foldersOnly=1",
-      {
-        headers: authHeaders()
-      }
-    );
+  try{
+    const response = await fetch(API + "/list?foldersOnly=1",{
+      headers:authHeaders()
+    });
 
-    if (!result.ok) {
-      const text = await result.text();
-      throw new Error(text || `HTTP ${result.status}`);
+    if(!response.ok){
+      const text = await response.text();
+      throw new Error(text || `HTTP ${response.status}`);
     }
 
-    const data = await result.json();
+    const data = await response.json();
 
     folders = data.folders || [];
     connected = true;
 
     populateFolderSelects();
-
     resetGallery();
     resetFeatureImageGallery();
 
     await loadFeatures();
 
-    setStatus(
-      "connectionStatus",
-      "接続しました。画像一覧は必要なときに読み込んでください。",
-      "success"
-    );
-  } catch (error) {
+    setStatus("connectionStatus","接続しました","success");
+  }catch(error){
     connected = false;
-
-    setStatus(
-      "connectionStatus",
-      "接続失敗：" + error.message,
-      "error"
-    );
-  } finally {
+    setStatus("connectionStatus","接続失敗："+error.message,"error");
+  }finally{
     $("connectButton").disabled = false;
   }
 }
 
-function disconnect() {
+function disconnect(){
   connected = false;
   folders = [];
 
-  $("folderSelect").innerHTML =
-    '<option value="">未接続</option>';
-
-  $("featureFolder").innerHTML =
-    '<option value="">未接続</option>';
+  $("folderSelect").innerHTML = '<option value="">未接続</option>';
+  $("featureFolder").innerHTML = '<option value="">未接続</option>';
 
   resetGallery();
   resetFeatureImageGallery();
 
   $("featureList").innerHTML = "";
 
-  setStatus("connectionStatus", "切断しました");
+  setStatus("connectionStatus","切断しました");
 }
 
-function populateFolderSelects() {
+function populateFolderSelects(){
   const folderSelect = $("folderSelect");
   const featureFolder = $("featureFolder");
 
@@ -662,10 +327,10 @@ function populateFolderSelects() {
 
   const featureRootOption = document.createElement("option");
   featureRootOption.value = "";
-  featureRootOption.textContent = "ルートフォルダ";
+  featureRootOption.textContent = "カバー画像から自動設定";
   featureFolder.appendChild(featureRootOption);
 
-  folders.forEach(folder => {
+  folders.forEach(folder=>{
     const option1 = document.createElement("option");
     option1.value = folder;
     option1.textContent = folder;
@@ -677,122 +342,111 @@ function populateFolderSelects() {
     featureFolder.appendChild(option2);
   });
 
-  if ([...folderSelect.options].some(o => o.value === previousFolder)) {
+  if([...folderSelect.options].some(o=>o.value===previousFolder)){
     folderSelect.value = previousFolder;
   }
 
-  if ([...featureFolder.options].some(o => o.value === previousFeatureFolder)) {
+  if([...featureFolder.options].some(o=>o.value===previousFeatureFolder)){
     featureFolder.value = previousFeatureFolder;
   }
 }
 
-// ------------------------------
-// フォルダ
-// ------------------------------
+// --------------------------------
+// フォルダ管理
+// --------------------------------
 
-function changeFolder() {
+function changeFolder(){
   resetGallery();
 }
 
-async function createFolder() {
+async function createFolder(){
   const name = $("newFolderName").value.trim();
 
-  if (!name) {
-    setStatus("folderStatus", "フォルダ名を入力してください", "error");
+  if(!name){
+    setStatus("folderStatus","フォルダ名を入力してください","error");
     return;
   }
 
-  try {
-    const data = await apiFetch("/folder", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ name })
+  try{
+    const data = await apiFetch("/folder",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({name})
     });
 
     $("newFolderName").value = "";
 
-    // フォルダ一覧を再取得
     const list = await apiFetch("/list?foldersOnly=1");
-
     folders = list.folders || [];
-    populateFolderSelects();
 
+    populateFolderSelects();
     $("folderSelect").value = data.folder;
 
     resetGallery();
 
-    setStatus(
-      "folderStatus",
-      "フォルダを作成しました：" + data.folder,
-      "success"
-    );
-  } catch (error) {
-    setStatus(
-      "folderStatus",
-      "作成失敗：" + error.message,
-      "error"
-    );
+    setStatus("folderStatus","フォルダを作成しました："+data.folder,"success");
+  }catch(error){
+    setStatus("folderStatus","作成失敗："+error.message,"error");
   }
 }
 
-// ------------------------------
+// --------------------------------
 // アップロード
-// ------------------------------
+// --------------------------------
 
-async function uploadImages() {
+async function uploadImages(){
   const files = [...$("uploadFiles").files];
 
-  if (!files.length) {
-    setStatus("uploadStatus", "画像を選択してください", "error");
+  if(!files.length){
+    setStatus("uploadStatus","画像を選択してください","error");
     return;
   }
 
-  if (!connected) {
-    setStatus("uploadStatus", "先に接続してください", "error");
+  if(!connected){
+    setStatus("uploadStatus","先に接続してください","error");
     return;
   }
 
   const folder = currentFolder();
+
   let successCount = 0;
   let errorCount = 0;
 
-  setStatus("uploadStatus", "アップロード開始...");
+  setStatus("uploadStatus","アップロード開始...");
 
-  for (let i = 0; i < files.length; i++) {
+  for(let i=0;i<files.length;i++){
     const file = files[i];
 
-    try {
-      if (file.size > 10 * 1024 * 1024) {
+    try{
+      if(file.size > 10*1024*1024){
         throw new Error("10MBを超えています");
       }
 
       const key = folder + file.name;
 
-      const response = await fetch(API + "/upload", {
-        method: "POST",
-        headers: authHeaders({
-          "Content-Type": file.type,
-          "X-Image-Key": key
+      const response = await fetch(API + "/upload",{
+        method:"POST",
+        headers:authHeaders({
+          "Content-Type":file.type,
+          "X-Image-Key":key
         }),
-        body: file
+        body:file
       });
 
-      if (!response.ok) {
+      if(!response.ok){
         const text = await response.text();
         throw new Error(text || `HTTP ${response.status}`);
       }
 
       successCount++;
-    } catch (error) {
+    }catch(error){
       errorCount++;
-      console.error(file.name, error);
+      console.error(file.name,error);
     }
 
     setStatus(
       "uploadStatus",
-      `${i + 1}/${files.length} 件処理中\n成功：${successCount} / 失敗：${errorCount}`
+      `${i+1}/${files.length} 件処理中\n成功：${successCount} / 失敗：${errorCount}`
     );
   }
 
@@ -804,78 +458,76 @@ async function uploadImages() {
     errorCount ? "error" : "success"
   );
 
-  // アップロード後は一覧をリセットし、勝手に大量読み込みしない
   resetGallery();
 }
 
-// ------------------------------
-// 画像一覧：10枚ずつ
-// ------------------------------
+// --------------------------------
+// 保存画像一覧：10枚ずつ切り替え
+// --------------------------------
 
-async function loadImages(reset = false) {
-  if (!connected) {
-    setStatus("imageStatus", "先に接続してください", "error");
+function resetGallery(){
+  imageCursor = null;
+  imageHasMore = false;
+  imageLoading = false;
+
+  $("imageGallery").innerHTML = "";
+  $("nextImagesButton").disabled = true;
+
+  setStatus("imageStatus","");
+}
+
+async function loadImages(reset=false){
+  if(!connected){
+    setStatus("imageStatus","先に接続してください","error");
     return;
   }
 
-  if (imageLoading) return;
+  if(imageLoading) return;
 
-  if (reset) {
+  if(reset){
     resetGallery();
   }
 
-  if (!reset && !imageHasMore) {
-    return;
-  }
+  if(!reset && !imageHasMore) return;
 
   imageLoading = true;
   $("nextImagesButton").disabled = true;
 
-  try {
+  try{
     const params = new URLSearchParams();
 
-    params.set("prefix", currentFolder());
-    params.set("limit", String(PAGE_SIZE));
+    params.set("prefix",currentFolder());
+    params.set("limit",String(PAGE_SIZE));
 
-    if (imageCursor) {
-      params.set("cursor", imageCursor);
+    if(imageCursor){
+      params.set("cursor",imageCursor);
     }
 
-    setStatus("imageStatus", "画像を読み込み中...");
+    setStatus("imageStatus","画像を読み込み中...");
 
-    const data = await apiFetch("/list?" + params.toString());
-
+    const data = await apiFetch("/list?"+params.toString());
     const objects = data.objects || [];
 
-    objects.forEach(object => {
-      addImageCard(object);
-    });
+    // 前ページを消して、次の10枚だけを表示
+    $("imageGallery").innerHTML = "";
+
+    objects.forEach(addImageCard);
 
     imageCursor = data.cursor || null;
     imageHasMore = Boolean(data.truncated);
 
     $("nextImagesButton").disabled = !imageHasMore;
 
-    const total = $("imageGallery").children.length;
-
-    setStatus(
-      "imageStatus",
-      `${objects.length}枚読み込みました（表示中：${total}枚）`,
-      "success"
-    );
-  } catch (error) {
-    setStatus(
-      "imageStatus",
-      "読み込み失敗：" + error.message,
-      "error"
-    );
-  } finally {
+    setStatus("imageStatus",`${objects.length}枚読み込みました`,"success");
+  }catch(error){
+    setStatus("imageStatus","読み込み失敗："+error.message,"error");
+  }finally{
     imageLoading = false;
     $("nextImagesButton").disabled = !imageHasMore;
   }
 }
 
-function addImageCard(object) {
+function addImageCard(object){
   const card = document.createElement("div");
   card.className = "image-card";
 
@@ -891,115 +543,132 @@ function addImageCard(object) {
   const copyButton = document.createElement("button");
   copyButton.className = "secondary small";
   copyButton.textContent = "コピー";
-  copyButton.onclick = async () => {
-    try {
+
+  copyButton.onclick = async()=>{
+    try{
       await navigator.clipboard.writeText(object.key);
       copyButton.textContent = "コピー済み";
-    } catch {
-      prompt("画像キーをコピーしてください", object.key);
+    }catch{
+      prompt("画像キーをコピーしてください",object.key);
     }
   };
 
-  card.appendChild(image);
-  card.appendChild(key);
-  card.appendChild(copyButton);
-
+  card.append(image,key,copyButton);
   $("imageGallery").appendChild(card);
 }
 
-// ------------------------------
-// 特集：画像選択
-// ------------------------------
+// --------------------------------
+// 特集画像：10枚ずつ切り替え
+// --------------------------------
 
-function changeFeatureFolder() {
+function resetFeatureImageGallery(){
+  featureImageCursor = null;
+  featureImageHasMore = false;
+  featureImageLoading = false;
+
+  $("featureImageGallery").innerHTML = "";
+  $("nextFeatureImagesButton").disabled = true;
+
+  setStatus("featureImageStatus","");
+}
+
+function changeFeatureFolder(){
   resetFeatureImageGallery();
 }
 
-async function loadFeatureImages(reset = false) {
-  if (!connected) {
-    setStatus(
-      "featureImageStatus",
-      "先に接続してください",
-      "error"
-    );
+async function loadFeatureImages(reset=false){
+  if(!connected){
+    setStatus("featureImageStatus","先に接続してください","error");
     return;
   }
 
-  if (featureImageLoading) return;
+  if(featureImageLoading) return;
 
-  if (reset) {
+  if(reset){
     resetFeatureImageGallery();
   }
 
-  if (!reset && !featureImageHasMore) {
-    return;
-  }
+  if(!reset && !featureImageHasMore) return;
 
   featureImageLoading = true;
   $("nextFeatureImagesButton").disabled = true;
 
-  try {
+  try{
     const params = new URLSearchParams();
 
-    params.set("prefix", currentFeatureFolder());
-    params.set("limit", String(PAGE_SIZE));
+    params.set("prefix",currentFeatureFolder());
+    params.set("limit",String(PAGE_SIZE));
 
-    if (featureImageCursor) {
-      params.set("cursor", featureImageCursor);
+    if(featureImageCursor){
+      params.set("cursor",featureImageCursor);
     }
 
-    setStatus("featureImageStatus", "画像を読み込み中...");
+    setStatus("featureImageStatus","画像を読み込み中...");
 
-    const data = await apiFetch("/list?" + params.toString());
+    const data = await apiFetch("/list?"+params.toString());
 
-    const objects = (data.objects || []).filter(object =>
+    const objects = (data.objects || []).filter(object=>
       /\.(jpg|jpeg|png|webp|gif)$/i.test(object.key)
     );
 
-    objects.forEach(object => {
-      featureImagesLoaded.push(object);
-      addFeatureImageCard(object);
-    });
+    // 前ページを消して、次の10枚だけを表示
+    $("featureImageGallery").innerHTML = "";
+
+    objects.forEach(addFeatureImageCard);
 
     featureImageCursor = data.cursor || null;
     featureImageHasMore = Boolean(data.truncated);
 
-    $("nextFeatureImagesButton").disabled =
-      !featureImageHasMore;
+    $("nextFeatureImagesButton").disabled = !featureImageHasMore;
 
-    setStatus(
-      "featureImageStatus",
-      `${objects.length}枚読み込みました。カバー画像を選択してください。`,
-      "success"
-    );
-
-    // 編集中のカバー画像が読み込まれたページにあれば表示
-    const currentCover = $("featureCoverKey").value;
-
-    if (currentCover) {
-      const found = objects.find(object =>
-        object.key === currentCover
-      );
-
-      if (found) {
-        showCoverPreview(found.key, found.url);
-      }
-    }
-  } catch (error) {
-    setStatus(
-      "featureImageStatus",
-      "画像取得失敗：" + error.message,
-      "error"
-    );
-  } finally {
+    setStatus("featureImageStatus",`${objects.length}枚読み込みました`,"success");
+  }catch(error){
+    setStatus("featureImageStatus","画像取得失敗："+error.message,"error");
+  }finally{
     featureImageLoading = false;
-
-    $("nextFeatureImagesButton").disabled =
-      !featureImageHasMore;
+    $("nextFeatureImagesButton").disabled = !featureImageHasMore;
   }
 }
 
-function addFeatureImageCard(object) {
+// --------------------------------
+// カバー画像選択とフォルダ自動判定
+// --------------------------------
+
+function getFolderFromImageKey(key){
+  if(!key || !key.includes("/")) return "";
+
+  return key.substring(0,key.lastIndexOf("/"));
+}
+
+function setFeatureFolderFromCover(key){
+  const folder = getFolderFromImageKey(key);
+
+  if(!folder){
+    setStatus(
+      "featureImageStatus",
+      "フォルダ内の画像をカバーに選択してください",
+      "error"
+    );
+    return false;
+  }
+
+  const folderValue = folder + "/";
+  const select = $("featureFolder");
+
+  // フォルダ一覧に存在しない場合も選択肢に追加
+  if(![...select.options].some(option=>option.value===folderValue)){
+    const option = document.createElement("option");
+    option.value = folderValue;
+    option.textContent = folderValue;
+    select.appendChild(option);
+  }
+
+  select.value = folderValue;
+
+  return true;
+}
+
+function addFeatureImageCard(object){
   const card = document.createElement("div");
   card.className = "image-card";
 
@@ -1016,70 +685,64 @@ function addFeatureImageCard(object) {
   selectButton.className = "small";
   selectButton.textContent = "カバーに選択";
 
-  selectButton.onclick = () => {
+  selectButton.onclick = ()=>{
+    // 画像キーからフォルダを自動判定して反映
+    const folderSet = setFeatureFolderFromCover(object.key);
+
+    if(!folderSet){
+      return;
+    }
+
     $("featureCoverKey").value = object.key;
-    showCoverPreview(object.key, object.url);
+    showCoverPreview(object.key,object.url);
 
     setStatus(
       "featureImageStatus",
-      "カバー画像を選択しました",
+      "カバー画像を選択しました。特集フォルダも自動設定しました。",
       "success"
     );
   };
 
-  card.appendChild(image);
-  card.appendChild(key);
-  card.appendChild(selectButton);
-
+  card.append(image,key,selectButton);
   $("featureImageGallery").appendChild(card);
 }
 
-function showCoverPreview(key, url) {
+function showCoverPreview(key,url){
   $("coverPreviewImage").src = url;
   $("coverPreviewText").textContent = key;
 }
 
-// ------------------------------
-// 特集：一覧
-// ------------------------------
+// --------------------------------
+// 特集一覧
+// --------------------------------
 
-async function loadFeatures() {
-  if (!connected) return;
+async function loadFeatures(){
+  if(!connected) return;
 
-  try {
+  try{
     const data = await apiFetch("/admin-features");
 
     features = data.features || [];
-
     renderFeatureList();
 
-    setStatus(
-      "featureStatus",
-      `特集を${features.length}件読み込みました`,
-      "success"
-    );
-  } catch (error) {
-    setStatus(
-      "featureStatus",
-      "特集取得失敗：" + error.message,
-      "error"
-    );
+    setStatus("featureStatus",`特集を${features.length}件読み込みました`,"success");
+  }catch(error){
+    setStatus("featureStatus","特集取得失敗："+error.message,"error");
   }
 }
 
-function renderFeatureList() {
+function renderFeatureList(){
   const container = $("featureList");
   container.innerHTML = "";
 
-  if (!features.length) {
+  if(!features.length){
     container.textContent = "登録済み特集はありません";
     return;
   }
 
-  features
-    .slice()
-    .sort((a, b) => Number(a.sortOrder) - Number(b.sortOrder))
-    .forEach(feature => {
+  features.slice()
+    .sort((a,b)=>Number(a.sortOrder)-Number(b.sortOrder))
+    .forEach(feature=>{
       const item = document.createElement("div");
       item.className = "feature-item";
 
@@ -1087,18 +750,16 @@ function renderFeatureList() {
       title.textContent = feature.title;
 
       const slug = document.createElement("p");
-      slug.textContent = "ID：" + feature.slug;
+      slug.textContent = "ID："+feature.slug;
 
       const folder = document.createElement("p");
-      folder.textContent = "フォルダ：" + feature.folder;
+      folder.textContent = "フォルダ："+feature.folder;
 
       const cover = document.createElement("p");
-      cover.textContent = "カバー：" + feature.coverKey;
+      cover.textContent = "カバー："+feature.coverKey;
 
       const publish = document.createElement("p");
-      publish.textContent = feature.published
-        ? "公開中"
-        : "非公開";
+      publish.textContent = feature.published ? "公開中" : "非公開";
 
       const buttons = document.createElement("div");
       buttons.className = "row";
@@ -1106,44 +767,46 @@ function renderFeatureList() {
       const editButton = document.createElement("button");
       editButton.className = "secondary";
       editButton.textContent = "編集";
-      editButton.onclick = () => editFeature(feature.slug);
+      editButton.onclick = ()=>editFeature(feature.slug);
 
       const deleteButton = document.createElement("button");
       deleteButton.className = "danger";
       deleteButton.textContent = "削除";
-      deleteButton.onclick = () => deleteFeature(feature.slug);
+      deleteButton.onclick = ()=>deleteFeature(feature.slug);
 
-      buttons.appendChild(editButton);
-      buttons.appendChild(deleteButton);
-
-      item.appendChild(title);
-      item.appendChild(slug);
-      item.appendChild(folder);
-      item.appendChild(cover);
-      item.appendChild(publish);
-      item.appendChild(buttons);
-
+      buttons.append(editButton,deleteButton);
+      item.append(title,slug,folder,cover,publish,buttons);
       container.appendChild(item);
     });
 }
 
-// ------------------------------
-// 特集：編集
-// ------------------------------
+// --------------------------------
+// 特集編集
+// --------------------------------
 
-function editFeature(slug) {
-  const feature = features.find(item => item.slug === slug);
-
-  if (!feature) return;
+function editFeature(slug){
+  const feature = features.find(item=>item.slug===slug);
+  if(!feature) return;
 
   editingFeatureSlug = feature.slug;
 
   $("featureSlug").value = feature.slug;
   $("featureTitle").value = feature.title || "";
   $("featureDescription").value = feature.description || "";
-  $("featureFolder").value = feature.folder
-    ? feature.folder + "/"
+
+  const folderValue = feature.folder
+    ? feature.folder.replace(/\/?$/,"/")
     : "";
+
+  // 保存済みフォルダが選択肢にない場合も追加
+  if(folderValue && ![...$("featureFolder").options].some(o=>o.value===folderValue)){
+    const option = document.createElement("option");
+    option.value = folderValue;
+    option.textContent = folderValue;
+    $("featureFolder").appendChild(option);
+  }
+
+  $("featureFolder").value = folderValue;
   $("featureCoverKey").value = feature.coverKey || "";
   $("featureSortOrder").value = Number(feature.sortOrder) || 0;
   $("featurePublished").checked = Boolean(feature.published);
@@ -1157,26 +820,21 @@ function editFeature(slug) {
   $("coverPreviewText").textContent =
     feature.coverKey || "カバー画像未選択";
 
-  setStatus(
-    "featureStatus",
-    "編集中：" + feature.title,
-    "success"
-  );
+  setStatus("featureStatus","編集中："+feature.title,"success");
 
   window.scrollTo({
-    top: $("featureSlug").getBoundingClientRect().top + window.scrollY - 30,
-    behavior: "smooth"
+    top:$("featureSlug").getBoundingClientRect().top+window.scrollY-30,
+    behavior:"smooth"
   });
 }
 
-function encodeKeyPath(key) {
-  return key
-    .split("/")
-    .map(part => encodeURIComponent(part))
+function encodeKeyPath(key){
+  return key.split("/")
+    .map(part=>encodeURIComponent(part))
     .join("/");
 }
 
-function resetFeatureForm() {
+function resetFeatureForm(){
   editingFeatureSlug = null;
 
   $("featureSlug").value = "";
@@ -1192,58 +850,78 @@ function resetFeatureForm() {
 
   resetFeatureImageGallery();
 
-  setStatus("featureStatus", "新規特集");
+  setStatus("featureStatus","新規特集");
 }
 
-// ------------------------------
-// 特集：保存
-// ------------------------------
+// --------------------------------
+// 特集保存
+// --------------------------------
 
-async function saveFeature() {
-  if (!connected) {
-    setStatus("featureStatus", "先に接続してください", "error");
+async function saveFeature(){
+  if(!connected){
+    setStatus("featureStatus","先に接続してください","error");
     return;
   }
 
   const slug = $("featureSlug").value.trim();
   const title = $("featureTitle").value.trim();
   const description = $("featureDescription").value;
-  const folder = currentFeatureFolder();
   const coverKey = $("featureCoverKey").value.trim();
   const sortOrder = Number($("featureSortOrder").value);
   const published = $("featurePublished").checked;
 
-  if (!slug || !/^[A-Za-z0-9_-]+$/.test(slug)) {
+  if(!slug || !/^[A-Za-z0-9_-]+$/.test(slug)){
+    setStatus("featureStatus","特集IDは半角英数字・_・-で入力してください","error");
+    return;
+  }
+
+  if(!title){
+    setStatus("featureStatus","タイトルを入力してください","error");
+    return;
+  }
+
+  if(!coverKey){
+    setStatus("featureStatus","カバー画像を選択してください","error");
+    return;
+  }
+
+  if(!Number.isFinite(sortOrder)){
+    setStatus("featureStatus","表示順が正しくありません","error");
+    return;
+  }
+
+  // ★カバー画像のキーからフォルダを必ず自動判定
+  const detectedFolder = getFolderFromImageKey(coverKey);
+
+  if(!detectedFolder){
     setStatus(
       "featureStatus",
-      "特集IDは半角英数字・_・-で入力してください",
+      "カバー画像はフォルダ内の画像を選択してください",
       "error"
     );
     return;
   }
 
-  if (!title) {
-    setStatus("featureStatus", "タイトルを入力してください", "error");
-    return;
+  const folderValue = detectedFolder + "/";
+
+  // フォルダ欄にも自動反映
+  const folderSelect = $("featureFolder");
+
+  if(![...folderSelect.options].some(option=>option.value===folderValue)){
+    const option = document.createElement("option");
+    option.value = folderValue;
+    option.textContent = folderValue;
+    folderSelect.appendChild(option);
   }
 
-  if (!coverKey) {
-    setStatus("featureStatus", "カバー画像を選択してください", "error");
-    return;
-  }
+  folderSelect.value = folderValue;
 
-  if (!Number.isFinite(sortOrder)) {
-    setStatus("featureStatus", "表示順が正しくありません", "error");
-    return;
-  }
-
+  // Workerへ送るfolderは末尾スラッシュなし
   const feature = {
     slug,
     title,
     description,
-    folder: folder.endsWith("/")
-      ? folder.slice(0, -1)
-      : folder,
+    folder:detectedFolder,
     coverKey,
     published,
     sortOrder
@@ -1251,40 +929,37 @@ async function saveFeature() {
 
   let nextFeatures;
 
-  if (editingFeatureSlug) {
-    nextFeatures = features.map(item =>
-      item.slug === editingFeatureSlug
-        ? feature
-        : item
-    );
-  } else {
-    if (features.some(item => item.slug === slug)) {
-      setStatus(
-        "featureStatus",
-        "同じ特集IDがすでに存在します",
-        "error"
-      );
+  if(editingFeatureSlug){
+    if(
+      slug !== editingFeatureSlug &&
+      features.some(item=>item.slug===slug)
+    ){
+      setStatus("featureStatus","同じ特集IDがすでに存在します","error");
       return;
     }
 
-    nextFeatures = [...features, feature];
+    nextFeatures = features.map(item=>
+      item.slug===editingFeatureSlug ? feature : item
+    );
+  }else{
+    if(features.some(item=>item.slug===slug)){
+      setStatus("featureStatus","同じ特集IDがすでに存在します","error");
+      return;
+    }
+
+    nextFeatures = [...features,feature];
   }
 
-  try {
-    setStatus("featureStatus", "保存中...");
+  try{
+    setStatus("featureStatus","保存中...");
 
-    const result = await apiFetch("/admin-features", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        features: nextFeatures
-      })
+    const result = await apiFetch("/admin-features",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({features:nextFeatures})
     });
 
     features = nextFeatures;
-
     renderFeatureList();
 
     setStatus(
@@ -1294,65 +969,44 @@ async function saveFeature() {
     );
 
     resetFeatureForm();
-  } catch (error) {
-    setStatus(
-      "featureStatus",
-      "保存失敗：" + error.message,
-      "error"
-    );
+  }catch(error){
+    setStatus("featureStatus","保存失敗："+error.message,"error");
   }
 }
 
-// ------------------------------
-// 特集：削除
-// ------------------------------
+// --------------------------------
+// 特集削除
+// --------------------------------
 
-async function deleteFeature(slug) {
-  const feature = features.find(item => item.slug === slug);
+async function deleteFeature(slug){
+  const feature = features.find(item=>item.slug===slug);
+  if(!feature) return;
 
-  if (!feature) return;
-
-  if (!confirm(`「${feature.title}」を削除しますか？`)) {
+  if(!confirm(`「${feature.title}」を削除しますか？`)){
     return;
   }
 
-  const nextFeatures = features.filter(item =>
-    item.slug !== slug
-  );
+  const nextFeatures = features.filter(item=>item.slug!==slug);
 
-  try {
-    const result = await apiFetch("/admin-features", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        features: nextFeatures
-      })
+  try{
+    const result = await apiFetch("/admin-features",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({features:nextFeatures})
     });
 
     features = nextFeatures;
-
     renderFeatureList();
 
-    if (editingFeatureSlug === slug) {
+    if(editingFeatureSlug===slug){
       resetFeatureForm();
     }
 
-    setStatus(
-      "featureStatus",
-      `削除しました（${result.count}件）`,
-      "success"
-    );
-  } catch (error) {
-    setStatus(
-      "featureStatus",
-      "削除失敗：" + error.message,
-      "error"
-    );
+    setStatus("featureStatus",`削除しました（${result.count}件）`,"success");
+  }catch(error){
+    setStatus("featureStatus","削除失敗："+error.message,"error");
   }
 }
 </script>
-
 </body>
 </html>
