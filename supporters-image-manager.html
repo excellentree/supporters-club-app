@@ -61,12 +61,63 @@ $("upload").onclick=async()=>{let fs=[...$("files").files];if(!fs.length){status
 }catch(err){
   errors.push(f.name+"："+err.message);
 }
- $("files").value="";status("selected","");await loadImages();status("uploadStatus",`${ok}/${fs.length}枚アップロード成功`+(errors.length?"\n"+errors.join("\n"):""));$("upload").disabled=false;
+ $("files").value = "";
+status("selected", "");
+
+renderUploadedImages();
+
+status(
+  "uploadStatus",
+  `${ok}/${fs.length}枚アップロード成功` +
+  (errors.length ? "\n" + errors.join("\n") : "")
+);
+
+$("upload").disabled = false;
 };
-async function loadImages(){if(!connected)return;status("listStatus","読み込み中...");$("gallery").innerHTML="";
- try{let d=await json(await fetch(API+"/list?prefix="+encodeURIComponent(prefix()),{headers:headers()}));
- (d.objects||[]).forEach(o=>{let card=document.createElement("article");card.className="card";let img=document.createElement("img");img.src=o.url;img.alt=o.key;img.loading="lazy";let box=document.createElement("div");box.textContent=o.key.split("/").pop();let a=document.createElement("a");a.href=o.url;a.target="_blank";a.rel="noopener";a.textContent="画像を開く";let b=document.createElement("button");b.textContent="URLをコピー";b.onclick=async()=>{try{await navigator.clipboard.writeText(o.url);b.textContent="コピーしました"}catch{prompt("画像URL",o.url)}};box.append(a,b);card.append(img,box);$("gallery").append(card)});
- status("listStatus",`${d.objects.length}枚の画像`+(d.truncated?"（1000件まで表示）":""));
- }catch(e){status("listStatus","一覧取得失敗："+e.message)}
+
+function renderUploadedImages(){
+  const gallery = $("gallery");
+  gallery.innerHTML = "";
+
+  uploadedImages.forEach(o => {
+    const card = document.createElement("article");
+    card.className = "card";
+
+    const img = document.createElement("img");
+    img.src = o.url;
+    img.alt = o.key;
+    img.loading = "lazy";
+
+    const box = document.createElement("div");
+    box.textContent = o.key.split("/").pop();
+
+    const a = document.createElement("a");
+    a.href = o.url;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.textContent = "画像を開く";
+
+    const b = document.createElement("button");
+    b.textContent = "URLをコピー";
+
+    b.onclick = async () => {
+      try{
+        await navigator.clipboard.writeText(o.url);
+        b.textContent = "コピーしました";
+      }catch{
+        prompt("画像URL", o.url);
+      }
+    };
+
+    box.append(a, b);
+    card.append(img, box);
+    gallery.append(card);
+  });
+
+  status(
+    "listStatus",
+    `${uploadedImages.length}枚（今回アップロードした画像）`
+  );
 }
+
 </script></body></html>
